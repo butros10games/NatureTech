@@ -1,0 +1,90 @@
+body {
+    margin-top: 64px;
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 10px;
+    margin-bottom: 20px;
+}
+
+.image-container img {
+    width: 100%;
+    height: 500px;
+    display: block;
+}
+
+.overlay-text-header
+ {
+    position: absolute;
+    top: 10px;
+    left: 550px;
+    width: 25rem;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    text-align: center;
+    display: flex;
+    padding: 10px; /* Add padding for better readability */
+}
+
+.overlay-text{
+    position: absolute;
+    top: 150px;
+    left: 300px;
+    width: 700PX;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+    padding: 10px; /* Add padding for better readability */
+
+}
+
+.box-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-bottom: 20px; /* Voeg ruimte toe tussen de bovenste afbeelding en de rij met vakken */
+}
+
+.box {
+    width: calc(33.33% - 20px);
+    margin-bottom: 100px;
+    position: relative;
+    height: 300px; /* Stel een vaste hoogte in voor het vak */
+}
+
+.box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Zorg ervoor dat de afbeeldingen het hele vak bedekken en behoud de beeldverhouding */
+    display: block;
+}
+
+.box .overlay-text,
+.box .image-text {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center; /* Centreer de tekst onder elke afbeelding */
+    width: calc(100% - 20px); /* Zorg ervoor dat de tekst de volledige breedte van het vak overspant */
+}
+
+.box p {
+    text-align: center; /* Centreer de tekst onder elke afbeelding */
+    margin-top: 10px; /* Pas de ruimte aan zoals nodig */
+}

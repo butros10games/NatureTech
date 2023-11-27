@@ -13,8 +13,8 @@ def booking_form(request):
 
         send_mail(
               'Boekings bevestiging',
-            f'Dankuwel, {first_name} {last_name}, voor het reserveren van een kampeerplek op de boerencamping van {start} tot {end}.',
-            'bobelsendoorn@gmail.com', 
+            f'Dankuwel, {first_name} {last_name}, voor het reserveren van een kampeerplek op de boerencamping voor {number_of_guests} personen van {start} tot {end}.',
+            {mail},
             [mail],  
             fail_silently=False,
         )

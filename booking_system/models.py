@@ -15,5 +15,15 @@ class Booking(models.Model):
     paid = models.BooleanField(default=False)
     # CampingSpot = models.ForeignKey()
     # ExtraServices = models.ForeignKey()
-    # Customer = models.ForeignKey()
+    customer = models.ForeignKey('Customer', on_delete=models.SET_NULL, null=True)
+
+class Customer(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
+    first_name = models.CharField(max_length=30)
+    infix = models.CharField(max_length=30, blank=True, null=True)
+    last_name = models.CharField(max_length=30)
+    phone_number = models.CharField(max_length=15) 
+    mail = models.CharField(max_length=30)
+    newsletter = models.BooleanField(default=False)
+  
 

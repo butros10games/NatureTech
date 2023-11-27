@@ -11,6 +11,12 @@ source /home/('username')/NatureTecht_env/bin/activate
 ```
 
 ## How to reload the static files
+### go to direcotry
+``` bash
+cd NatureTech
+```
+
+### Run the next command
 ``` bash
 python manage.py collectstatic --noinput
 ```

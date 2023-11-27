@@ -13,6 +13,12 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 
+# Import the passwords file from passwords.json
+import json
+with open('passwords.json') as f:
+    passwords = json.load(f)
+    django_password = passwords['django']
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = Path(__file__).resolve().parent
@@ -21,7 +27,7 @@ PROJECT_DIR = Path(__file__).resolve().parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '38-=v#0hid9x0cskra+qinxlm*gqil@m#y-*a3n07nawf$xa3d'
+SECRET_KEY = django_password['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -91,10 +97,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'NatureTech',
-        'USER': 'butrosdata',
-        'PASSWORD': 'Bo3tr0s03',
-        'HOST': '192.168.2.237',  # Replace with the actual hostname
-        'PORT': '5432',  # Replace with the actual port number
+        'USER': django_password['user'],
+        'PASSWORD': django_password['password'],
+        'HOST': django_password['host'],  # Replace with the actual hostname
+        'PORT': django_password['port'],  # Replace with the actual port number
     }
 }
 
@@ -152,8 +158,8 @@ TEMPLATE_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = django_password['host']
 EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'butrosgroot@gmail.com'
-EMAIL_HOST_PASSWORD = 'pcnwpwottyabmkix'
+EMAIL_PORT = django_password['port']
+EMAIL_HOST_USER = django_password['user']
+EMAIL_HOST_PASSWORD = django_password['password']

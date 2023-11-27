@@ -97,10 +97,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'NatureTech',
-        'USER': django_password['user'],
-        'PASSWORD': django_password['password'],
-        'HOST': django_password['host'],  # Replace with the actual hostname
-        'PORT': django_password['port'],  # Replace with the actual port number
+        'USER': django_password['Database']['user'],
+        'PASSWORD': django_password['Database']['password'],
+        'HOST': django_password['Database']['host'],  # Replace with the actual hostname
+        'PORT': django_password['Database']['port'],  # Replace with the actual port number
     }
 }
 
@@ -158,8 +158,8 @@ TEMPLATE_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = django_password['host']
+EMAIL_HOST = django_password['email']['host']
 EMAIL_USE_TLS = True
-EMAIL_PORT = django_password['port']
-EMAIL_HOST_USER = django_password['user']
-EMAIL_HOST_PASSWORD = django_password['password']
+EMAIL_PORT = django_password['email']['port']
+EMAIL_HOST_USER = django_password['email']['user']
+EMAIL_HOST_PASSWORD = django_password['email']['password']

@@ -3,16 +3,13 @@ from django.core.mail import send_mail
 
 
 def booking_form(request):
-    return render(request, 'templates/booking_form.html')
-
-def confirm_booking(request):
     if request.method == 'POST':
         first_name = request.POST['FirstName']
         last_name = request.POST['LastName']
         number_of_guests = request.POST['NumberofGuests']
         mail = request.POST['CustomerEmail']
-        start = request.POST['Start']
-        end = request.POST['End']
+        start = request.POST['StartDate']
+        end = request.POST['EndDate']
 
         send_mail(
               'Boekings bevestiging',
@@ -21,9 +18,11 @@ def confirm_booking(request):
             [mail],  
             fail_silently=False,
         )
-        return render(request, 'confirmation.html', {'name': first_name, 'mail': mail, 'date': start})
-    else:
-        return redirect('booking_form')
+        return redirect('confirm_booking')
+    return render(request, 'booking/booking_form.html')
+
+def confirm_booking(request):
+    return render(request, 'confirmation/confirmation.html')
 
       
 

@@ -170,3 +170,4 @@ cython_debug/
 passwords.json
 
 sftp.json
+settings.json

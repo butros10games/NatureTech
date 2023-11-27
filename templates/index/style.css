@@ -21,7 +21,7 @@ img {
 
 .image-container img {
     width: 100%;
-    height: 500px;
+    height: 608px;
     display: block;
 }
 
@@ -29,8 +29,8 @@ img {
  {
     position: absolute;
     top: 10px;
-    left: 550px;
-    width: 25rem;
+    left: 300px;
+    width: 20rem;
     color: white;
     font-size: 32px;
     font-weight: bold;
@@ -42,8 +42,8 @@ img {
 .overlay-text{
     position: absolute;
     top: 150px;
-    left: 300px;
-    width: 700PX;
+    left: 200px;
+    width: 600PX;
     color: white;
     font-size: 18px;
     text-align: center;
@@ -87,4 +87,22 @@ img {
 .box p {
     text-align: center; /* Centreer de tekst onder elke afbeelding */
     margin-top: 10px; /* Pas de ruimte aan zoals nodig */
+}
+
+.footer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: top;
+    left: 0;
+    height: 260px;
+    bottom: 0;
+    width: 100%;
+    background-color: #4CD76B;
+    color: white;
+    padding: 10px;
+}
+
+.footer h2 {
+    margin: 50; 
 }

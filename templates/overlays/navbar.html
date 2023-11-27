@@ -1,8 +1,8 @@
 {% load static %}
 
-<link rel="stylesheet" href="{% static 'nav_styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/overlays/nav_styles.css' %}">
 <nav>
-    <a href="/index.html"><img src="/templates\navbar\icon.svg" alt="Icon" style="width:64px;height:64px"></a>
+    <a href="{% url 'index' %}"><img src="{% static 'img/overlays/icon.svg' %}" alt="Icon" style="width:64px;height:64px"></a>
 
     <ul id="primary-navigation" data-visible="false" class="primary-navigation flex">
         <li>

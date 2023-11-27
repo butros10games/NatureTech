@@ -7,7 +7,7 @@ Fill in the password and you are in!
 # How to use the server
 ## python virtual environment
 ``` bash
-source /home/('username')/NatureTecht_env/bin/activate
+source /home/('username')/NatureTech_env/bin/activate
 ```
 
 ## How to reload the static files

@@ -1,17 +1,52 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contact</title>
-    <link rel="stylesheet" href="css/customer_general/contact.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"/>
+    <link rel="stylesheet" href="{% static 'css/customer_general/contact.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   </head>
   <body>
     {% include 'overlays/navbar.html' %}
 
-
+    <h1>Heeft u vragen?</h1>
+    <h2>Neem contact op via het contactformulier of bel ons tijdens de openingstijden van de receptie</h2>
+    <div class="contactimage">
+        <img src="{% static 'img/customer_general/contact/contact_icon.jpg' %}" alt="Image 1">
+        <div class="contact-info">
+            <div>
+                <strong>Adres:</strong>
+                <p>Vijverlaan 1, 3737 RE Groenekan</p>
+            </div>
     
-    {% include 'overlays/footer.html' %}
+            <div>
+                <strong>Email:</strong>
+                <p>butrosgroot@gmail.com</p>
+            </div>
+    
+            <div>
+                <strong>Telefoon:</strong>
+                <p>(850) 2 18 111/999</p>
+            </div>
+    
+            <div>
+                <strong>Maandag-Zondag:</strong>
+                <p>7:00-22:00</p>
+            </div>
+    
+            <div>
+                <strong>Receptie:</strong>
+                <p>9:00-17:00</p>
+                <p>12:00-2:00 gesloten (Lunch)</p>
+            </div>
+    
+            <div>
+                <strong>Neem contact op voor eerdere/latere aankomst</strong>
+            </div>
+        </div>
+    </div>
   </body>
 </html>

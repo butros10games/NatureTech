@@ -7,6 +7,6 @@
 </head>
 <body>
     <h2>Boeking bevestigd</h2>
-    <p>Dankuwel, {{ FirstName }} {{ LastName }}, voor het reserveren van een kampeerplek van {{ Start }} tot {{ End }}. Een bevestigingsmail is verstuurd naar {{CustomerEmail}}.</p>
+    <p>Dankuwel, {{ Users.first_name }} {{ Users.first_name }}, voor het reserveren van een kampeerplek van {{ Booking.start_date }} tot {{ Booking.end_date }}. Een bevestigingsmail is verstuurd naar {{Users.email}}.</p>
 </body>
 </html>

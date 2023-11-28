@@ -11,4 +11,4 @@ class BookingAdmin(admin.ModelAdmin):
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ('id', 'phone_number', 'newsletter', 'user')
     list_filter = ('newsletter',)
-    search_fields = ('phone_number')
+    search_fields = ('phone_number',)

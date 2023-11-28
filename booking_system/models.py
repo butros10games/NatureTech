@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 from NatureTech.programs.uuidv7 import uuid7
 
@@ -19,11 +20,8 @@ class Booking(models.Model):
 
 class Customer(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
-    first_name = models.CharField(max_length=30)
-    infix = models.CharField(max_length=30, blank=True, null=True)
-    last_name = models.CharField(max_length=30)
-    phone_number = models.CharField(max_length=15) 
-    mail = models.CharField(max_length=30)
+    phone_number = models.CharField(max_length=15)
     newsletter = models.BooleanField(default=False)
-  
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
 

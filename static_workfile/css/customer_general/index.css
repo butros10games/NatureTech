@@ -1,7 +1,5 @@
 body {
-    margin-top: 0;
-    margin-left: 0;
-    margin-right: 0;
+    margin: 0;
     padding: 0;
     font-family: 'Inter', sans-serif;
 }
@@ -12,41 +10,61 @@ img {
     display: block;
 }
 
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
 .image-container {
     position: relative;
     width: 100%;
-    height: 10px;
+    height: calc(100vh - 64px);
     margin-bottom: 20px;
+    background-image: url('/static/img/customer_general/index/wandelbos.jpeg');
+    background-size: cover;
+    background-position: center;
+    transform: scaleX(-1);
 }
 
-.image-container img {
+.image-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
-    height: 608px;
-    display: block;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2); /* Adjust the opacity as needed */
+}
+
+.text-container-head{
+    transform: scalex(-1);
 }
 
 .overlay-text-header{
-    position: absolute;
-    top: 10px;
-    left: 300px;
-    width: 20rem;
-    color: white;
-    font-size: 32px;
-    font-weight: bold;
-    text-align: center;
     display: flex;
-    padding: 10px; /* Add padding for better readability */
+
+    width: 512px;
+    color: white;
+    font-size: 48px;
+    font-weight: bold;
+    
+    margin: 0;
+    padding-bottom: 20px;
 }
 
 .overlay-text{
-    position: absolute;
-    top: 150px;
-    left: 200px;
     width: 600PX;
     color: white;
     font-size: 18px;
-    text-align: center;
-    padding: 10px; /* Add padding for better readability */
+
+    margin: 0;
 }
 
 .box-container {
@@ -87,20 +105,3 @@ img {
     margin-top: 10px; /* Pas de ruimte aan zoals nodig */
 }
 
-.footer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: top;
-    left: 0;
-    height: 260px;
-    bottom: 0;
-    width: 100%;
-    background-color: #4CD76B;
-    color: white;
-    padding: 10px;
-}
-
-.footer h2 {
-    margin: 50; 
-}

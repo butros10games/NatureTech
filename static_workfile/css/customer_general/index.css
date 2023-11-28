@@ -105,20 +105,3 @@ img {
     margin-top: 10px; /* Pas de ruimte aan zoals nodig */
 }
 
-.footer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: top;
-    left: 0;
-    height: 260px;
-    bottom: 0;
-    width: 100%;
-    background-color: #4CD76B;
-    color: white;
-    padding: 10px;
-}
-
-.footer h2 {
-    margin: 50; 
-}

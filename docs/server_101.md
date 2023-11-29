@@ -16,17 +16,17 @@ source /home/('username')/NatureTech_env/bin/activate
 cd NatureTech
 ```
 
-### Run the next command
+### Run the next command      CSS, images and JS changes
 ``` bash
 python manage.py collectstatic --noinput
 ```
 
-## How to restart uwsgi webserver (the server that runs the syncornes django app)
+## How to restart uwsgi webserver (the server that runs the syncornes django app)      HTML and Django changes
 ``` bash
 sudo systemctl reload uwsgi-NatureTech.service
 ```
 
-## How to restart daphne webserver (the server that runs the asyncornes django app)
+## How to restart daphne webserver (the server that runs the asyncornes django app) 
 ``` bash
 sudo systemctl reload daphne-NatureTech.service
 ```

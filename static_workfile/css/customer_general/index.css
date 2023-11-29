@@ -40,7 +40,8 @@ img {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.2); /* Adjust the opacity as needed */
+    background-color: rgba(0, 0, 0, 0.2); 
+    
 }
 
 .text-container-head{
@@ -71,20 +72,20 @@ img {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-bottom: 20px; /* Voeg ruimte toe tussen de bovenste afbeelding en de rij met vakken */
+    margin-bottom: 20px; 
 }
 
 .box {
     width: calc(33.33% - 20px);
     margin-bottom: 100px;
     position: relative;
-    height: 300px; /* Stel een vaste hoogte in voor het vak */
+    height: 300px; 
 }
 
 .box img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Zorg ervoor dat de afbeeldingen het hele vak bedekken en behoud de beeldverhouding */
+    object-fit: cover; 
     display: block;
 }
 
@@ -96,12 +97,12 @@ img {
     color: white;
     font-size: 18px;
     font-weight: bold;
-    text-align: center; /* Centreer de tekst onder elke afbeelding */
-    width: calc(100% - 20px); /* Zorg ervoor dat de tekst de volledige breedte van het vak overspant */
+    text-align: center; 
+    width: calc(100% - 20px);
 }
 
 .box p {
-    text-align: center; /* Centreer de tekst onder elke afbeelding */
-    margin-top: 10px; /* Pas de ruimte aan zoals nodig */
+    text-align: center; 
+    margin-top: 10px; 
 }
 

@@ -2,20 +2,22 @@
 
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact</title>
     <link rel="stylesheet" href="{% static 'css/customer_general/contact.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-  </head>
-  <body>
+</head>
+<body>
     {% include 'overlays/navbar.html' %}
-
+    <div class="alles">
     <h1>Heeft u vragen?</h1>
+    <div class= "contactimage">
+    <img src="{% static 'img/customer_general/contact/contact_icon.png' %}" alt="Image 1">
+    </div>
     <h2>Neem contact op via het contactformulier of bel ons tijdens de openingstijden van de receptie</h2>
-    <div class="contactimage">
-        <img src="{% static 'img/customer_general/contact/contact_icon.jpg' %}" alt="Image 1">
+    <div class="contact-container">
         <div class="contact-info">
             <div>
                 <strong>Adres:</strong>
@@ -47,6 +49,30 @@
                 <strong>Neem contact op voor eerdere/latere aankomst</strong>
             </div>
         </div>
+
+        <div class="contact-form">
+            <h1>Heeft u vragen?</h1>
+            <form action="#" method="post">
+                <label for="voornaam">Voornaam:</label>
+                <input type="text" id="voornaam" name="voornaam" required>
+
+                <label for="achternaam">Achternaam:</label>
+                <input type="text" id="achternaam" name="achternaam" required>
+
+                <label for="email">Emailadres:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="telefoonnummer">Telefoonnummer:</label>
+                <input type="tel" id="telefoonnummer" name="telefoonnummer" required>
+
+                <label for="bericht">Uw bericht:</label>
+                <textarea id="bericht" name="bericht"></textarea>
+
+                <input type="submit" value="Verstuur">
+            </form>
+        </div>
     </div>
-  </body>
+</div>
+    {% include 'overlays/footer.html' %}
+</body>
 </html>

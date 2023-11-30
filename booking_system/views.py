@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.core.mail import send_mail
-from .models import Booking, Customer
+from .models import Booking, Customer, Notes
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
@@ -61,6 +61,44 @@ def booking_form(request):
 
 def confirm_booking(request):
     return render(request, 'confirmation/confirmation.html')
+
+def contact_form(request):
+    if request.method == 'POST':
+         first_name = request.POST['first_name']
+         last_name = request.POST['last_name']
+         mail = request.POST['email']
+         phone_number = request.POST['phone_number']
+         contact_message = request.POST['contact_message']
+
+    context = {
+            "first_name": first_name,
+            "last_name": last_name,
+            "email": mail,
+            "phone_number": phone_number,
+            "contact_message": contact_message
+        }
+    
+    html_message = render_to_string("mail/contact_confirmation_mail.html", context=context)
+    plain_message = strip_tags(html_message)
+
+    message = EmailMultiAlternatives(
+    subject = 'Uw vraag is ontvangen', 
+    body = plain_message,
+    from_email = None ,
+    to= {mail}
+    )
+    message.attach_alternative(html_message, "text/html")
+    message.send()
+
+    messages.succes(request, 'Uw vraag is verstuurd!')
+
+    return render(request, 'customer_general/contact.html')
+
+    
+    
+
+
+
 
       
 

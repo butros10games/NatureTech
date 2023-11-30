@@ -163,3 +163,6 @@ EMAIL_USE_TLS = True
 EMAIL_PORT = django_password['email']['port']
 EMAIL_HOST_USER = django_password['email']['user']
 EMAIL_HOST_PASSWORD = django_password['email']['password']
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+   

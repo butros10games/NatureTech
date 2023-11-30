@@ -17,9 +17,18 @@ def booking_form(request):
         start = request.POST['StartDate']
         end = request.POST['EndDate']
 
-        user, created = User.objects.get_or_create(username=mail, first_name=first_name, last_name=last_name, email=mail)
+        user, created = User.objects.get_or_create(email=mail)
+        if created:
+            user.username = mail
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+
         customer, created = Customer.objects.get_or_create(user=user)
-        booking, created = Booking.objects.get_or_create(customer=customer, age_above=number_of_guests, start_date=start, end_date=end)
+        booking, created = Booking.objects.create(customer=customer, age_above=number_of_guests, start_date=start, end_date=end)
+        
+        ## reload booking out of the database
+        booking.refresh_from_db()
 
         context = {
             "first_name": first_name,
@@ -27,12 +36,9 @@ def booking_form(request):
             "date_of_arrival": start,
             "date_of_departure": end,
             "accomodation": end,
-            "order_number": end,
+            "order_number": booking.order_number,
             "price": end,
             "method_of_paying": end
-
-
-
         }
 
         html_message = render_to_string("booking/confirmation_mail.html", context=context)
@@ -51,7 +57,7 @@ def booking_form(request):
         messages.success(request,f'Dankuwel, {first_name} {last_name}, voor het reserveren van een kampeerplek van {start} tot {end}. Een bevestigingsmail is verstuurd naar {mail}!')
 
         return redirect('confirm_booking')
-    return render(request, 'booking/booking_form.html')
+    return render(request, 'booking/booking_index.html')
 
 def confirm_booking(request):
     return render(request, 'confirmation/confirmation.html')

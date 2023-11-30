@@ -1,0 +1,33 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>De Groene Weide</title>
+
+        <link rel="stylesheet" href="{% static 'css/customer_general/index.css' %}">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+    </head>
+    <body>
+        {% include 'overlays/navbar.html' %}
+
+        <div style="margin-top: 64px;">
+            <div class="flex-column">
+            </div>
+
+            <div class="flex-column">
+                <div>
+
+                </div>
+
+                <div>
+                    {% include 'booking/booking_form.html' %}
+                </div>
+            </div>
+        </div>
+
+        {% include 'overlays/footer.html' %}
+    </body>
+</html>

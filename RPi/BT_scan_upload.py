@@ -1,3 +1,7 @@
+##This is test code that is broken
+
+#!/usr/bin/env python3
+
 import bluetooth
 from bluepy.btle import Scanner, DefaultDelegate
 import psycopg2

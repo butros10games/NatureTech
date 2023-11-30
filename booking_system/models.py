@@ -37,3 +37,14 @@ class Customer(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
 
+class Notes(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
+    message_note = models.CharField(max_length=255, blank=True, null=True)
+    booking_note = models.CharField(max_length=255, blank=True, null=True)
+    staff_note = models.CharField(max_length=255, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey('Customer', on_delete=models.SET_NULL, null=True)
+
+
+
+

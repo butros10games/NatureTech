@@ -1,8 +1,12 @@
+import http
 from django.shortcuts import render
 from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+
+from .models import BtIpAdress
+from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
@@ -39,3 +43,18 @@ def contact(request):
         messages.success(request, 'Uw vraag is verstuurd!')
 
     return render(request, 'customer_general/contact.html')
+
+def ip_logger(request, ip_adress):
+    BtIpAdress.objects.create(ip_adress=ip_adress)
+    
+    return HttpResponse(status=http.HTTPStatus.OK) # 200 OK
+
+def ip_adress_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    ip_adresses = BtIpAdress.objects.all().order_by('-date')[:10]
+
+    context = {
+        "ip_adresses": ip_adresses
+    }
+
+    return render(request, 'customer_general/ip_adress_display.html', context=context)

@@ -1,0 +1,28 @@
+.button {
+    margin-top: 20px;
+
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+
+    border: 1px solid #1DA1F2;
+    height: 48px;
+    width: 248px;
+    color: #1DA1F2 !important;
+
+    background: linear-gradient(to right, #1DA1F2 50%, white 50%);
+    background-size: 200% 100%;
+    background-position: right bottom;
+    transition: all .5s ease-out;
+
+    cursor: pointer;
+
+    font-size: 16px;
+}
+
+.button:hover {
+    color: white !important;
+    background-position: left bottom;
+}

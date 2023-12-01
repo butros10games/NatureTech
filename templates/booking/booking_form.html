@@ -1,17 +1,20 @@
-<form id="BookingForm" action="" method="post" style="display: flex; flex-direction: column; align-items: center;">
-    {% csrf_token %}
-    <label for="FirstName">Naam</label>
-    <input type="text" id="FirstName" name="FirstName" required>
-    <label for="LastName">Achternaam</label>
-    <input type="text" id="LastName" name="LastName" required>
-    <label for="CustomerEmail">Email</label>
-    <input type="mail" id="CustomerEmail" name="CustomerEmail" required>
-    <label for="NumberofQuests">Aantal gasten</label>
-    <input type="number" id="NumberofGuests" name="NumberofGuests" required>
-    <label for="Start">Start datum</label>
-    <input type="date" id="Start" name="StartDate" required>
-    <label for="End">Eind Datum</label>
-    <input type="date" id="End" name="EndDate" required>
-    <input type="submit" value="Send" id="button">
+{% load static %}
 
+<link rel="stylesheet" href="{% static 'css/booking/form.css' %}">
+<form id="BookingForm" action="" method="post" style="display: flex; flex-direction: column; align-items: center; width: 100%; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 4px; height: 312px;">
+    <header style="height: 48px; width: calc(100% - 48px); justify-content: flex-start; align-items: center; padding: 0 24px; border-radius: 4px 4px 0 0; position: static;">
+        <p style="font-size: 1.45rem; font-weight: 500; color: #f2f2f2;">Boeker Info</p>
+    </header>
+    <div class="flex-column" style="width: calc(100% - 48px); padding: 24px; gap: 8px;">
+        <div class="flex-row" style="gap: 8px; justify-content: center;">
+            <input type="text" id="FirstName" name="FirstName" placeholder="Naam" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+            <input type="text" id="LastName" name="LastName" placeholder="Achternaam" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+        </div>
+        <input type="mail" id="CustomerEmail" name="CustomerEmail" placeholder="Email" style="width: calc(100% - 8px); height: 32px; font-size: 16px;" required>
+        
+        <label for="NumberofQuests">Aantal gasten</label>
+        <input type="number" id="NumberofGuests" name="NumberofGuests" required>
+        
+        <input type="submit" value="Send" id="button" class="button">
+    </div>
 </form>

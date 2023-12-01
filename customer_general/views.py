@@ -58,7 +58,7 @@ def contact(request):
         messages.success(request, 'Uw vraag is verstuurd!')
 
     return render(request, 'customer_general/contact.html')
-    return render(request, 'customer_general/contact.html')
+
 def ip_logger(request, ip_adress):
     BtIpAdress.objects.create(ip_adress=ip_adress)
     

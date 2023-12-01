@@ -25,7 +25,10 @@ def booking_form(request):
             user.save()
 
         customer, created = Customer.objects.get_or_create(user=user)
-        booking, created = Booking.objects.create(customer=customer, age_above=number_of_guests, start_date=start, end_date=end)
+        booking_created = Booking.objects.create(customer=customer, age_above=number_of_guests, start_date=start, end_date=end)
+        booking = booking_created if isinstance(booking_created, Booking) else None
+        created = True  # Assuming the object is always created in this context
+
         
         ## reload booking out of the database
         booking.refresh_from_db()

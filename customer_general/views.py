@@ -49,8 +49,8 @@ def contact(request):
         message_admin = EmailMultiAlternatives(
             subject='Nieuwe vraag ontvangen',
             body=plain_message_admin,
-            from_email=[mail],  # Use your default email address or specify one
-            to=settings.DEFAULT_FROM_EMAIL,  # Use a list for the 'to' parameter
+            from_email=mail,  # Use your default email address or specify one
+            to=[settings.DEFAULT_FROM_EMAIL],  # Use a list for the 'to' parameter
         )
         message_admin.attach_alternative(html_message_admin, "text/html")
         message_admin.send()

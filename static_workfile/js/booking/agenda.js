@@ -41,10 +41,12 @@ const renderCalendar = () => {
 
 const updateDateSelection = (selectedYear, selectedMonth, selectedDay) => {
     let newDate = new Date(selectedYear, selectedMonth, selectedDay);
-    if (!startDate || newDate < startDate) {
-        startDate = newDate;
+    if (startDate && +startDate === +newDate) {
+        startDate = null;
         endDate = null;
-    } else if (!endDate || newDate > endDate) {
+    } else if (!startDate || (endDate && Math.abs(newDate - startDate) < Math.abs(newDate - endDate))) {
+        startDate = newDate;
+    } else if (!endDate || (startDate && Math.abs(newDate - endDate) < Math.abs(newDate - startDate))) {
         endDate = newDate;
     } else {
         startDate = newDate;
@@ -55,7 +57,7 @@ const updateDateSelection = (selectedYear, selectedMonth, selectedDay) => {
 
 const highlightSelection = () => {
     document.querySelectorAll('.days li').forEach(li => {
-        li.classList.remove('selected', 'range');
+        li.classList.remove('selected', 'range', 'first', 'last', 'halfLine');
         let day = parseInt(li.getAttribute("data-day"));
         let month = parseInt(li.getAttribute("data-month"));
         let year = parseInt(li.getAttribute("data-year"));
@@ -64,16 +66,30 @@ const highlightSelection = () => {
         if ((startDate && liDate.getTime() === startDate.getTime()) ||
             (endDate && liDate.getTime() === endDate.getTime())) {
             li.classList.add('selected');
+
+            // Add to the first day of the range the class 'first'
+            if (startDate && liDate.getTime() === startDate.getTime()) {
+                li.classList.add('first');
+            }
+
+            // Add to the last day of the range the class 'last'
+            if (endDate && liDate.getTime() === endDate.getTime()) {
+                li.classList.add('last');
+            }
+
+            // when there are two days selected add the class `halfLine` to the two selected days
+            if (startDate && endDate) {
+                li.classList.add('halfLine');
+            } else if (startDate && !endDate) {
+                // when there is only one day selected, remove the `halfLine` class from all selected elements
+                document.querySelectorAll('.halfLine').forEach(el => el.classList.remove('halfLine'));
+            }
         }
 
         if (startDate && endDate && liDate > startDate && liDate < endDate) {
             li.classList.add('range');
         }
     });
-
-    if ($('.range').length) {
-        $('.days li.selected').addClass('has-range');
-    }
 };
 
 const addDayCellEventListeners = () => {

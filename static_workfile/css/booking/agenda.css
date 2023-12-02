@@ -86,7 +86,7 @@ header .current-date {
 }
 
 /* add for the first selected time a half line */
-.days li.selected.has-range::after {
+.days li.halfLine::after {
     content: "";
     position: absolute;
     top: 0;
@@ -95,6 +95,14 @@ header .current-date {
     width: 50%;
     background: #24A0ED; /* Same blue as selected dates */
     z-index: -2;
+}
+
+.days li.first::after {
+    right: 0;
+}
+
+.days li.last::after {
+    left: 0;
 }
 
 /* Adding a continuous line effect for the range */

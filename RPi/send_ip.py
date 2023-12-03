@@ -1,4 +1,3 @@
-  GNU nano 5.4                                              test_1.py
 import requests
 import socket
 

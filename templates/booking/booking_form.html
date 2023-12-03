@@ -1,20 +1,88 @@
 {% load static %}
 
 <link rel="stylesheet" href="{% static 'css/booking/form.css' %}">
-<form id="BookingForm" action="" method="post" style="display: flex; flex-direction: column; align-items: center; width: 100%; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 4px; height: 312px;">
+<form id="BookingForm" action="" method="post" style="display: flex; flex-direction: column; align-items: center; width: 100%; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 4px;">
     <header style="height: 48px; width: calc(100% - 48px); justify-content: flex-start; align-items: center; padding: 0 24px; border-radius: 4px 4px 0 0; position: static;">
         <p style="font-size: 1.45rem; font-weight: 500; color: #f2f2f2;">Boeker Info</p>
     </header>
     <div class="flex-column" style="width: calc(100% - 48px); padding: 24px; gap: 8px;">
         <div class="flex-row" style="gap: 8px; justify-content: center;">
-            <input type="text" id="FirstName" name="FirstName" placeholder="Naam" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
-            <input type="text" id="LastName" name="LastName" placeholder="Achternaam" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+            <input type="text" id="FirstName" name="FirstName" placeholder="Naam*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+            <input type="text" id="LastName" name="LastName" placeholder="Achternaam*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
         </div>
-        <input type="mail" id="CustomerEmail" name="CustomerEmail" placeholder="Email" style="width: calc(100% - 8px); height: 32px; font-size: 16px;" required>
+        <input type="mail" id="CustomerEmail" name="CustomerEmail" placeholder="Email*" style="width: calc(100% - 8px); height: 32px; font-size: 16px;" required>
+        <input type="tel" id="CustomerPhone" name="CustomerPhone" placeholder="Phone*" style="width: calc(100% - 8px); height: 32px; font-size: 16px;" required>
+
+        <div class="flex-row" style="gap: 8px; justify-content: center;">
+            <select id="Country" name="Country" style="width: calc(50% - 4px); height: 38px; font-size: 16px;" required>
+                <option value="">Select country</option>
+                <option value="Netherlands">Netherlands</option>
+                <option value="Belgium">Belgium</option>
+                <option value="Germany">Germany</option>
+                <!-- Add more options as needed -->
+            </select>
+            <input type="text" id="State" name="State" placeholder="Provincie*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+        </div>
+
+        <div class="flex-row" style="gap: 8px; justify-content: center;">
+            <input type="text" id="PostalCode" name="PostalCode" placeholder="Postcode*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+            <input type="text" id="HouseNumber" name="HouseNumber" placeholder="Huisnummer*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+        </div>
+
+        <div class="flex-row" style="gap: 8px; justify-content: center;">
+            <input type="text" id="City" name="City" placeholder="Stad*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+            <input type="text" id="Street" name="Street" placeholder="Straat*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+        </div>
         
-        <label for="NumberofQuests">Aantal gasten</label>
-        <input type="number" id="NumberofGuests" name="NumberofGuests" required>
+        <div class="flex-row" style="gap: 10px; height: 32px;">
+            <div class="flex-row" style="gap: 10px; justify-content: flex-start; height: 100%; border-radius: 4px;">
+                <label for="NumberofGuests18Plus">Volwassenen</label>
+                <div style="display: flex; align-items: center; height: 100%; border: 1px solid black; padding: 0 6px;">
+                    <button type="button" onclick="decrement('NumberofGuests18Plus')" style="border: none; background: transparent; height: 20px; width: 20px; padding: 0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.25 12.75H3.75a.75.75 0 0 1 0-1.5h16.5a.75.75 0 0 1 0 1.5z"></path></svg>
+                    </button>
+                    <input type="number" id="NumberofGuests18Plus" name="NumberofGuests18Plus" min="1" value="2" style="width: 50px; text-align: center; height: 100%; font-size: 16px; border: none; background: transparent;">
+                    <button type="button" onclick="increment('NumberofGuests18Plus')" style="border: none; background: transparent; height: 20px; width: 20px; padding: 0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.25 11.25h-7.5v-7.5a.75.75 0 0 0-1.5 0v7.5h-7.5a.75.75 0 0 0 0 1.5h7.5v7.5a.75.75 0 0 0 1.5 0v-7.5h7.5a.75.75 0 0 0 0-1.5z"></path></svg>
+                    </button>
+                </div>
+            </div>
+          
+            <div class="flex-row" style="gap: 10px; justify-content: flex-start; height: 100%; border-radius: 4px;">
+                <label for="NumberofGuests18Minus">Kinderen</label>
+                <div style="display: flex; align-items: center; height: 100%; border: 1px solid black; padding: 0 6px;">
+                    <button type="button" onclick="decrement('NumberofGuests18Minus')" style="border: none; background: transparent; height: 20px; width: 20px; padding: 0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.25 12.75H3.75a.75.75 0 0 1 0-1.5h16.5a.75.75 0 0 1 0 1.5z"></path></svg>
+                    </button>
+                    <input type="number" id="NumberofGuests18Minus" name="NumberofGuests18Minus" min="0" value="0" style="width: 50px; text-align: center; height: 100%; font-size: 16px; border: none; background: transparent;">
+                    <button type="button" onclick="increment('NumberofGuests18Minus')" style="border: none; background: transparent; height: 20px; width: 20px; padding: 0;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.25 11.25h-7.5v-7.5a.75.75 0 0 0-1.5 0v7.5h-7.5a.75.75 0 0 0 0 1.5h7.5v7.5a.75.75 0 0 0 1.5 0v-7.5h7.5a.75.75 0 0 0 0-1.5z"></path></svg>
+                    </button>
+                </div>
+            </div>
+        </div>
         
         <input type="submit" value="Send" id="button" class="button">
     </div>
 </form>
+
+<script>
+    function increment(id) {
+        var input = document.getElementById(id);
+        var value = parseInt(input.value, 10);
+        value = isNaN(value) ? 0 : value;
+        value++;
+        input.value = value;
+    }
+    
+    function decrement(id) {
+        var input = document.getElementById(id);
+        var value = parseInt(input.value, 10);
+        value = isNaN(value) ? 0 : value;
+        value--;
+        if (value < input.min) {
+            value = input.min;
+        }
+        input.value = value;
+    }
+</script>

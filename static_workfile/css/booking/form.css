@@ -26,3 +26,27 @@
     color: white !important;
     background-position: left bottom;
 }
+
+/* Chrome, Safari, Edge, Opera */
+#NumberofGuests18Minus::-webkit-inner-spin-button,
+#NumberofGuests18Minus::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+#NumberofGuests18Minus {
+    -moz-appearance: textfield;
+}
+
+/* Chrome, Safari, Edge, Opera */
+#NumberofGuests18Plus::-webkit-inner-spin-button,
+#NumberofGuests18Plus::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+#NumberofGuests18Plus {
+    -moz-appearance: textfield;
+}

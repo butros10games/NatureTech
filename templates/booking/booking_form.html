@@ -1,17 +1,73 @@
-<form id="BookingForm" action="" method="post" style="display: flex; flex-direction: column; align-items: center;">
-    {% csrf_token %}
-    <label for="FirstName">Naam</label>
-    <input type="text" id="FirstName" name="FirstName" required>
-    <label for="LastName">Achternaam</label>
-    <input type="text" id="LastName" name="LastName" required>
-    <label for="CustomerEmail">Email</label>
-    <input type="mail" id="CustomerEmail" name="CustomerEmail" required>
-    <label for="NumberofQuests">Aantal gasten</label>
-    <input type="number" id="NumberofGuests" name="NumberofGuests" required>
-    <label for="Start">Start datum</label>
-    <input type="date" id="Start" name="StartDate" required>
-    <label for="End">Eind Datum</label>
-    <input type="date" id="End" name="EndDate" required>
-    <input type="submit" value="Send" id="button">
+{% load static %}
 
+<link rel="stylesheet" href="{% static 'css/booking/form.css' %}">
+<form id="BookingForm" action="" method="post" style="display: flex; flex-direction: column; align-items: center; width: 100%; box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 4px; position: relative;">
+    <header style="height: 48px; width: calc(100% - 48px); justify-content: flex-start; align-items: center; padding: 0 24px; border-radius: 4px 4px 0 0; position: static;">
+        <p style="font-size: 1.45rem; font-weight: 500; color: #f2f2f2;">Boeker Info</p>
+        <button id="toggleButton" type="button" style="background: transparent; border: none; margin-left: auto; color: #f2f2f2;">
+            <svg id="rotateButton" class="faq-btn-arrow" id="faq-btn-arrow3" width="30" height="14" viewBox="0 0 15 8" xmlns="http://www.w3.org/2000/svg" fill="#fff" stroke="#fff" stroke-width="0.8" style="transform: rotate(0deg); transition: 0.5s ease;">
+                <path fill="#fff" stroke-linecap="round" stroke-linejoin="round" d="M8.00019 6.01218L14.1325 0.755938C14.3421 0.576226 14.6578 0.600507 14.8375 0.81017L15.1629 1.1898C15.3426 1.39946 15.3183 1.71511 15.1087 1.89482L8.32558 7.70888C8.13834 7.86938 7.86204 7.86938 7.67479 7.70888L0.891723 1.89482C0.68206 1.71511 0.657779 1.39946 0.83749 1.1898L1.16289 0.810172C1.3426 0.600509 1.65825 0.576228 1.86791 0.755939L8.00019 6.01218Z"></path>
+            </svg>
+        </button>
+    </header>
+    <div id="AnimationContainer" style="overflow: hidden; width: 100%; position: absolute; top: 48px;">
+        <div id="bookingFromContainer" class="flex-column" style="width: calc(100% - 48px); padding: 24px; gap: 8px;">
+            <div class="flex-row" style="gap: 8px; justify-content: center;">
+                <input type="text" id="FirstName" name="FirstName" placeholder="Naam*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+                <input type="text" id="LastName" name="LastName" placeholder="Achternaam*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+            </div>
+            <input type="mail" id="CustomerEmail" name="CustomerEmail" placeholder="Email*" style="width: calc(100% - 8px); height: 32px; font-size: 16px;" required>
+            <input type="tel" id="CustomerPhone" name="CustomerPhone" placeholder="Phone*" style="width: calc(100% - 8px); height: 32px; font-size: 16px;" required>
+
+            <div class="flex-row" style="gap: 8px; justify-content: center;">
+                <select id="Country" name="Country" style="width: calc(50% - 4px); height: 38px; font-size: 16px;" required>
+                    <option value="">Select country</option>
+                    <option value="Netherlands">Netherlands</option>
+                    <option value="Belgium">Belgium</option>
+                    <option value="Germany">Germany</option>
+                    <!-- Add more options as needed -->
+                </select>
+                <input type="text" id="State" name="State" placeholder="Provincie*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+            </div>
+
+            <div class="flex-row" style="gap: 8px; justify-content: center;">
+                <input type="text" id="PostalCode" name="PostalCode" placeholder="Postcode*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+                <input type="text" id="HouseNumber" name="HouseNumber" placeholder="Huisnummer*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+            </div>
+
+            <div class="flex-row" style="gap: 8px; justify-content: center;">
+                <input type="text" id="City" name="City" placeholder="Stad*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+                <input type="text" id="Street" name="Street" placeholder="Straat*" style="width: calc(50% - 12px); height: 32px; font-size: 16px;" required>
+            </div>
+            
+            <input type="submit" value="Send" id="button" class="button">
+        </div>
+    </div>
+    <div id="bookingFromContainerPsudo" style="transition: 0.5s ease;"></div>
 </form>
+
+<script>
+    var BookingForm = document.querySelector('#BookingForm');
+    var toggleButton = BookingForm.querySelector('#toggleButton');
+    var bookingFromContainer = BookingForm.querySelector('#bookingFromContainer');
+
+    toggleButton.addEventListener('click', function() {
+        var rotateButton = BookingForm.querySelector('#rotateButton');
+    
+        bookingFromContainer.classList.toggle('collapsed');
+    
+        rotateButton.style.transform = 
+            bookingFromContainer.classList.contains('collapsed') ? 'rotate(-90deg)' : 'rotate(0deg)';
+
+        if (bookingFromContainer.classList.contains('collapsed')) {
+            bookingFromContainerPsudo.style.height = '0px';
+        } else {
+            bookingFromContainerPsudo.style.height = bookingFromContainer.offsetHeight + 'px';
+        }
+    });
+
+    var bookingFromContainerPsudo = BookingForm.querySelector('#bookingFromContainerPsudo');
+    
+    // get the hight of the BookingFormContainer and give it to the BookingFormContainerPsudo
+    bookingFromContainerPsudo.style.height = bookingFromContainer.offsetHeight + 'px';
+</script>

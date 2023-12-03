@@ -50,3 +50,27 @@
 #NumberofGuests18Plus {
     -moz-appearance: textfield;
 }
+
+#AnimationContainer {
+    overflow: hidden; /* This will clip the PlaceSearchContainer */
+}
+
+#PlaceSearchContainer {
+    transition: transform 0.5s ease;
+    transform-origin: top;
+    display: flex;
+}
+
+#PlaceSearchContainer.collapsed {
+    transform: translateY(-100%); /* Moves the container up */
+}
+
+#bookingFromContainer {
+    transition: transform 0.5s ease;
+    transform-origin: top;
+    display: flex;
+}
+
+#bookingFromContainer.collapsed {
+    transform: translateY(-100%); /* Moves the container up */
+}

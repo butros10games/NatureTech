@@ -25,3 +25,6 @@ Showing the hex code of all the scanned signals:
 sudo hcidump --raw
 ```
 This includes the RSSI
+
+
+Running .py script on startup:

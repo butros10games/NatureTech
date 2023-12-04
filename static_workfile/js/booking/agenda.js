@@ -41,7 +41,7 @@ const renderCalendar = () => {
 
 const updateDateSelection = (selectedYear, selectedMonth, selectedDay) => {
     let newDate = new Date(selectedYear, selectedMonth, selectedDay);
-    if (startDate && +startDate === +newDate) {
+    if (startDate && +startDate === +newDate || endDate && +endDate === +newDate) {
         startDate = null;
         endDate = null;
     } else if (!startDate || (endDate && Math.abs(newDate - startDate) < Math.abs(newDate - endDate))) {
@@ -51,6 +51,12 @@ const updateDateSelection = (selectedYear, selectedMonth, selectedDay) => {
     } else {
         startDate = newDate;
         endDate = null;
+    }
+
+    if (startDate && endDate && startDate > endDate) {
+        let temp = startDate;
+        startDate = endDate;
+        endDate = temp;
     }
     highlightSelection();
 };

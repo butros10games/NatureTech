@@ -10,8 +10,11 @@ from django.http import JsonResponse
 
 from django_ratelimit.decorators import ratelimit
 
-@ratelimit(key='ip', rate='5/60m')  # Limit to 5 requests per 15 minutes per IP address
+@ratelimit(key='ip', rate='3/60m')  # Limit to 5 requests per 15 minutes per IP address
 def booking_form(request):
+    if getattr(request, 'limited', False):
+        return JsonResponse({"status": "error", "type": "rate_limit", "message": "You have exceeded the rate limit. Please wait before trying again."})
+    
     if request.method == 'POST':
         try:
             first_name = request.POST['firstName']

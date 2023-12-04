@@ -119,7 +119,11 @@
             },
             error: function (data) {
                 console.log(data)
-                alert('Er is iets fout gegaan, probeer het later opnieuw.')
+                if (data.type === 'rate_limit') {
+                    alert(data.message)
+                } else {
+                    alert('Er is iets fout gegaan, probeer het later opnieuw.')
+                }
             }
         });
     }

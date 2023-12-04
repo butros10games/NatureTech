@@ -5,7 +5,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <div id="agenda" class="wrapper" style="position: relative;">
-    <header style="height: 48px; position: static; z-index: 1;">
+    <header style="height: 48px; position: static; z-index: 1; transition: 0.5s ease;">
         <div class="flex-row" style="justify-content: flex-start">
             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24px" width="24px" version="1.1" id="Capa_1" viewBox="0 0 29.237 29.237" xml:space="preserve">
                 <g>
@@ -59,6 +59,7 @@
 
     toggleButton.addEventListener('click', function() {
         var rotateButton = agenda.querySelector('#rotateButton');
+        var header = agenda.querySelector('header');
     
         agendaContainer.classList.toggle('collapsed');
     
@@ -69,8 +70,12 @@
 
         if (agendaContainer.classList.contains('collapsed')) {
             calendarPsudo.style.height = '0px';
+
+            header.style.borderRadius = '4px 4px 4px 4px';
         } else {
             calendarPsudo.style.height = agendaContainer.offsetHeight + 'px';
+
+            header.style.borderRadius = '4px 4px 0 0';
         }
     });
 

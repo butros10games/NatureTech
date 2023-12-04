@@ -7,27 +7,120 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>De Groene Weide</title>
 
-        <link rel="stylesheet" href="{% static 'css/customer_general/index.css' %}">
+        <link rel="stylesheet" href="{% static 'css/booking/index.css' %}">
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
     </head>
-    <body>
+    <body style="overflow-x: hidden;">
         {% include 'overlays/navbar.html' %}
 
-        <div style="margin-top: 64px;">
-            <div class="flex-column">
-            </div>
+        <div class="flex-column" style="width: 100%; min-height: calc(100vh - 64px); justify-content: center;">
+            <div class="flex-row" style="width: calc(100% - 64px); max-width: 1536px; height: 100%; justify-content: flex-start; margin-top: 64px; align-items: flex-start">
+                <div id="fake-container" style="width: 65%"></div>
+                <div id="map-container" class="flex-column" style="width: 65%; height: calc(95vh - 128px); transition: 0.5s ease; position: absolute;">
+                    <header style="height: 48px; width: calc(100% - 80px); justify-content: flex-start; align-items: center; padding: 0 24px; border-radius: 4px 4px 0 0; position: static;">
+                        <p style="font-size: 1.45rem; font-weight: 500; color: #f2f2f2;">Camping kaart</p>
+                    </header>
+                    <div class="flex-center" style="width: calc(100% - 32px); height: calc(100% - 48px); box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 4px; justify-content: space-between;">
+                        <div></div>
+                        <div id="search-container" class="flex-row">
 
-            <div class="flex-column">
-                <div>
+                            <div style="min-width: 24px; width: 24px;">
+                                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 50 50">
+                                    <path d="M 21 3 C 11.654545 3 4 10.654545 4 20 C 4 29.345455 11.654545 37 21 37 C 24.701287 37 28.127393 35.786719 30.927734 33.755859 L 44.085938 46.914062 L 46.914062 44.085938 L 33.875 31.046875 C 36.43682 28.068316 38 24.210207 38 20 C 38 10.654545 30.345455 3 21 3 z M 21 5 C 29.254545 5 36 11.745455 36 20 C 36 28.254545 29.254545 35 21 35 C 12.745455 35 6 28.254545 6 20 C 6 11.745455 12.745455 5 21 5 z"></path>
+                                </svg>
+                            </div>
 
+                            <div style="min-width: 24px;"></div>
+
+                            <p id="search-text" style="margin: 0; white-space: nowrap;">Camping Kaart</p>
+                        </div>
+
+                        <div id="slide-button" class="flex-center" style="height: 100%; cursor: pointer;">
+                            <svg class="faq-btn-arrow" id="faq-btn-arrow3" width="30" height="14" viewBox="0 0 15 8" xmlns="http://www.w3.org/2000/svg" fill="#c9c9c9" stroke="#c9c9c9" stroke-width="0.8" style="transform: rotate(-90deg);">
+                                <path fill="#c9c9c9" stroke-linecap="round" stroke-linejoin="round" d="M8.00019 6.01218L14.1325 0.755938C14.3421 0.576226 14.6578 0.600507 14.8375 0.81017L15.1629 1.1898C15.3426 1.39946 15.3183 1.71511 15.1087 1.89482L8.32558 7.70888C8.13834 7.86938 7.86204 7.86938 7.67479 7.70888L0.891723 1.89482C0.68206 1.71511 0.657779 1.39946 0.83749 1.1898L1.16289 0.810172C1.3426 0.600509 1.65825 0.576228 1.86791 0.755939L8.00019 6.01218Z"></path>
+                            </svg>
+                        </div>
+                    </div>
                 </div>
 
-                <div>
+                <div id="form-container" class="flex-column" style="overflow-y: auto; padding: 0 8px; max-height: calc(100vh - 128px)">
+                    {% include 'booking/booking_agenda.html' %}
+
+                    {% include 'booking/booking_plek_form.html' %}
+
                     {% include 'booking/booking_form.html' %}
+
+                    <div style="min-height: 24px;"></div>
                 </div>
             </div>
         </div>
 
         {% include 'overlays/footer.html' %}
     </body>
+
+    <script src="{% static 'js/booking/index.js' %}"></script>
 </html>
+
+<script>
+    const bookButton = document.getElementById('bookButton');
+
+    bookButton.addEventListener('click', sendBookingData);
+
+    // get the data from the from's and agenda and send it to the backend
+    function sendBookingData() {
+        // Place form
+        let adult = document.getElementById('NumberofGuests18Plus').value;
+        let children = document.getElementById('NumberofGuests18Minus').value;
+
+        // Booking user info
+        let firstName = document.getElementById('FirstName').value;
+        let lastName = document.getElementById('LastName').value;
+        let email = document.getElementById('CustomerEmail').value;
+        let phone = document.getElementById('CustomerPhone').value;
+        let country = document.getElementById('Country').value;
+        let state = document.getElementById('State').value;
+        let postalCode = document.getElementById('PostalCode').value;
+        let houseNumber = document.getElementById('HouseNumber').value;
+        let city = document.getElementById('City').value;
+        let street = document.getElementById('Street').value;
+
+        const data = {
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+            'startDate': startDate.toISOString().split('T')[0],
+            'endDate': endDate.toISOString().split('T')[0],
+            'adults': parseInt(adult),
+            'children': parseInt(children),
+            'firstName': firstName,
+            'lastName': lastName,
+            'email': email,
+            'phone': phone,
+            'country': country,
+            'state': state,
+            'postalCode': postalCode,
+            'houseNumber': houseNumber,
+            'city': city,
+            'street': street,
+        }
+
+        console.log(data)
+
+        // send the data to the backend
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'booking_form' %}",
+            data: data,
+            success: function (data) {
+                console.log(data)
+                if (data['status'] == 'success') {
+                    window.location.href = "{% url 'confirm_booking' %}"
+                } else {
+                    alert('Er is iets fout gegaan, probeer het later opnieuw.')
+                }
+            },
+            error: function (data) {
+                console.log(data)
+                alert('Er is iets fout gegaan, probeer het later opnieuw.')
+            }
+        });
+    }
+</script>

@@ -60,3 +60,67 @@
 
     <script src="{% static 'js/booking/index.js' %}"></script>
 </html>
+
+<script>
+    const bookButton = document.getElementById('bookButton');
+
+    bookButton.addEventListener('click', sendBookingData);
+
+    // get the data from the from's and agenda and send it to the backend
+    function sendBookingData() {
+        // Place form
+        let adult = document.getElementById('NumberofGuests18Plus').value;
+        let children = document.getElementById('NumberofGuests18Minus').value;
+
+        // Booking user info
+        let firstName = document.getElementById('FirstName').value;
+        let lastName = document.getElementById('LastName').value;
+        let email = document.getElementById('CustomerEmail').value;
+        let phone = document.getElementById('CustomerPhone').value;
+        let country = document.getElementById('Country').value;
+        let state = document.getElementById('State').value;
+        let postalCode = document.getElementById('PostalCode').value;
+        let houseNumber = document.getElementById('HouseNumber').value;
+        let city = document.getElementById('City').value;
+        let street = document.getElementById('Street').value;
+
+        const data = {
+            'csrfmiddlewaretoken': '{{ csrf_token }}',
+            'startDate': startDate.toISOString().split('T')[0],
+            'endDate': endDate.toISOString().split('T')[0],
+            'adults': parseInt(adult),
+            'children': parseInt(children),
+            'firstName': firstName,
+            'lastName': lastName,
+            'email': email,
+            'phone': phone,
+            'country': country,
+            'state': state,
+            'postalCode': postalCode,
+            'houseNumber': houseNumber,
+            'city': city,
+            'street': street,
+        }
+
+        console.log(data)
+
+        // send the data to the backend
+        $.ajax({
+            type: 'POST',
+            url: "{% url 'booking_form' %}",
+            data: data,
+            success: function (data) {
+                console.log(data)
+                if (data['status'] == 'success') {
+                    window.location.href = "{% url 'confirm_booking' %}"
+                } else {
+                    alert('Er is iets fout gegaan, probeer het later opnieuw.')
+                }
+            },
+            error: function (data) {
+                console.log(data)
+                alert('Er is iets fout gegaan, probeer het later opnieuw.')
+            }
+        });
+    }
+</script>

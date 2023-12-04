@@ -37,6 +37,7 @@ const renderCalendar = () => {
 
     highlightSelection();
     addDayCellEventListeners();
+    setPsudoElement();
 };
 
 const updateDateSelection = (selectedYear, selectedMonth, selectedDay) => {

@@ -8,6 +8,9 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.http import JsonResponse
 
+from django_ratelimit.decorators import ratelimit
+
+@ratelimit(key='ip', rate='5/60m')  # Limit to 5 requests per 15 minutes per IP address
 def booking_form(request):
     if request.method == 'POST':
         try:
@@ -66,6 +69,8 @@ def booking_form(request):
         except Exception as e:
             # Log the error if needed
             return JsonResponse({"status": "error", "message": str(e)})
+
+def booking_index(request):
     return render(request, 'booking/booking_index.html')
 
 def confirm_booking(request):

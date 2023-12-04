@@ -154,3 +154,16 @@ header .current-date {
 .arr-down {
     transform: rotate(45deg);
 }
+
+#AnimationContainer {
+    overflow: hidden; /* This will clip the PlaceSearchContainer */
+}
+
+#agendaContainer {
+    transition: transform 0.5s ease;
+    transform-origin: top;
+}
+
+#agendaContainer.collapsed {
+    transform: translateY(-100%); /* Moves the container up */
+}

@@ -4,6 +4,7 @@ from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django_ratelimit.decorators import ratelimit
 
 from .models import BtIpAdress
 from django.http import HttpResponse
@@ -13,6 +14,7 @@ from django.conf import settings
 def index(request):
     return render(request, 'customer_general/index.html')
 
+@ratelimit(key='ip', rate='5/60m')  # Limit to 5 requests per 15 minutes per IP address
 def contact(request):
     if request.method == 'POST':
         first_name = request.POST['first_name']
@@ -28,7 +30,6 @@ def contact(request):
             "phone_number": phone_number,
             "contact_message": contact_message
         }
-
       
         html_message_user = render_to_string("mail/contact_confirmation_mail.html", context=context)
         plain_message_user = strip_tags(html_message_user)

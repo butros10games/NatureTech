@@ -1,5 +1,14 @@
 import requests
 import socket
+import sys  # Import sys module for exit()
+
+# Function to check internet connectivity
+def check_internet_connection():
+    try:
+        response = requests.get("http://www.google.com", timeout=5)
+        return True
+    except requests.RequestException:
+        return False
 
 # Function to get the local IP address
 def get_local_ip():
@@ -13,8 +22,14 @@ def get_local_ip():
     except socket.error:
         return None
 
+# Check internet connectivity
+if not check_internet_connection():
+    print("Unable to connect to the internet. Exiting.")
+    sys.exit()
+
 # Get the local WLAN IP address
 local_ip = get_local_ip()
+pi_name = socket.gethostname()
 
 # Check if local_ip is obtained successfully
 if local_ip:
@@ -26,10 +41,12 @@ if local_ip:
         response = requests.get(server_url)
 
         # Print the server's response
-        print("IP send:", local_ip)
+        print("Name:", pi_name)
+        print("IP sent:", local_ip)
         print("Server response:", response.text)
 
     except requests.RequestException as e:
         print("Error sending request:", e)
+        sys.exit("Exiting due to an error.")
 else:
     print("Unable to retrieve local IP address.")

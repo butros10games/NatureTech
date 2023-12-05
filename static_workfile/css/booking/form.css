@@ -73,3 +73,11 @@
 #bookingFromContainer.collapsed {
     transform: translateY(-100%); /* Moves the container up */
 }
+
+.colapseButton:hover {
+    scale: 1.05;
+}
+
+.nonFocus:focus {
+    outline: none;
+}

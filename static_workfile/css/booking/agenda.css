@@ -34,7 +34,7 @@ header .icons span {
 }
 
 header .icons span:hover {
-    background: #878787;
+    scale: 1.05;
 }
 
 header .current-date {

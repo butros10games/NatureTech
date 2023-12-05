@@ -10,21 +10,20 @@
     border: 1px solid #1DA1F2;
     height: 48px;
     width: 248px;
-    color: #1DA1F2 !important;
+    color: white;
 
-    background: linear-gradient(to right, #1DA1F2 50%, white 50%);
-    background-size: 200% 100%;
-    background-position: right bottom;
+    background: #1DA1F2;
     transition: all .5s ease-out;
 
     cursor: pointer;
 
     font-size: 16px;
+
+    border-radius: 4px;
 }
 
 .button:hover {
-    color: white !important;
-    background-position: left bottom;
+    background: #2b6cb0;
 }
 
 /* Chrome, Safari, Edge, Opera */

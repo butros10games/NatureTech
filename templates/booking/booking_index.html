@@ -128,3 +128,41 @@
         });
     }
 </script>
+
+<script>
+    var formContainer = document.getElementById('form-container');
+    var body = document.body;
+
+    var allowBodyScroll = false; // Flag to control body scroll
+
+    // Function to update body scroll behavior based on formContainer's scroll position
+    function updateBodyScroll() {
+        if (formContainer.scrollTop + formContainer.offsetHeight >= formContainer.scrollHeight) {
+            // Allow body to scroll when formContainer is fully scrolled
+            allowBodyScroll = true;
+            body.style.overflowY = 'auto';
+        } else {
+            // Keep body from scrolling when formContainer is not fully scrolled
+            allowBodyScroll = false;
+            body.style.overflowY = 'hidden';
+        }
+    }
+
+    formContainer.addEventListener('scroll', function() {
+        // Update body scroll behavior on formContainer scroll
+        updateBodyScroll();
+    });
+
+    body.addEventListener('wheel', function(e) {
+        if (!allowBodyScroll) {
+            // Prevent default scroll and scroll formContainer instead
+            e.preventDefault();
+            formContainer.scrollTop += e.deltaY;
+        } else if (window.scrollY === 0) {
+            // When body is scrolled to the top, resume scrolling formContainer upwards
+            e.preventDefault();
+            formContainer.scrollTop += e.deltaY;
+            updateBodyScroll(); // Update body scroll behavior
+        }
+    });
+</script>

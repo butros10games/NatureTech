@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 </head>
 <body>
-    {% include 'overlays/navbar.html' %}
+    {% include 'boer/overlays/navbar.html' %}
     <div class="alles">
     <h1>Heeft u vragen?</h1>
     <div class= "contactimage">
@@ -52,7 +52,7 @@
 
         <div class="contact-form">
             <h1>Heeft u vragen?</h1>
-            {% include 'customer_general/contact_form.html' %}
+            {% include 'boer/customer_general/contact_form.html' %}
             {% if messages %}
             {% for message in messages %}
              {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
@@ -63,7 +63,7 @@
         </div>
     </div>
 </div>
-    {% include 'overlays/footer.html' %}
+    {% include 'boer/overlays/footer.html' %}
 
 </body>
 </html>

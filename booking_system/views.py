@@ -54,7 +54,7 @@ def booking_form(request):
                 "children": childeren
             }
 
-            html_message = render_to_string("booking/confirmation_mail.html", context=context)
+            html_message = render_to_string("boer/booking/confirmation_mail.html", context=context)
             plain_message = strip_tags(html_message)
 
             message = EmailMultiAlternatives(
@@ -68,7 +68,7 @@ def booking_form(request):
             message.send()
 
                 # Second email to the specified email address
-            html_message_admin = render_to_string("booking/confirmation_mail_admin.html", context=context)
+            html_message_admin = render_to_string("boer/booking/confirmation_mail_admin.html", context=context)
             plain_message_admin = strip_tags(html_message_admin)
 
             message_admin = EmailMultiAlternatives(
@@ -89,7 +89,7 @@ def booking_form(request):
             return JsonResponse({"status": "error", "message": str(e)})
 
 def booking_index(request):
-    return render(request, 'booking/booking_index.html')
+    return render(request, 'boer/booking/booking_index.html')
 
 def confirm_booking(request):
-    return render(request, 'confirmation/confirmation.html')
+    return render(request, 'boer/confirmation/confirmation.html')

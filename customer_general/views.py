@@ -12,7 +12,7 @@ from django.conf import settings
 
 # Create your views here.
 def index(request):
-    return render(request, 'customer_general/index.html')
+    return render(request, 'boer/customer_general/index.html')
 
 @ratelimit(key='ip', rate='5/60m')  # Limit to 5 requests per 15 minutes per IP address
 def contact(request):
@@ -31,7 +31,7 @@ def contact(request):
             "contact_message": contact_message
         }
       
-        html_message_user = render_to_string("mail/contact_confirmation_mail.html", context=context)
+        html_message_user = render_to_string("boer/mail/contact_confirmation_mail.html", context=context)
         plain_message_user = strip_tags(html_message_user)
 
         message_user = EmailMultiAlternatives(
@@ -44,7 +44,7 @@ def contact(request):
         message_user.send()
 
         # Second email to the specified email address
-        html_message_admin = render_to_string("mail/new_request_mail.html", context=context)
+        html_message_admin = render_to_string("boer/mail/new_request_mail.html", context=context)
         plain_message_admin = strip_tags(html_message_admin)
 
         message_admin = EmailMultiAlternatives(
@@ -58,7 +58,7 @@ def contact(request):
 
         messages.success(request, 'Uw vraag is verstuurd!')
 
-    return render(request, 'customer_general/contact.html')
+    return render(request, 'boer/customer_general/contact.html')
 
 def ip_logger(request, ip_adress):
     BtIpAdress.objects.create(ip_adress=ip_adress)
@@ -73,4 +73,4 @@ def ip_adress_display(request):
         "ip_adresses": ip_adresses
     }
 
-    return render(request, 'customer_general/ip_adress_display.html', context=context)
+    return render(request, 'boer/customer_general/ip_adress_display.html', context=context)

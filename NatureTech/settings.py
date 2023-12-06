@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     
     'booking_system',
     'customer_general',
+    'authentication',
 ]
 
 MIDDLEWARE = [
@@ -62,6 +63,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_hosts.middleware.HostsResponseMiddleware',
+]
+
+LOGIN_URL = 'login'
+
+AUTHENTICATION_BACKENDS = [
+    'authentication.auth_backend.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
 ]
 
 ROOT_HOSTCONF = 'NatureTech.hosts'

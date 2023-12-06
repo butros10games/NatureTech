@@ -68,8 +68,12 @@ header .current-date {
 }
 
 .days li.inactive {
+    color: #ddd;
+}
+
+.days li.past {
     color: #aaa;
-    cursor: default;
+    cursor: not-allowed;
 }
 
 .days li.selected::before {

@@ -148,6 +148,16 @@
         }
     }
 
+    function updateFormScroll() {
+        if (window.scrollY === 0) {
+            // Allow formContainer to scroll when body is at the top
+            formContainer.style.overflowY = 'auto';
+        } else {
+            // Keep formContainer from scrolling when body is not at the top
+            formContainer.style.overflowY = 'hidden';
+        }
+    }
+
     formContainer.addEventListener('scroll', function() {
         // Update body scroll behavior on formContainer scroll
         updateBodyScroll();
@@ -155,14 +165,13 @@
 
     body.addEventListener('wheel', function(e) {
         if (!allowBodyScroll) {
-            // Prevent default scroll and scroll formContainer instead
-            e.preventDefault();
             formContainer.scrollTop += e.deltaY;
         } else if (window.scrollY === 0) {
-            // When body is scrolled to the top, resume scrolling formContainer upwards
-            e.preventDefault();
             formContainer.scrollTop += e.deltaY;
             updateBodyScroll(); // Update body scroll behavior
         }
+
+        // Update formContainer scroll behavior on body scroll
+        updateFormScroll();
     });
 </script>

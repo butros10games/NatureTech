@@ -21,15 +21,27 @@ const renderCalendar = () => {
     let liTag = "";
 
     for (let i = firstDayOfMonth; i > 0; i--) {
-        liTag += `<li class="inactive" data-day="${lastDateOfLastMonth - i + 1}" data-month="${currMonth - 1}" data-year="${currYear}">${lastDateOfLastMonth - i + 1}</li>`;
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let currentDate = new Date(currYear, currMonth, i);
+        let isPast = currentDate < today;
+        liTag += `<li class="inactive ${isPast ? 'past' : ''}" data-day="${lastDateOfLastMonth - i + 1}" data-month="${currMonth - 1}" data-year="${currYear}">${lastDateOfLastMonth - i + 1}</li>`;
     }
 
     for (let i = 1; i <= lastDateOfMonth; i++) {
-        liTag += `<li data-day="${i}" data-month="${currMonth}" data-year="${currYear}">${i}</li>`;
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let currentDate = new Date(currYear, currMonth, i);
+        let isPast = currentDate < today;
+        liTag += `<li ${isPast ? 'class="past"' : ''} data-day="${i}" data-month="${currMonth}" data-year="${currYear}">${i}</li>`;
     }
 
     for (let i = lastDayOfMonth; i < 6; i++) {
-        liTag += `<li class="inactive" data-day="${i - lastDayOfMonth + 1}" data-month="${currMonth + 1}" data-year="${currYear}">${i - lastDayOfMonth + 1}</li>`;
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+        let currentDate = new Date(currYear, currMonth + 1, i);
+        let isPast = currentDate < today;
+        liTag += `<li class="inactive ${isPast ? 'past' : ''}" data-day="${i - lastDayOfMonth + 1}" data-month="${currMonth + 1}" data-year="${currYear}">${i - lastDayOfMonth + 1}</li>`;
     }
 
     currentDate.innerText = `${months[currMonth]} ${currYear}`;
@@ -106,7 +118,13 @@ const addDayCellEventListeners = () => {
             const selectedMonth = parseInt(day.getAttribute("data-month"));
             const selectedYear = parseInt(day.getAttribute("data-year"));
 
-            updateDateSelection(selectedYear, selectedMonth, selectedDay);
+            let today = new Date();
+            today.setHours(0, 0, 0, 0);
+            let selectedDate = new Date(selectedYear, selectedMonth, selectedDay);
+
+            if (selectedDate >= today) {
+                updateDateSelection(selectedYear, selectedMonth, selectedDay);
+            }
         });
     });
 };

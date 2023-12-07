@@ -28,23 +28,8 @@ class Booking(models.Model):
                 self.order_number = 1
         super(Booking, self).save(*args, **kwargs)
 
-
-
 class Customer(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
     phone_number = models.CharField(max_length=15)
     newsletter = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-
-
-class Notes(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
-    message_note = models.CharField(max_length=255, blank=True, null=True)
-    booking_note = models.CharField(max_length=255, blank=True, null=True)
-    staff_note = models.CharField(max_length=255, blank=True, null=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    customer = models.ForeignKey('Customer', on_delete=models.SET_NULL, null=True)
-
-
-
-

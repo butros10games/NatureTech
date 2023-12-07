@@ -1,25 +1,21 @@
 {% load static %}
-
 <link rel="stylesheet" href="{% static 'css/overlays/nav_styles.css' %}">
-<header style="width: 100%">
-    <nav style="max-width: 1536px; width: calc(100% - 64px); display: flex; justify-content: flex-start; z-index: 10;">
-        <a href="{% url 'index' %}"><img src="{% static 'img/overlays/icon.svg' %}" alt="Icon" style="width: 56px; height: 100%;"></a>
+<header style="width: 200px; height: 100vh; position: fixed; z-index: 10;">
+    <nav>
+        <a href=""><img src="{% static 'img/overlays/icon.svg' %}" alt="Icon" style="width: 56px; height: 100%;"></a>
 
-        <ul id="primary-navigation" data-visible="false" class="primary-navigation flex" style="justify-content: flex-start; gap: 22px; width: auto;">
-           
+        <ul id="primary-navigation" data-visible="false" class="primary-navigation" style="flex-direction: column; gap: 22px; width: auto;">
             <li>
                 <a href="/nieuws.html">Nieuws</a>
             </li>
             <li>
-                <a href="{% url 'booking_index' %}">Boeking</a>
+                <a href="">Boeking</a>
             </li>
             <li>
                 <a href="/faciliteiten.html">Faciliteiten</a>
             </li>
-        </ul>
-        <ul id="primary-navigation" data-visible="false" class="primary-navigation flex" style="justify-content: flex-start; margin-left: auto; width: auto;">
             <li>
-                <a href="{% url 'contact'%}">Contact</a>
+                <a href="">Contact</a>
             </li>
         </ul>
     </nav>

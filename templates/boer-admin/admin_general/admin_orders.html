@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boer bert</title>
+</head>
+<body>
+    <h1>Reserveringen</h1>
+    
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Order Nummer</th>
+                <th>Naam</th>
+                <th>CheckIn datum</th>
+                <th>CheckOut datum</th>
+                <th>Kinderen</th>
+                <th>Volwasssenen</th>
+                <th>PDF</th>
+                <th>Ingecheckt</th>
+                <th>Betaald</th>
+                <th>Telefoon nummer</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+                <tr>
+                    <td>{{ booking.order_number }}</td>
+                    <td>{{ booking.customer.user.first_name}}  {{ booking.customer.user.last_name}}</td>
+                    <td>{{ booking.start_date }}</td>
+                    <td>{{ booking.end_date }}</td>
+                    <td>{{ booking.age_below }}</td>
+                    <td>{{ booking.age_above }}</td>
+                    <td>{{ booking.pdf }}</td>
+                    <td>{{ booking.checked_in }}</td>
+                    <td>{{ booking.paid }}</td>
+                    <td>{{ booking.customer.phone_number }}</td>
+                    <td>{{ booking.customer.user.email}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 # Create your views here.
 def admin_index(request):
-    return booking_context(request)
+    return render(request, 'boer-admin/admin_general/admin_index.html')
 
 def booking_context(request):
     bookings = Booking.objects.all().order_by('id')
@@ -15,5 +15,5 @@ def booking_context(request):
         'bookings': bookings,
     }
 
-    return render(request, 'boer-admin/admin_general/admin_index.html', context)
+    return render(request, 'boer-admin/admin_general/admin_orders.html', context)
 

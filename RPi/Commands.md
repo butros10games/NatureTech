@@ -28,3 +28,6 @@ This includes the RSSI
 
 
 Running .py script on startup:
+sudo nano /etc/systemd/system/name.service
+sudo systemctl enable/start/status/restart name.service
+sudo systemctl

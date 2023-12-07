@@ -1,0 +1,15 @@
+[Unit]
+Description=BLE scan for NatureTech
+After=bthelper@hci0.target
+Before=graphical.target
+
+[Service]
+User=root
+Group=root
+WorkingDirectory=/home/joost/RPi/
+ExecStartPre=/bin/sleep 60
+ExecStart=python3 BLE_scan.py
+ExecReload=/bin/kill -s HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

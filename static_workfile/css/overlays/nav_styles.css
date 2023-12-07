@@ -27,7 +27,7 @@ header {
     display: flex;
     align-items: center;
 
-    color: rgb(213, 213, 213);
+    color: rgb(255, 255, 255, 0.75);
     text-decoration: none;
     font-family: Arial, Helvetica, sans-serif;
     font-size: larger;
@@ -40,6 +40,10 @@ header {
 
 .primary-navigation li a:hover {
     color: white;
+}
+
+.primary-navigation li a:hover::before {
+    width: 100% !important;
 }
 
 .primary-navigation li a.active {

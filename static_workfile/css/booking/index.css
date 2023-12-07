@@ -78,3 +78,11 @@ a {
     right: 0;
     width: 100% !important;
 }
+
+#slide-button {
+    transition: transform 0.5s ease;
+}
+
+#slide-button:hover {
+    scale: 1.05;
+}

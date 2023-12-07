@@ -10,11 +10,13 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from email.policy import default
 from pathlib import Path
 import os
 
 # Import the passwords file from passwords.json
 import json
+from unittest.mock import DEFAULT
 with open('passwords.json') as f:
     passwords = json.load(f)
     django_password = passwords['django']
@@ -32,7 +34,7 @@ SECRET_KEY = django_password['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['boer.butrosgroot.com']
+ALLOWED_HOSTS = ['boer.butrosgroot.com', 'boer-admin.butrosgroot.com']
 
 # Application definition
 
@@ -44,11 +46,15 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
+    'django_hosts',
+    
     'booking_system',
     'customer_general',
+    'authentication',
 ]
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,9 +62,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware',
 ]
 
-ROOT_URLCONF = 'NatureTech.urls'
+LOGIN_URL = 'login'
+
+AUTHENTICATION_BACKENDS = [
+    'authentication.auth_backend.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+ROOT_HOSTCONF = 'NatureTech.hosts'
+ROOT_URLCONF = 'NatureTech.boer_urls'
+DEFAULT_HOST = 'boer'
 
 TEMPLATES = [
     {

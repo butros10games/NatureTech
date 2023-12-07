@@ -1,0 +1,37 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/overlays/nav_styles.css' %}">
+<header style="width: 100%">
+    <nav style="max-width: 1536px; width: calc(100% - 64px); display: flex; justify-content: flex-start; z-index: 10;">
+        <a href="{% url 'index' %}"><img src="{% static 'img/overlays/icon.svg' %}" alt="Icon" style="width: 56px; height: 100%;"></a>
+
+        <ul id="primary-navigation" data-visible="false" class="primary-navigation flex" style="justify-content: flex-start; gap: 22px; width: auto;">
+           
+            <li>
+                <a href="/nieuws.html">Nieuws</a>
+            </li>
+            <li>
+                <a href="{% url 'booking_index' %}">Boeking</a>
+            </li>
+            <li>
+                <a href="/faciliteiten.html">Faciliteiten</a>
+            </li>
+        </ul>
+        <ul id="primary-navigation" data-visible="false" class="primary-navigation flex" style="justify-content: flex-start; margin-left: auto; width: auto;">
+            <li>
+                <a href="{% url 'contact'%}">Contact</a>
+            </li>
+        </ul>
+    </nav>
+</header>
+
+<script>
+    // check what page you are on and set the active class to the correct nav item
+    var url = window.location.pathname;
+    var navItems = Array.from(document.querySelectorAll("#primary-navigation a"));
+    for (var i = 0; i < navItems.length; i++) {
+        if (navItems[i].getAttribute("href") === url) {
+            navItems[i].classList.add("active");
+        }
+    }
+</script>

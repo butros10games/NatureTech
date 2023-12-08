@@ -1,0 +1,27 @@
+{
+  "name": "naturetech",
+  "version": "1.0.0",
+  "description": "before working on this project, make sure you have the following installed on your machine:\r [requirements.txt](/docs/requirements.md)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "tailwindcss build static/css/styles.css -o static/css/main.css",
+    "watch:css": "tailwindcss build static/css/styles.css -o static/css/main.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/butros10games/NatureTech.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/butros10games/NatureTech/issues"
+  },
+  "homepage": "https://github.com/butros10games/NatureTech#readme",
+  "dependencies": {
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.3.6"
+  }
+}

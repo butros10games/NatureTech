@@ -1,21 +1,23 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/boer-admin/overlays/nav_styles.css' %}">
-<header style="width: 200px; height: 100vh; position: fixed; z-index: 10;">
-    <nav>
-        <a href=""><img src="{% static 'img/overlays/icon.svg' %}" alt="Icon" style="width: 56px; height: 100%;"></a>
 
-        <ul id="primary-navigation" data-visible="false" class="primary-navigation" style="flex-direction: column; gap: 22px; width: auto;">
+<header class="w-64 h-screen fixed z-10 bg-">
+    <nav class="flex flex-col items-center py-8 bg-white h-full">
+        <a href="" class="mb-10">
+            <img src="{% static 'img/overlays/icon.svg' %}" alt="Icon" class="w-14 h-auto">
+        </a>
+
+        <ul id="primary-navigation" class="space-y-5">
             <li>
-                <a href="/nieuws.html">Nieuws</a>
+                <a href="/nieuws.html" class="text-gray-700 hover:text-gray-900">Nieuws</a>
             </li>
             <li>
-                <a href="">Boeking</a>
+                <a href="" class="text-gray-700 hover:text-gray-900">Boeking</a>
             </li>
             <li>
-                <a href="/faciliteiten.html">Faciliteiten</a>
+                <a href="/faciliteiten.html" class="text-gray-700 hover:text-gray-900">Faciliteiten</a>
             </li>
             <li>
-                <a href="">Contact</a>
+                <a href="" class="text-gray-700 hover:text-gray-900">Contact</a>
             </li>
         </ul>
     </nav>

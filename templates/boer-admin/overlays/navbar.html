@@ -1,5 +1,5 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/overlays/nav_styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/boer-admin/overlays/nav_styles.css' %}">
 <header style="width: 200px; height: 100vh; position: fixed; z-index: 10;">
     <nav>
         <a href=""><img src="{% static 'img/overlays/icon.svg' %}" alt="Icon" style="width: 56px; height: 100%;"></a>
@@ -25,9 +25,9 @@
     // check what page you are on and set the active class to the correct nav item
     var url = window.location.pathname;
     var navItems = Array.from(document.querySelectorAll("#primary-navigation a"));
-    for (var i = 0; i < navItems.length; i++) {
-        if (navItems[i].getAttribute("href") === url) {
-            navItems[i].classList.add("active");
+    for (const element of navItems) {
+        if (element.getAttribute("href") === url) {
+            element.classList.add("active");
         }
     }
 </script>

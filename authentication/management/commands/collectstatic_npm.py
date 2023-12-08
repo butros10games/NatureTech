@@ -9,4 +9,4 @@ class Command(CollectstaticCommand):
 
         # Then run 'npm run build:css'
         self.stdout.write("Running 'npm run build:css'...")
-        subprocess.call(['npm', 'run', 'build:css'])
+        subprocess.call(['npm', 'run', 'watch:css'])

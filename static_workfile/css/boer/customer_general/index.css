@@ -27,7 +27,7 @@ img {
     width: 100%;
     height: calc(100vh - 64px);
     margin-bottom: 20px;
-    background-image: url('/static/img/customer_general/index/wandelbos.jpeg');
+    background-image: url('/static/img/boer/customer_general/index/wandelbos.jpeg');
     background-size: cover;
     background-position: center;
     transform: scaleX(-1);

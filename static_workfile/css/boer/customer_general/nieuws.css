@@ -1,0 +1,28 @@
+body {
+    margin: 11110;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.box-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 20px;
+  }
+
+  .box {
+    width: 30%;
+    margin: 10px;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+
+  .text-box {
+    margin-top: 10px;
+  }

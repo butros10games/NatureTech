@@ -8,14 +8,10 @@
         <meta name="description" content="Registration">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         
-        <link rel="stylesheet" href="/static/css/authentication/login_registration.css">
-        <link rel="stylesheet" href="/static/css/color/color.css">
+        <link rel="stylesheet" href="{% static 'css/boer-admin/authentication/login_registration.css' %}">
 
         <link rel="stylesheet" href="https://use.typekit.net/pbm5dyg.css">
         <link rel="icon" href="/static/images/logo/KWT_logo.png" type="image/x-icon">
-
-        <link rel="manifest" href="/static/json/manifest.json">
-        <script src="/static/js/pwa/service-worker.js"></script>
     </head>
     <body class="background-color">
         <div class="CHK2">
@@ -37,13 +33,13 @@
                         
                         <div class="flex-column">
                             <div class="flex-row" style="justify-content: center; width: 100%;">
-                                <input type="text" id="username" name="username" placeholder="Username or email..." class="CHK2-text-input" value="{{ username }}">
+                                <input type="text" id="username" name="username" placeholder="Username or email..." class="CHK2-text-input" value="{{ username }}" autocomplete="username">
                             </div>
                         </div>
 
                         <div class="flex-column" style="width: 100%;">
                             <div class="flex-row" style="justify-content: center; width: 100%;">
-                                <input type="password" id="password" name="password" placeholder="Password..." class="CHK2-text-input" >
+                                <input type="password" id="password" name="password" placeholder="Password..." class="CHK2-text-input" autocomplete="current-password">
                             </div>
                             <div class="flex-row" style="width: 100%; justify-content: space-between;">
                                 <div class="flex-row" style="justify-content: flex-start; width: 156px;">
@@ -65,9 +61,6 @@
                     {% if error_message %}
                         <p class="CHK2-P">{{ error_message|safe }}</p>
                     {% endif %}
-
-                    <p class="CHK2-P">Don't have an account yet? <a href="{% url 'register'%}" style="color: var(--button-color); margin-left: 12px;">Sign Up</a></p>
-                    
                 </div>
             </div>
         </div>

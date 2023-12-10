@@ -24,4 +24,3 @@ def booking_context(request):
     }
 
     return render(request, 'boer-admin/admin_general/admin_orders.html', context)
-

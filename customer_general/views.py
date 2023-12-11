@@ -82,6 +82,14 @@ def ip_adress_display(request):
     return render(request, 'boer/customer_general/ip_adress_display.html', context=context)
 
 def btn_logger(request, ip_adress, state):
+    ## string to bool converter
+    if state == "True":
+        state = True
+    elif state == "False":
+        state = False
+    else:
+        return HttpResponse(status=http.HTTPStatus.BAD_REQUEST) # 400 Bad Request
+    
     BtnState.objects.create(state=state, ip_adress=ip_adress)
     
     return HttpResponse(status=http.HTTPStatus.OK) # 200 OK

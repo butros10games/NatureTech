@@ -18,5 +18,5 @@ urlpatterns = [
     path('resend-confirmation/<str:email>/', views.resend_confirmation_email, name='resend_confirmation'),
     
     path('enter_2fa_code/', views.enter_2fa_code, name='enter_2fa_code'),
-    path('verify_2fa_code/', views.verify_2fa_code, name='verify_2fa_code'),
+    path('verify_2fa_code/', views.verify_2fa_code, name='verify_2fa_code')
 ]

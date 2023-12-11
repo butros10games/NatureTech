@@ -18,6 +18,8 @@ from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
 from django.utils.html import strip_tags
 
+from django.http import HttpResponse
+
 import random
 from .models import UserProfile
 
@@ -241,4 +243,3 @@ def verify_2fa_code(request):
         else:
             messages.error(request, 'Invalid 2FA code. Please try again.')
             return redirect('enter_2fa_code')
-        

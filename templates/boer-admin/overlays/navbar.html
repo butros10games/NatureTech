@@ -1,14 +1,14 @@
 {% load static %}
 
-<header class="w-64 h-screen fixed z-10 bg-green-main">
-    <nav class="flex flex-col items-center py-8 h-full">
+<header class="w-72 h-screen fixed z-10 bg-green-main">
+    <nav class="flex flex-col items-center py-8 h-full w-full px-6">
         <a href="" class="mb-10">
             <img src="{% static 'img/overlays/icon.svg' %}" alt="Icon" class="w-14 h-auto">
         </a>
 
         <ul id="primary-navigation" class="space-y-1 w-11/12">
             <li>
-                <a href="/nieuws.html" class="flex flex-row items-center space-x-2 p-2 rounded cursor-pointer text-gray-300 hover:bg-green-hover hover:text-white">
+                <a href="{% url 'booking_index' %}" class="flex flex-row items-center space-x-2 p-2 rounded cursor-pointer text-gray-300 hover:bg-green-hover hover:text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="oc se ur" width="24" height="24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
                     </svg>
@@ -16,7 +16,7 @@
                 </a>
             </li>
             <li>
-                <a href="" class="flex flex-row items-center space-x-2 p-2 rounded cursor-pointer text-gray-300 hover:bg-green-hover hover:text-white">
+                <a href="{% url 'booking_context' %}" class="flex flex-row items-center space-x-2 p-2 rounded cursor-pointer text-gray-300 hover:bg-green-hover hover:text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="oc se ur" width="24" height="24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
                     </svg>

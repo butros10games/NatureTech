@@ -26,12 +26,14 @@ try:
             if button_state == GPIO.LOW:
                 print("Button is pressed (closed)")
                 print(f"{button_state}")
+                server_url = f"https://boer.butrosgroot.com/api/btn/{button_state}"
                 # current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S") #Can be removed later because backend will do time
                 # print(f"Button is pressed (closed) at {current_time}")
                 
             else:
                 print("Button is released (open)")
                 print(f"{button_state}")
+                server_url = f"https://boer.butrosgroot.com/api/btn/{button_state}"
                 # current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S") #Can be removed later because backend will do time
                 # print(f"Button is released (open) at {current_time}")
 

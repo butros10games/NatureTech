@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django_ratelimit.decorators import ratelimit
 
-from .models import BtIpAdress
+from .models import BtIpAdress, BtnState
 from django.http import HttpResponse
 from django.conf import settings
 
@@ -60,6 +60,12 @@ def contact(request):
 
     return render(request, 'boer/customer_general/contact.html')
 
+def faciliteiten(request):
+    return render(request, 'boer/customer_general/faciliteiten.html')
+
+def nieuws(request):
+    return render(request, 'boer/customer_general/nieuws.html')
+
 def ip_logger(request, ip_adress):
     BtIpAdress.objects.create(ip_adress=ip_adress)
     
@@ -75,8 +81,17 @@ def ip_adress_display(request):
 
     return render(request, 'boer/customer_general/ip_adress_display.html', context=context)
 
-def faciliteiten(request):
-    return render(request, 'boer/customer_general/faciliteiten.html')
+def btn_logger(request, ip_adress, state):
+    BtnState.objects.create(state=state, ip_adress=ip_adress)
+    
+    return HttpResponse(status=http.HTTPStatus.OK) # 200 OK
 
-def nieuws(request):
-    return render(request, 'boer/customer_general/nieuws.html')
+def btn_state_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    btn_states = BtnState.objects.all().order_by('-date')[:10]
+
+    context = {
+        "btn_states": btn_states
+    }
+
+    return render(request, 'boer/customer_general/btn_states_display.html', context=context)

@@ -1,0 +1,83 @@
+.button {
+    margin-top: 20px;
+
+    -webkit-appearance: button;
+    -moz-appearance: button;
+    appearance: button;
+
+    text-decoration: none;
+
+    border: 1px solid #1DA1F2;
+    height: 48px;
+    width: 248px;
+    color: white;
+
+    background: #1DA1F2;
+    transition: all .5s ease-out;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    border-radius: 4px;
+}
+
+.button:hover {
+    background: #2b6cb0;
+}
+
+/* Chrome, Safari, Edge, Opera */
+#NumberofGuests18Minus::-webkit-inner-spin-button,
+#NumberofGuests18Minus::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+#NumberofGuests18Minus {
+    -moz-appearance: textfield;
+}
+
+/* Chrome, Safari, Edge, Opera */
+#NumberofGuests18Plus::-webkit-inner-spin-button,
+#NumberofGuests18Plus::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+#NumberofGuests18Plus {
+    -moz-appearance: textfield;
+}
+
+#AnimationContainer {
+    overflow: hidden; /* This will clip the PlaceSearchContainer */
+}
+
+#PlaceSearchContainer {
+    transition: transform 0.5s ease;
+    transform-origin: top;
+    display: flex;
+}
+
+#PlaceSearchContainer.collapsed {
+    transform: translateY(-100%); /* Moves the container up */
+}
+
+#bookingFromContainer {
+    transition: transform 0.5s ease;
+    transform-origin: top;
+    display: flex;
+}
+
+#bookingFromContainer.collapsed {
+    transform: translateY(-100%); /* Moves the container up */
+}
+
+.colapseButton:hover {
+    scale: 1.05;
+}
+
+.nonFocus:focus {
+    outline: none;
+}

@@ -1,0 +1,16 @@
+{% load static %}
+
+<form id='contact_form' action="" method="post">
+    {% csrf_token %}
+    <label for="voornaam">Voornaam:</label>
+    <input type="text" id="voornaam" name="first_name" required>
+    <label for="achternaam">Achternaam:</label>
+    <input type="text" id="achternaam" name="last_name" required>
+    <label for="email">Emailadres:</label>
+    <input type="email" id="email" name="email" required>
+    <label for="telefoonnummer">Telefoonnummer:</label>
+    <input type="tel" id="telefoonnummer" name="phone_number" required>
+    <label for="bericht">Uw bericht:</label>
+    <textarea id="bericht" name="contact_message"></textarea>
+    <input type="submit" value="Verstuur">
+</form>

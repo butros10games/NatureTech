@@ -167,3 +167,7 @@ cython_debug/
 .AppleDouble
 .LSOverride
 
+passwords.json
+
+sftp.json
+settings.json

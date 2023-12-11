@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact</title>
+    <link rel="stylesheet" href="{% static 'css/boer/customer_general/contact.css' %}">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+</head>
+<body>
+    {% include 'boer/overlays/navbar.html' %}
+    <div class="alles">
+    <h1>Heeft u vragen?</h1>
+    <div class= "contactimage">
+    <img src="{% static 'img/boer/customer_general/contact/contact_icon.png' %}" alt="Image 1">
+    </div>
+    <h2>Neem contact op via het contactformulier of bel ons tijdens de openingstijden van de receptie</h2>
+    <div class="contact-container">
+        <div class="contact-info">
+            <div>
+                <strong>Adres:</strong>
+                <p>Vijverlaan 1, 3737 RE Groenekan</p>
+            </div>
+    
+            <div>
+                <strong>Email:</strong>
+                <p>butrosgroot@gmail.com</p>
+            </div>
+    
+            <div>
+                <strong>Telefoon:</strong>
+                <p>(850) 2 18 111/999</p>
+            </div>
+    
+            <div>
+                <strong>Maandag-Zondag:</strong>
+                <p>7:00-22:00</p>
+            </div>
+    
+            <div>
+                <strong>Receptie:</strong>
+                <p>9:00-17:00</p>
+                <p>12:00-14:00 gesloten (Lunch)</p>
+            </div>
+    
+            <div>
+                <strong>Neem contact op voor eerdere/latere aankomst</strong>
+            </div>
+        </div>
+
+        <div class="contact-form">
+            <h1>Heeft u vragen?</h1>
+            {% include 'boer/customer_general/contact_form.html' %}
+            {% if messages %}
+            {% for message in messages %}
+             {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+        
+            {% endfor %}
+        
+        {% endif %}
+        </div>
+    </div>
+</div>
+    {% include 'boer/overlays/footer.html' %}
+
+</body>
+</html>

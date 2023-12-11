@@ -1,0 +1,100 @@
+{% load static %}
+
+<link rel="stylesheet" href="{% static 'css/boer/booking/agenda.css' %}">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<div id="agenda" class="wrapper" style="position: relative;">
+    <header style="height: 48px; position: static; z-index: 1; transition: 0.5s ease;">
+        <div class="flex-row" style="justify-content: flex-start">
+            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" height="24px" width="24px" version="1.1" id="Capa_1" viewBox="0 0 29.237 29.237" xml:space="preserve">
+                <g>
+                    <g>
+                        <path style="fill:#f2f2f2" d="M7.685,24.819H8.28v-2.131h3.688v2.131h0.596v-2.131h3.862v2.131h0.597v-2.131h4.109v2.131h0.595    v-2.131h3.417v-0.594h-3.417v-3.861h3.417v-0.596h-3.417v-3.519h3.417v-0.594h-3.417v-2.377h-0.595v2.377h-4.109v-2.377h-0.597    v2.377h-3.862v-2.377h-0.596v2.377H8.279v-2.377H7.685v2.377H3.747v0.594h3.938v3.519H3.747v0.596h3.938v3.861H3.747v0.594h3.938    V24.819z M12.563,22.094v-3.861h3.862v3.861H12.563z M21.132,22.094h-4.109v-3.861h4.109V22.094z M21.132,14.118v3.519h-4.109    v-3.519C17.023,14.119,21.132,14.119,21.132,14.118z M16.426,14.118v3.519h-3.862v-3.519    C12.564,14.119,16.426,14.119,16.426,14.118z M8.279,14.118h3.688v3.519H8.279V14.118z M8.279,18.233h3.688v3.861H8.279V18.233z"/>
+                        <path style="fill:#f2f2f2;" d="M29.207,2.504l-4.129,0.004L24.475,2.51v2.448c0,0.653-0.534,1.187-1.188,1.187h-1.388    c-0.656,0-1.188-0.533-1.188-1.187V2.514l-1.583,0.002v2.442c0,0.653-0.535,1.187-1.191,1.187h-1.388    c-0.655,0-1.188-0.533-1.188-1.187V2.517l-1.682,0.004v2.438c0,0.653-0.534,1.187-1.189,1.187h-1.389    c-0.653,0-1.188-0.533-1.188-1.187V2.525H8.181v2.434c0,0.653-0.533,1.187-1.188,1.187H5.605c-0.656,0-1.189-0.533-1.189-1.187    V2.53L0,2.534v26.153h2.09h25.06l2.087-0.006L29.207,2.504z M27.15,26.606H2.09V9.897h25.06V26.606z"/>
+                        <path style="fill:#f2f2f2;" d="M5.605,5.303h1.388c0.163,0,0.296-0.133,0.296-0.297v-4.16c0-0.165-0.133-0.297-0.296-0.297H5.605    c-0.165,0-0.298,0.132-0.298,0.297v4.16C5.307,5.17,5.44,5.303,5.605,5.303z"/>
+                        <path style="fill:#f2f2f2;" d="M11.101,5.303h1.389c0.164,0,0.297-0.133,0.297-0.297v-4.16c-0.001-0.165-0.134-0.297-0.298-0.297    H11.1c-0.163,0-0.296,0.132-0.296,0.297v4.16C10.805,5.17,10.938,5.303,11.101,5.303z"/>
+                        <path style="fill:#f2f2f2;" d="M16.549,5.303h1.388c0.166,0,0.299-0.133,0.299-0.297v-4.16c-0.001-0.165-0.133-0.297-0.299-0.297    h-1.388c-0.164,0-0.297,0.132-0.297,0.297v4.16C16.252,5.17,16.385,5.303,16.549,5.303z"/>
+                        <path style="fill:#f2f2f2;" d="M21.899,5.303h1.388c0.164,0,0.296-0.133,0.296-0.297v-4.16c0-0.165-0.132-0.297-0.296-0.297    h-1.388c-0.164,0-0.297,0.132-0.297,0.297v4.16C21.603,5.17,21.735,5.303,21.899,5.303z"/>
+                    </g>
+                </g>
+            </svg>
+            
+            <p class="current-date" style="margin-left: 12px; cursor: default;"></p>
+        </div>
+        <div class="icons">
+            <span id="prev" class="material-symbols-rounded"><i class="arr-left"></i></span>
+            <span id="next" class="material-symbols-rounded "><i class="arr-right"></i></span>
+        </div>
+
+        <button id="toggleButton" type="button" style="background: transparent; border: none; margin-left: auto; color: #f2f2f2; display: none;">
+            <svg id="rotateButton" class="faq-btn-arrow" id="faq-btn-arrow3" width="30" height="14" viewBox="0 0 15 8" xmlns="http://www.w3.org/2000/svg" fill="#fff" stroke="#fff" stroke-width="0.8" style="transform: rotate(0deg); transition: 0.5s ease;">
+                <path fill="#fff" stroke-linecap="round" stroke-linejoin="round" d="M8.00019 6.01218L14.1325 0.755938C14.3421 0.576226 14.6578 0.600507 14.8375 0.81017L15.1629 1.1898C15.3426 1.39946 15.3183 1.71511 15.1087 1.89482L8.32558 7.70888C8.13834 7.86938 7.86204 7.86938 7.67479 7.70888L0.891723 1.89482C0.68206 1.71511 0.657779 1.39946 0.83749 1.1898L1.16289 0.810172C1.3426 0.600509 1.65825 0.576228 1.86791 0.755939L8.00019 6.01218Z"></path>
+            </svg>
+        </button>
+    </header>
+    <div id="AnimationContainer" style="overflow: hidden; width: 100%; position: absolute; top: 48px;">
+        <div id="agendaContainer" class="calendar">
+            <ul class="weeks" style="padding: 0; margin: 0;">
+                <li>Sun</li>
+                <li>Mon</li>
+                <li>Tue</li>
+                <li>Wed</li>
+                <li>Thu</li>
+                <li>Fri</li>
+                <li>Sat</li>
+            </ul>
+            <ul class="days" style="padding: 0;"></ul>
+        </div>
+    </div>
+    <div id="calendarPsudo" style="transition: 0.5s ease;"></div>
+</div>
+
+<script src="{% static 'js/boer/booking/agenda.js' %}" defer></script>
+
+<script>
+    var agenda = document.querySelector('#agenda');
+    var toggleButton = agenda.querySelector('#toggleButton');
+    var agendaContainer = agenda.querySelector('#agendaContainer');
+
+    toggleButton.addEventListener('click', function() {
+        var rotateButton = agenda.querySelector('#rotateButton');
+        var header = agenda.querySelector('header');
+    
+        agendaContainer.classList.toggle('collapsed');
+    
+        rotateButton.style.transform = 
+            agendaContainer.classList.contains('collapsed') ? 'rotate(-90deg)' : 'rotate(0deg)';
+        
+        rotateButton.classList.toggle('closed');
+
+        if (agendaContainer.classList.contains('collapsed')) {
+            calendarPsudo.style.height = '0px';
+
+            header.style.borderRadius = '4px 4px 4px 4px';
+        } else {
+            calendarPsudo.style.height = agendaContainer.offsetHeight + 'px';
+
+            header.style.borderRadius = '4px 4px 0 0';
+        }
+    });
+
+    // set a delay to and then run this code
+    function setPsudoElement() {
+        var calendarPsudo = agenda.querySelector('#calendarPsudo');
+
+        // remove the transition from the calendarPsudo
+        calendarPsudo.style.transition = 'none';
+    
+        // get the hight of the BookingFormContainer and give it to the BookingFormContainerPsudo
+        calendarPsudo.style.height = agendaContainer.offsetHeight + 'px';
+
+        
+        // set the transition back to the BookingFormContainerPsudo with a delay of 1ms
+        setTimeout(function() {
+            calendarPsudo.style.transition = '0.5s ease';
+        }, 1);
+    }
+
+    setPsudoElement()
+</script>

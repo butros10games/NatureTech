@@ -10,8 +10,16 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+from email.policy import default
 from pathlib import Path
 import os
+
+# Import the passwords file from passwords.json
+import json
+from unittest.mock import DEFAULT
+with open('passwords.json') as f:
+    passwords = json.load(f)
+    django_password = passwords['django']
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +29,12 @@ PROJECT_DIR = Path(__file__).resolve().parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '38-=v#0hid9x0cskra+qinxlm*gqil@m#y-*a3n07nawf$xa3d'
+SECRET_KEY = django_password['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['boer.butrosgroot.com']
+ALLOWED_HOSTS = ['boer.butrosgroot.com', 'boer-admin.butrosgroot.com']
 
 # Application definition
 
@@ -38,10 +46,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    'booking_system'
+    'django_hosts',
+    'django_browser_reload',
+    
+    'booking_system',
+    'customer_general',
+    'authentication',
 ]
 
 MIDDLEWARE = [
+    'django_hosts.middleware.HostsRequestMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,9 +63,20 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_hosts.middleware.HostsResponseMiddleware',
+    'django_browser_reload.middleware.BrowserReloadMiddleware',
 ]
 
-ROOT_URLCONF = 'NatureTech.urls'
+LOGIN_URL = 'login'
+
+AUTHENTICATION_BACKENDS = [
+    'authentication.auth_backend.EmailOrUsernameModelBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
+ROOT_HOSTCONF = 'NatureTech.hosts'
+ROOT_URLCONF = 'NatureTech.boer_urls'
+DEFAULT_HOST = 'boer'
 
 TEMPLATES = [
     {
@@ -65,6 +90,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+            'debug': DEBUG,
         },
     },
 ]
@@ -91,10 +117,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'NatureTech',
-        'USER': 'butrosdata',
-        'PASSWORD': 'Bo3tr0s03',
-        'HOST': '192.168.2.237',  # Replace with the actual hostname
-        'PORT': '5432',  # Replace with the actual port number
+        'USER': django_password['Database']['user'],
+        'PASSWORD': django_password['Database']['password'],
+        'HOST': django_password['Database']['host'],  # Replace with the actual hostname
+        'PORT': django_password['Database']['port'],  # Replace with the actual port number
     }
 }
 
@@ -152,8 +178,11 @@ TEMPLATE_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = django_password['email']['host']
 EMAIL_USE_TLS = True
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'butrosgroot@gmail.com'
-EMAIL_HOST_PASSWORD = 'pcnwpwottyabmkix'
+EMAIL_PORT = django_password['email']['port']
+EMAIL_HOST_USER = django_password['email']['user']
+EMAIL_HOST_PASSWORD = django_password['email']['password']
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+   

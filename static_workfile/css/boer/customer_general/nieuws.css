@@ -1,0 +1,54 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+.box-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    margin: 20px;
+    margin-top: 300px; 
+}
+
+.box {
+    width: 30%;
+    margin: 10px;
+    box-sizing: border-box;
+    text-align: center;
+    background-color: rgb(248, 247, 247);
+    border-radius: 5px;
+    padding: 30px;
+
+}
+
+img {
+    width: 100%;
+    height: auto;
+
+}
+
+.alle-tekst {
+    margin-top: 10px;
+}
+
+
+img {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+}
+
+
+.datum {
+    font-size: 12px;
+    color: #1DA1F2;
+    text-align: left;
+}
+
+.titel {
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+}

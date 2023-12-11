@@ -1,8 +1,6 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/boer-admin/orders/admin_orders.css' %}">
 <body>
-
-    
     <table>
         <thead>
             <tr>
@@ -20,7 +18,7 @@
             </tr>
         </thead>
         <tbody>
-            {% for booking in bookings %}
+            {% for booking in page_obj %}
                 <tr>
                     <td>{{ booking.order_number }}</td>
                     <td>{{ booking.customer.user.first_name}}  {{ booking.customer.user.last_name}}</td>
@@ -36,6 +34,27 @@
                 </tr>
             {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <th><span class="step-links">
+                        {% if page_obj.has_previous %}
+                            <a href="?page=1">&laquo; first</a>
+                            <a href="?page={{ page_obj.previous_page_number }}">Vorige</a>
+                        {% endif %}</th>
+                
+                        <th><span class="current">
+                             {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}.
+                        </span></th>
+                
+                        <th>{% if page_obj.has_next %}
+                            <a href="?page={{ page_obj.next_page_number }}">Volgende</a>
+                            
+                        {% endif %}
+                    </span></th>
+                </div>
+            </tr>
+        </tfoot>
     </table>
+
 </body>
 </html>

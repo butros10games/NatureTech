@@ -47,7 +47,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     'django_hosts',
-    'django_browser_reload',
     
     'booking_system',
     'customer_general',
@@ -64,7 +63,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_hosts.middleware.HostsResponseMiddleware',
-    'django_browser_reload.middleware.BrowserReloadMiddleware',
 ]
 
 LOGIN_URL = 'login'

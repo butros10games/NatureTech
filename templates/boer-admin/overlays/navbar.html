@@ -1,21 +1,40 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/overlays/nav_styles.css' %}">
-<header style="width: 200px; height: 100vh; position: fixed; z-index: 10;">
-    <nav>
-        <a href=""><img src="{% static 'img/overlays/icon.svg' %}" alt="Icon" style="width: 56px; height: 100%;"></a>
 
-        <ul id="primary-navigation" data-visible="false" class="primary-navigation" style="flex-direction: column; gap: 22px; width: auto;">
+<header class="w-64 h-screen fixed z-10 bg-green-main">
+    <nav class="flex flex-col items-center py-8 h-full">
+        <a href="" class="mb-10">
+            <img src="{% static 'img/overlays/icon.svg' %}" alt="Icon" class="w-14 h-auto">
+        </a>
+
+        <ul id="primary-navigation" class="space-y-1 w-11/12">
             <li>
-                <a href="/nieuws.html">Nieuws</a>
+                <a href="/nieuws.html" class="flex flex-row items-center space-x-2 p-2 rounded cursor-pointer text-gray-300 hover:bg-green-hover hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="oc se ur" width="24" height="24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
+                    </svg>
+                    Dashboard
+                </a>
             </li>
             <li>
-                <a href="">Boeking</a>
+                <a href="" class="flex flex-row items-center space-x-2 p-2 rounded cursor-pointer text-gray-300 hover:bg-green-hover hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="oc se ur" width="24" height="24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
+                    </svg>
+                    Boekingen
+                </a>
             </li>
             <li>
-                <a href="/faciliteiten.html">Faciliteiten</a>
+                <a href="/faciliteiten.html" class="flex flex-row items-center space-x-2 p-2 rounded cursor-pointer text-gray-300 hover:bg-green-hover hover:text-white">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true" class="oc se ur" width="24" height="24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"></path>
+                    </svg>
+                    Plek management daeafadaefa
+                </a>
             </li>
             <li>
-                <a href="">Contact</a>
+                <a href="" class="flex flex-row items-center space-x-2 p-2 rounded cursor-pointer text-gray-300 hover:bg-green-hover hover:text-white">
+                    Contact
+                </a>
             </li>
         </ul>
     </nav>
@@ -25,9 +44,9 @@
     // check what page you are on and set the active class to the correct nav item
     var url = window.location.pathname;
     var navItems = Array.from(document.querySelectorAll("#primary-navigation a"));
-    for (var i = 0; i < navItems.length; i++) {
-        if (navItems[i].getAttribute("href") === url) {
-            navItems[i].classList.add("active");
+    for (const element of navItems) {
+        if (element.getAttribute("href") === url) {
+            element.classList.add("active");
         }
     }
 </script>

@@ -8,13 +8,13 @@
         <ul id="primary-navigation" data-visible="false" class="primary-navigation flex" style="justify-content: flex-start; gap: 22px; width: auto;">
            
             <li>
-                <a href="/nieuws.html">Nieuws</a>
+                <a href="{% url 'nieuws' %}">Nieuws</a>
             </li>
             <li>
                 <a href="{% url 'booking_index' %}">Boeking</a>
             </li>
             <li>
-                <a href="/faciliteiten.html">Faciliteiten</a>
+                <a href="{% url 'faciliteiten' %}">Faciliteiten</a>
             </li>
         </ul>
         <ul id="primary-navigation" data-visible="false" class="primary-navigation flex" style="justify-content: flex-start; margin-left: auto; width: auto;">
@@ -29,9 +29,9 @@
     // check what page you are on and set the active class to the correct nav item
     var url = window.location.pathname;
     var navItems = Array.from(document.querySelectorAll("#primary-navigation a"));
-    for (var i = 0; i < navItems.length; i++) {
-        if (navItems[i].getAttribute("href") === url) {
-            navItems[i].classList.add("active");
+    for (const element of navItems) {
+        if (element.getAttribute("href") === url) {
+            element.classList.add("active");
         }
     }
 </script>

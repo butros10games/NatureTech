@@ -74,3 +74,9 @@ def ip_adress_display(request):
     }
 
     return render(request, 'boer/customer_general/ip_adress_display.html', context=context)
+
+def faciliteiten(request):
+    return render(request, 'boer/customer_general/faciliteiten.html')
+
+def nieuws(request):
+    return render(request, 'boer/customer_general/nieuws.html')

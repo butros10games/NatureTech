@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('', include("customer_general.urls")),
     path("Booking/", include("booking_system.urls")),
+    path("__reload__/", include("django_browser_reload.urls")),
 ]

@@ -119,7 +119,7 @@ def login_page(request):
         username = request.POST['username']
         password = request.POST['password']
         remember_me = request.POST.get('remember', False)  # Assuming the checkbox name is 'remember_me'
-        next_page = request.POST.get('next') or 'teams'  # This will use 'index' if next_page is None or empty
+        next_page = request.POST.get('next') or 'booking_index'  # This will use 'index' if next_page is None or empty
 
         user = authenticate(request, username=username, password=password)
         if user is not None:
@@ -163,6 +163,10 @@ def login_page(request):
         'username': username,
         "display_back": True,
     }
+    
+    ## if user is already logged in, redirect to the index page
+    if request.user.is_authenticated:
+        return redirect('booking_index')
 
     return render(request, 'boer-admin/authentication/login.html', context)
 

@@ -18,7 +18,7 @@ cd NatureTech
 
 ### Run the next command      CSS, images and JS changes
 ``` bash
-python manage.py collectstatic --noinput
+python manage.py collectstatic_npm --noinput
 ```
 
 ## How to restart uwsgi webserver (the server that runs the syncornes django app)      HTML and Django changes

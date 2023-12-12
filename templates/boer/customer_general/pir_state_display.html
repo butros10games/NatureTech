@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP tracker</title>
+    <title>PIR</title>
     <link rel="stylesheet" href="{% static 'css/boer/customer_general/contact.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 </head>
@@ -13,14 +13,15 @@
         {% include 'boer/overlays/navbar.html' %}
 
         <div style="display: flex;flex-direction: column;">
-        {% for ip in ip_adresses %}
+        {% for pir in pir_states %}
             <div style="display: flex; flex-direction: row;">
-                {{ ip.date }} - IP adres: 
-                {{ ip.ip_adress }}
+                {{ pir.ip_adress }} -
+                {{ pir.date }} - Persoon gezien =
+                {{ pir.PIR_state }}
             </div>
         {% endfor %}
         </div>
-
+  
         {% include 'boer/overlays/footer.html' %}
     </body>
 </html>

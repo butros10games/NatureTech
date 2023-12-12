@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP tracker</title>
+    <title>BTN</title>
     <link rel="stylesheet" href="{% static 'css/boer/customer_general/contact.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 </head>
@@ -13,10 +13,11 @@
         {% include 'boer/overlays/navbar.html' %}
 
         <div style="display: flex;flex-direction: column;">
-        {% for ip in ip_adresses %}
+        {% for btn in btn_states %}
             <div style="display: flex; flex-direction: row;">
-                {{ ip.date }} - IP adres: 
-                {{ ip.ip_adress }}
+                {{ btn.ip_adress }} -
+                {{ btn.date }} - Deur open =
+                {{ btn.state }}
             </div>
         {% endfor %}
         </div>

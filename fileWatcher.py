@@ -15,7 +15,7 @@ class ChangeHandler(FileSystemEventHandler):
         if event.is_directory:
             return
 
-        if event.event_type == 'modified' and (event.src_path.endswith('.py') or event.src_path.endswith('.html')):
+        if event.event_type == 'modified' and (event.src_path.endswith('.py') or event.src_path.endswith('.html')) and not event.src_path.endswith('manage.py'):
             print("Python file change detected, restarting uWSGI...")
             subprocess.run(["sudo", "systemctl", "reload", "uwsgi-NatureTech.service"])
             self.last_restart = time.time()

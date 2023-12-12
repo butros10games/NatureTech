@@ -22,12 +22,14 @@ tbody tr {
 tbody tr:nth-of-type(even) {
   background-color: #f3f3f3;
 }
-
-tbody tr:last-of-type {
-  border-bottom: 2px solid #355E3B;
-}
 tbody tr:hover {
   font-weight: bold;
   color: #355E3B;
+}
+tfoot {
+  background-color: #f3f3f3;
+  color: #355E3B;
+  font-weight: bold;
+  border-bottom: 2px solid #355E3B;
 }
 

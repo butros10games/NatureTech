@@ -23,3 +23,16 @@ class BtnState(models.Model):
     class Meta:
         verbose_name_plural = 'BTN presses'
         verbose_name = 'BTN press'
+
+
+class pirState(models.Model):
+    ip_adress = models.CharField(max_length=20)
+    PIR_state = models.BooleanField()
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.ip_adress
+
+    class Meta:
+        verbose_name_plural = 'PIRs info'
+        verbose_name = 'PIR info'

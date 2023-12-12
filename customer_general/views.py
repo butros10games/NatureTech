@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django_ratelimit.decorators import ratelimit
 
-from .models import BtIpAdress, BtnState
+from .models import BtIpAdress, BtnState, pirState
 from django.http import HttpResponse
 from django.conf import settings
 
@@ -83,9 +83,9 @@ def ip_adress_display(request):
 
 def btn_logger(request, ip_adress, state):
     ## string to bool converter
-    if state == "True":
+    if state == "1":
         state = True
-    elif state == "False":
+    elif state == "0":
         state = False
     else:
         return HttpResponse(status=http.HTTPStatus.BAD_REQUEST) # 400 Bad Request
@@ -102,4 +102,27 @@ def btn_state_display(request):
         "btn_states": btn_states
     }
 
-    return render(request, 'boer/customer_general/btn_states_display.html', context=context)
+    return render(request, 'boer/customer_general/btn_state_display.html', context=context)
+
+def pir_logger(request, ip_adress, PIR_state, ):
+    ## string to bool converter
+    if PIR_state == "1":
+        PIR_state = True
+    elif PIR_state == "0":
+        PIR_state = False
+    else:
+        return HttpResponse(status=http.HTTPStatus.BAD_REQUEST) # 400 Bad Request
+    
+    pirState.objects.create(PIR_state=PIR_state, ip_adress=ip_adress)
+    
+    return HttpResponse(status=http.HTTPStatus.OK) # 200 OK
+
+def pir_state_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    pir_states = pirState.objects.all().order_by('-date')[:10]
+
+    context = {
+        "pir_states": pir_states
+    }
+
+    return render(request, 'boer/customer_general/pir_state_display.html', context=context)

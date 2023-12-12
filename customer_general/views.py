@@ -6,7 +6,7 @@ from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django_ratelimit.decorators import ratelimit
 
-from .models import BtIpAdress, BtnState, pirState
+from .models import BtIpAdress, BtnState, pirState, BtMACAdress
 from django.http import HttpResponse
 from django.conf import settings
 
@@ -66,6 +66,9 @@ def faciliteiten(request):
 def nieuws(request):
     return render(request, 'boer/customer_general/nieuws.html')
 
+
+
+########### PI code ###########
 def ip_logger(request, ip_adress):
     BtIpAdress.objects.create(ip_adress=ip_adress)
     
@@ -126,3 +129,18 @@ def pir_state_display(request):
     }
 
     return render(request, 'boer/customer_general/pir_state_display.html', context=context)
+
+def ble_logger(request, BLE_adress):
+    BtMACAdress.objects.create(BLE_adress=BLE_adress)
+    
+    return HttpResponse(status=http.HTTPStatus.OK) # 200 OK
+
+def ble_state_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    BLE_adresses = BtMACAdress.objects.all().order_by('-date')[:10]
+
+    context = {
+        "BLE_adresses": BLE_adresses
+    }
+
+    return render(request, 'boer/customer_general/ble_state_display.html', context=context)

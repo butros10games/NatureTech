@@ -15,9 +15,9 @@
         <div style="display: flex;flex-direction: column;">
         {% for pir in pir_states %}
             <div style="display: flex; flex-direction: row;">
-                {{ pir.ip_adress }}
+                {{ pir.ip_adress }} -
+                {{ pir.date }} - Persoon gezien =
                 {{ pir.PIR_state }}
-                {{ pir.date }}
             </div>
         {% endfor %}
         </div>

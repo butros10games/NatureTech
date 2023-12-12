@@ -15,8 +15,8 @@
         <div style="display: flex;flex-direction: column;">
         {% for ip in ip_adresses %}
             <div style="display: flex; flex-direction: row;">
+                {{ ip.date }} - IP adres: 
                 {{ ip.ip_adress }}
-                {{ ip.date }}
             </div>
         {% endfor %}
         </div>

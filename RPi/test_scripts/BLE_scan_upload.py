@@ -33,7 +33,9 @@ while True:
                 name = None
 
             # Send data to the server
-            server_url = f"https://boer.butrosgroot.com/api/ble/{local_ip}/{dev.rssi}/{dev.addr}/{name}"
+            #server_url = f"https://boer.butrosgroot.com/api/ble/{local_ip}/{dev.rssi}/{dev.addr}/{name}"
+            server_url = f"https://boer.butrosgroot.com/api/ble/{local_ip}/{dev.addr}"
+
             response = requests.get(server_url)
             print(f"Server Response: {response.text}")
 

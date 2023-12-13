@@ -32,4 +32,8 @@ tfoot {
   font-weight: bold;
   border-bottom: 2px solid #355E3B;
 }
+.pagination {
+ size: 100px;
+}
+ 
 

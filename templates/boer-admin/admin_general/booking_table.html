@@ -1,0 +1,18 @@
+{% load static %}
+<tbody>
+  {% for booking in page_obj %}
+    <tr>
+      <td>{{ booking.order_number }}</td>
+      <td>{{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</td>
+      <td>{{ booking.start_date }}</td>
+      <td>{{ booking.end_date }}</td>
+      <td>{{ booking.age_below }}</td>
+      <td>{{ booking.age_above }}</td>
+      <td>{{ booking.pdf }}</td>
+      <td>{{ booking.checked_in }}</td>
+      <td>{{ booking.paid }}</td>
+      <td>{{ booking.customer.phone_number }}</td>
+      <td>{{ booking.customer.user.email }}</td>
+    </tr>
+  {% endfor %}
+</tbody>

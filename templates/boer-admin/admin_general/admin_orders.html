@@ -1,60 +1,192 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/boer-admin/orders/admin_orders.css' %}">
-<body>
-    <table>
-        <thead>
-            <tr>
-                <th>Order Nummer</th>
-                <th>Naam</th>
-                <th>CheckIn datum</th>
-                <th>CheckOut datum</th>
-                <th>Kinderen</th>
-                <th>Volwasssenen</th>
-                <th>PDF</th>
-                <th>Ingecheckt</th>
-                <th>Betaald</th>
-                <th>Telefoon nummer</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for booking in page_obj %}
-                <tr>
-                    <td>{{ booking.order_number }}</td>
-                    <td>{{ booking.customer.user.first_name}}  {{ booking.customer.user.last_name}}</td>
-                    <td>{{ booking.start_date }}</td>
-                    <td>{{ booking.end_date }}</td>
-                    <td>{{ booking.age_below }}</td>
-                    <td>{{ booking.age_above }}</td>
-                    <td>{{ booking.pdf }}</td>
-                    <td>{{ booking.checked_in }}</td>
-                    <td>{{ booking.paid }}</td>
-                    <td>{{ booking.customer.phone_number }}</td>
-                    <td>{{ booking.customer.user.email}}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <th><span class="step-links">
-                        {% if page_obj.has_previous %}
-                            <a href="?page=1">&laquo; first</a>
-                            <a href="?page={{ page_obj.previous_page_number }}">Vorige</a>
-                        {% endif %}</th>
-                
-                        <th><span class="current">
-                             {{ page_obj.number }} / {{ page_obj.paginator.num_pages }}.
-                        </span></th>
-                
-                        <th>{% if page_obj.has_next %}
-                            <a href="?page={{ page_obj.next_page_number }}">Volgende</a>
-                            
-                        {% endif %}
-                    </span></th>
-                </div>
-            </tr>
-        </tfoot>
-    </table>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" href="{% static 'css/boer-admin/orders/admin_orders.css' %}" />
+	</head>
+	<body>
+		<table id="booking-table">
+		<thead>
+			<tr>
+			<th>Order Nummer</th>
+			<th>Naam</th>
+			<th>CheckIn datum</th>
+			<th>CheckOut datum</th>
+			<th>Kinderen</th>
+			<th>Volwasssenen</th>
+			<th>PDF</th>
+			<th>Ingecheckt</th>
+			<th>Betaald</th>
+			<th>Telefoon nummer</th>
+			<th>Email</th>
+			</tr>
+		</thead>
+		<tbody id="table_content">
+			{% for booking in page_obj %}
+			<tr>
+				<td>{{ booking.order_number }}</td>
+				<td>{{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</td>
+				<td>{{ booking.start_date }}</td>
+				<td>{{ booking.end_date }}</td>
+				<td>{{ booking.age_below }}</td>
+				<td>{{ booking.age_above }}</td>
+				<td>{{ booking.pdf }}</td>
+				<td>{{ booking.checked_in }}</td>
+				<td>{{ booking.paid }}</td>
+				<td>{{ booking.customer.phone_number }}</td>
+				<td>{{ booking.customer.user.email }}</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+		</table>
+		<div class="pagination">
+		<span class="step-links">
+			<a id="prev" pageNumber="0" class="ajax-link">Vorige</a>
+		</span>
 
-</body>
+		<span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}.</span>
+
+		<span class="step-links">
+			<a id="next" pageNumber="0" class="ajax-link">Volgende</a>
+		</span>
+		</div>
+	</body>
+
+	<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+	<script>
+		const prevButton = document.getElementById("prev");
+		const nextButton = document.getElementById("next");
+		const tableContent = document.getElementById("table_content");
+		const pageNumberElement = document.getElementById("page_number");
+
+		// add click event to the prev button
+		prevButton.addEventListener("click", function() {
+			console.log("clicked");
+
+			// get the page number
+			let pageNumber = parseInt(this.getAttribute("pageNumber"));
+
+			// if the page number is 0, then we are on the first page
+			if (pageNumber === 0) {
+				// disable the prev button
+				this.classList.add("disabled");
+			} else {
+				// enable the next button
+				nextButton.classList.remove("disabled");
+
+				// get the previous page number
+				let prevPageNumber = pageNumber - 1;
+
+				// set the page number
+				this.setAttribute("pageNumber", prevPageNumber);
+				nextButton.setAttribute("pageNumber", prevPageNumber);
+
+				request_data(prevPageNumber);
+			}
+		});
+
+		// add click event to the prev button
+		nextButton.addEventListener("click", function() {
+			console.log("clicked");
+
+			// get the page number
+			let pageNumber = parseInt(this.getAttribute("pageNumber"));
+
+			// enable the next button
+			nextButton.classList.remove("disabled");
+
+			// get the previous page number
+			let prevPageNumber = pageNumber + 1;
+
+			// set the page number
+			this.setAttribute("pageNumber", prevPageNumber);
+			prevButton.setAttribute("pageNumber", prevPageNumber);
+
+			request_data(prevPageNumber);
+		});
+
+
+		function request_data(pageNumber) {
+			// get the url
+			let url = window.location.href;
+
+			data = {
+				'csrfmiddlewaretoken': '{{ csrf_token }}',
+				"page": pageNumber,
+			}
+
+			$.ajax({
+				type: 'POST',
+				url: url,
+				data: data,
+				success: function (data) {
+					console.log(data)
+
+					// fill the table
+					fill_table(data)
+				},
+				error: function (data) {
+					console.log(data)
+				}
+			});
+		}
+
+		function fill_table(datas) {
+			// clear the table
+			tableContent.innerHTML = "";
+
+			// loop through the data
+			for (let i = 0; i < datas.length; i++) {
+
+				field = datas[i]
+
+				console.log(field)
+
+				// create a new row
+				let row = document.createElement("tr");
+
+				// create the columns
+				let orderNumber = document.createElement("td");
+				let name = document.createElement("td");
+				let checkInDate = document.createElement("td");
+				let checkOutDate = document.createElement("td");
+				let children = document.createElement("td");
+				let adults = document.createElement("td");
+				let pdf = document.createElement("td");
+				let checkedIn = document.createElement("td");
+				let paid = document.createElement("td");
+				let phoneNumber = document.createElement("td");
+				let email = document.createElement("td");
+
+				// set the text of the columns
+				orderNumber.innerText = field.order_number;
+				// name.innerText = field.customer.user.first_name + " " + field.customer.user.last_name;
+				checkInDate.innerText = field.start_date;
+				checkOutDate.innerText = field.end_date;
+				children.innerText = field.age_below;
+				adults.innerText = field.age_above;
+				pdf.innerText = field.pdf;
+				checkedIn.innerText = field.checked_in;
+				paid.innerText = field.paid;
+				// phoneNumber.innerText = field.customer.phone_number;
+				// email.innerText = field.customer.user.email;
+
+				// append the columns to the row
+				row.appendChild(orderNumber);
+				row.appendChild(name);
+				row.appendChild(checkInDate);
+				row.appendChild(checkOutDate);
+				row.appendChild(children);
+				row.appendChild(adults);
+				row.appendChild(pdf);
+				row.appendChild(checkedIn);
+				row.appendChild(paid);
+				row.appendChild(phoneNumber);
+				row.appendChild(email);
+
+				// append the row to the table
+				tableContent.appendChild(row);
+			}
+		}
+	</script>
 </html>

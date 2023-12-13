@@ -12,8 +12,9 @@
 </head>
 <body>
     {% include 'boer/overlays/navbar.html' %}
+    <script src="{% static 'js/boer/booking/weer.js' %}"></script>
+    <div id="weer"></div>
     <div class="box-container">
-        <!-- Row 1 -->
         <div class="box">
           <img src="{% static 'img/boer/customer_general/nieuws/camping-attractiepark-1.jpg' %}" alt="Image 1">
           <div class="text-box">
@@ -41,7 +42,6 @@
           </div>
         </div>
     
-        <!-- Row 2 -->
         <div class="box">
           <img src="{% static 'img/boer/customer_general/nieuws/herfst-bestemming-auto.jpg' %}" alt="Image 4">
           <div class="alle-tekst">

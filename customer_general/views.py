@@ -7,8 +7,10 @@ from django.utils.html import strip_tags
 from django_ratelimit.decorators import ratelimit
 
 from .models import BtIpAdress, BtnState, pirState, BtMACAdress
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.conf import settings
+
+
 
 # Create your views here.
 def index(request):
@@ -118,7 +120,7 @@ def pir_logger(request, ip_adress, PIR_state, ):
     
     pirState.objects.create(PIR_state=PIR_state, ip_adress=ip_adress)
     
-    return HttpResponse(status=http.HTTPStatus.OK) # 200 OK
+    return JsonResponse({'status': 'Ok'})
 
 def pir_state_display(request):
     ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
@@ -130,10 +132,10 @@ def pir_state_display(request):
 
     return render(request, 'boer/customer_general/pir_state_display.html', context=context)
 
-def ble_logger(request, BLE_adress):
+def ble_logger(request, ip_adress, BLE_adress):
     BtMACAdress.objects.create(BLE_adress=BLE_adress)
     
-    return HttpResponse(status=http.HTTPStatus.OK) # 200 OK
+    return JsonResponse({'status': 'Ok'})
 
 def ble_state_display(request):
     ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top

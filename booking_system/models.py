@@ -32,4 +32,4 @@ class Customer(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
     phone_number = models.CharField(max_length=15)
     newsletter = models.BooleanField(default=False)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='customer')

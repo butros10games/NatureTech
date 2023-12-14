@@ -3,28 +3,48 @@ function renderWeather(weather) {
     var result = document.getElementById("weer");
 
     var temp = document.createElement("p");
-    temp.textContent = "Temp: " + weather.main.temp + "°C";
+    temp.classList.add("temp");
+    temp.textContent = "Temperatuur: " + weather.main.temp + "°C";
     result.appendChild(temp);
 
     var humidity = document.createElement("p");
-    humidity.textContent = "Humidity: " + weather.main.humidity + "%";
-    result.append(humidity);
+    humidity.classList.add("humidity");
+    humidity.textContent = "Luchtvochtigheid: " + weather.main.humidity + "%";
+    result.appendChild(humidity);
 
     var wind = document.createElement("p");
-    wind.textContent = "wind: " + weather.wind.speed + "km/h"
-    result.append(wind);
+    wind.classList.add("wind");
+    wind.textContent = "Wind: " + weather.wind.speed + "km/h";
+    result.appendChild(wind);
 
-    details.append("")
+    var feelsLike = document.createElement("p");
+    feelsLike.classList.add("feelsLike");
+    feelsLike.textContent = "Gevoel: " + weather.main.feels_like + "°C";
+    result.appendChild(feelsLike);
+
+
+    var iconCode = weather.weather[0].icon;
+    var iconUrl = "https://openweathermap.org/img/wn/" + iconCode + ".png";
+    var icon = document.createElement("img");
+    Icon.classList.add("icon");
+    icon.src = iconUrl;
+    icon.alt = "Weather Icon";
+    icon.classList.add("weather-icon");
+    result.appendChild(icon);
+
 }
 
-function fetchWeather(query) {
-    var url =
-        "https://api.openweathermap.org/data/2.5/weather?lat=52.122860&lon=5.151870&appid=ecb2c229c444da2509af110aae3d4dbf&units=metric";
 
+
+
+
+function fetchWeather() {
+    var url = "https://api.openweathermap.org/data/2.5/weather?lat=52.122860&lon=5.151870&appid=ecb2c229c444da2509af110aae3d4dbf&units=metric";
 
     fetch(url)
         .then((response) => response.json())
         .then((data) => renderWeather(data))
+
 }
 
-fetchWeather()
+fetchWeather();

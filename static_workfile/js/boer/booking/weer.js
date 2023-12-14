@@ -22,21 +22,14 @@ function renderWeather(weather) {
     feelsLike.textContent = "Gevoel: " + weather.main.feels_like + "°C";
     result.appendChild(feelsLike);
 
-
     var iconCode = weather.weather[0].icon;
     var iconUrl = "https://openweathermap.org/img/wn/" + iconCode + ".png";
     var icon = document.createElement("img");
-    Icon.classList.add("icon");
+    icon.classList.add("icon");
     icon.src = iconUrl;
     icon.alt = "Weather Icon";
-    icon.classList.add("weather-icon");
     result.appendChild(icon);
-
 }
-
-
-
-
 
 function fetchWeather() {
     var url = "https://api.openweathermap.org/data/2.5/weather?lat=52.122860&lon=5.151870&appid=ecb2c229c444da2509af110aae3d4dbf&units=metric";
@@ -44,7 +37,6 @@ function fetchWeather() {
     fetch(url)
         .then((response) => response.json())
         .then((data) => renderWeather(data))
-
 }
 
 fetchWeather();

@@ -93,7 +93,7 @@ header .current-date {
 .days li.halfLine::after {
     content: "";
     position: absolute;
-    top: 0;
+    top: 2px;
     right: 0;
     height: 20px; /* Line thickness */
     width: 50%;
@@ -113,7 +113,7 @@ header .current-date {
 .days li.range:not(:last-child)::after {
     content: "";
     position: absolute;
-    top: 0;
+    top: 2px;
     right: 0;
     height: 20px; /* Line thickness */
     width: 100%;

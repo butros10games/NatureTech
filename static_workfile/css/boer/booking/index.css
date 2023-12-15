@@ -1,6 +1,7 @@
 body {
     margin: 0;
     font-family: termina, sans-serif;
+    scroll-behavior: smooth;
 }
 
 .flex-row {
@@ -47,9 +48,13 @@ a {
     border: 1px solid lightgray;
     border-radius: 4px;
     font-size: 16px;
-    width: 24px; /* Initial width */
+    width: 48px; /* Initial width */
     transition: width 0.5s ease; /* Animate the width change */
     overflow: hidden; /* Hide the overflowing text */
+
+    position: absolute;
+    top: 64px;
+    left: 32px;
 }
 
 #search-text {
@@ -58,7 +63,7 @@ a {
 }
 
 #search-container:hover {
-    width: 156px; /* Expand the container on hover */
+    width: 180px; /* Expand the container on hover */
 }
 
 #form-container {
@@ -85,4 +90,28 @@ a {
 
 #slide-button:hover {
     scale: 1.05;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.noScrollBar::-webkit-scrollbar {
+    display: none;
+}
+  
+/* Hide scrollbar for IE, Edge and Firefox */
+.noScrollBar {
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+/* Additional styles for the visual representation of the checkbox */
+.checkbox-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #000;
+    display: inline-block;
+    border-radius: 50%;
+}
+
+.checkbox-custom.checked {
+    background: #000;
 }

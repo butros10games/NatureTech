@@ -16,7 +16,6 @@ urlpatterns = [
     path('api/pir/<str:ip_adress>/<str:PIR_state>', pir_logger, name='pir_log'),
     path('pir/pir_state_display/', pir_state_display, name='pir_state_display'),
 
-    # path('api/ble/<str:ip_adress>/<str:BLE_adress>/<str:rssi>/<str:addr>/<str:name>', ble_logger, name='ble_log'),
-    path('api/ble/<str:ip_adress>/<str:BLE_adress>', ble_logger, name='ble_log'),
+    path('api/ble/<str:ip_adress>/<str:BLE_rssi>/<str:BLE_adress>/<str:BLE_name>', ble_logger, name='ble_log'),
     path('ble/ble_state_display/', ble_state_display, name='ble_state_display')
 ]

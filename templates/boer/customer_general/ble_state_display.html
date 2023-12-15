@@ -15,11 +15,11 @@
         <div style="display: flex;flex-direction: column;">
         {% for ble in BLE_adresses %}
             <div style="display: flex; flex-direction: row;">
-                {{ ble.ip_adress }}
-                {{ ble.date }}
-                {{ ble.rssi }}
-                {{ ble.addr }}
-                {{ ble.name }}
+                {{ ble.ip_adress }} -
+                {{ ble.date }}, 
+                RSSI: {{ ble.BLE_rssi }}, 
+                MAC: {{ ble.BLE_adress }}, 
+                Name: {{ ble.BLE_name }}
             </div>
         {% endfor %}
         </div>

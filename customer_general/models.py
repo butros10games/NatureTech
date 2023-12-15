@@ -39,7 +39,9 @@ class pirState(models.Model):
 
 class BtMACAdress(models.Model):
     ip_adress = models.CharField(max_length=20)
+    BLE_rssi = models.CharField(max_length=6)
     BLE_adress = models.CharField(max_length=20)
+    BLE_name = models.CharField(max_length=20)
     date = models.DateTimeField(auto_now_add=True)
 
 

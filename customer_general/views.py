@@ -132,14 +132,14 @@ def pir_state_display(request):
 
     return render(request, 'boer/customer_general/pir_state_display.html', context=context)
 
-def ble_logger(request, ip_adress, BLE_adress):
-    BtMACAdress.objects.create(BLE_adress=BLE_adress)
+def ble_logger(request, ip_adress, BLE_rssi, BLE_adress, BLE_name):
+    BtMACAdress.objects.create(ip_adress=ip_adress, BLE_rssi=BLE_rssi, BLE_adress=BLE_adress, BLE_name=BLE_name)
     
     return JsonResponse({'status': 'Ok'})
 
 def ble_state_display(request):
     ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
-    BLE_adresses = BtMACAdress.objects.all().order_by('-date')[:10]
+    BLE_adresses = BtMACAdress.objects.all().order_by('-date')[:100]
 
     context = {
         "BLE_adresses": BLE_adresses

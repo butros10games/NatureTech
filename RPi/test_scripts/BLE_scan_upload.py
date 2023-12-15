@@ -31,10 +31,11 @@ while True:
                     name = None
             else:
                 name = None
+                print(f"rssi: {dev.rssi} ; mac: {dev.addr} ; Name: {name}")
 
             # Send data to the server
-            #server_url = f"https://boer.butrosgroot.com/api/ble/{local_ip}/{dev.rssi}/{dev.addr}/{name}"
-            server_url = f"https://boer.butrosgroot.com/api/ble/{local_ip}/{dev.addr}"
+            server_url = f"https://boer.butrosgroot.com/api/ble/{local_ip}/{dev.rssi}/{dev.addr}/{name}"
+            # server_url = f"https://boer.butrosgroot.com/api/ble/{local_ip}/{dev.addr}"  
 
             response = requests.get(server_url)
             print(f"Server Response: {response.text}")

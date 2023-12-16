@@ -13,10 +13,23 @@ function renderDay(result, dayData, dateString) {
     // Format the date
     const formattedDate = formatDateString(dateString);
 
+    // Create a container for date and icon
+    var dateContainer = document.createElement("div");
+    dateContainer.classList.add("date-container");
+    result.appendChild(dateContainer);
+
+    var iconCode = dayData.weather[0].icon;
+    var iconUrl = "https://openweathermap.org/img/wn/" + iconCode + ".png";
+    var icon = document.createElement("img");
+    icon.classList.add("icon");
+    icon.src = iconUrl;
+    icon.alt = "Weather Icon";
+    dateContainer.appendChild(icon);
+
     var dateElement = document.createElement("p");
     dateElement.classList.add("date");
     dateElement.textContent = formattedDate;
-    result.appendChild(dateElement);
+    dateContainer.appendChild(dateElement);
 
     var temp = document.createElement("p");
     temp.classList.add("temp");
@@ -37,14 +50,6 @@ function renderDay(result, dayData, dateString) {
     wind.classList.add("wind");
     wind.textContent = "Wind: " + dayData.wind.speed + "km/h";
     result.appendChild(wind);
-
-    var iconCode = dayData.weather[0].icon;
-    var iconUrl = "https://openweathermap.org/img/wn/" + iconCode + ".png";
-    var icon = document.createElement("img");
-    icon.classList.add("icon");
-    icon.src = iconUrl;
-    icon.alt = "Weather Icon";
-    result.appendChild(icon);
 }
 
 function formatDateString(dateString) {
@@ -65,13 +70,13 @@ function formatDateString(dateString) {
     return formattedDateString;
 }
 
-function fetchWeather(){
-var url = "https://api.openweathermap.org/data/2.5/forecast?lat=52.122860&lon=5.151870&appid=ecb2c229c444da2509af110aae3d4dbf&units=metric";
+function fetchWeather() {
+    var url = "https://api.openweathermap.org/data/2.5/forecast?lat=52.122860&lon=5.151870&appid=ecb2c229c444da2509af110aae3d4dbf&units=metric";
 
-fetch(url)
-    .then((response) => response.json())
-    .then((data) => renderWeather(data))
-    .catch((error) => console.error("Error fetching weather:", error));
+    fetch(url)
+        .then((response) => response.json())
+        .then((data) => renderWeather(data))
+        .catch((error) => console.error("Error fetching weather:", error));
 }
 
 fetchWeather();

@@ -14,7 +14,7 @@ class Booking(models.Model):
     pdf = models.CharField(max_length=255, blank=True, null=True)
     checked_in = models.BooleanField(default=False)
     paid = models.BooleanField(default=False)
-    # CampingSpot = models.ForeignKey()
+    CampingSpot = models.ForeignKey('CampingSpot', on_delete=models.SET_NULL, null=True)
     # ExtraServices = models.ForeignKey()
     customer = models.ForeignKey('Customer', on_delete=models.SET_NULL, null=True)
 
@@ -33,3 +33,50 @@ class Customer(models.Model):
     phone_number = models.CharField(max_length=15)
     newsletter = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='customer')
+
+class CampingSpot(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
+    plekNummer = models.IntegerField()
+    plekType = models.ForeignKey('PlekType', on_delete=models.SET_NULL, null=True)
+    veld = models.ForeignKey('Veld', on_delete=models.SET_NULL, null=True)
+    
+    def __str__(self):
+        return str(self.plekNummer)
+    
+class PlekType(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
+    name = models.CharField(max_length=255)
+    width = models.IntegerField()
+    length = models.IntegerField()
+    omschrijving = models.TextField(blank=True, null=True)
+    
+    def __str__(self):
+        return self.name
+    
+class Price(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
+    price = models.IntegerField()
+    startDateTime = models.DateTimeField(auto_now=False, auto_now_add=False)
+    endDateTime = models.DateTimeField(auto_now=False, auto_now_add=False)
+    PlekType = models.ForeignKey('PlekType', on_delete=models.SET_NULL, null=True)
+    
+    def __str__(self):
+        return str(self.PlekType)
+    
+class Veld(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
+    name = models.CharField(max_length=255)
+    width = models.IntegerField()
+    length = models.IntegerField()
+    
+    def __str__(self):
+        return self.name
+    
+class Veldvulling(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
+    Veld = models.ForeignKey('Veld', on_delete=models.SET_NULL, null=True)
+    PlekType = models.ForeignKey('PlekType', on_delete=models.SET_NULL, null=True)
+    number = models.IntegerField()
+    
+    def __str__(self):
+        return str(self.Veld)

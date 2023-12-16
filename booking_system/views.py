@@ -1,14 +1,17 @@
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail
-from .models import Booking, Customer
-from django.contrib.auth.models import User
+from django.shortcuts import render
 from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.http import JsonResponse
 from django.conf import settings
+
 from django_ratelimit.decorators import ratelimit
+
+from .models import Booking, Customer, PlekType, Price
+from django.contrib.auth.models import User
+
+import datetime
 
 @ratelimit(key='ip', rate='3/60m')  # Limit to 5 requests per 15 minutes per IP address
 def booking_form(request):
@@ -89,7 +92,30 @@ def booking_form(request):
             return JsonResponse({"status": "error", "message": str(e)})
 
 def booking_index(request):
-    return render(request, 'boer/booking/booking_index.html')
+    places_dict = []
+    
+    ## get all the places
+    places = PlekType.objects.all()
+    
+    # get the price of the places
+    ## get the current date and time
+    now = datetime.datetime.now()
+    
+    ## loop trough all the places and request the price at the current time
+    for place in places:
+        price = Price.objects.filter(startDateTime__lte=now, endDateTime__gte=now, PlekType = place).first()
+        if price:
+            places_dict.append({
+                'id': place.id,
+                'name': place.name,
+                'price': price.price,
+            })
+    
+    context = {
+        'plekType': places_dict
+    }
+    
+    return render(request, 'boer/booking/booking_index.html', context)
 
 def confirm_booking(request):
     return render(request, 'boer/confirmation/confirmation.html')

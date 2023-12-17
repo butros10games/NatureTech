@@ -28,6 +28,7 @@ def booking_form(request):
             mail = request.POST['email']
             start = request.POST['startDate']
             end = request.POST['endDate']
+            accomodation = request.POST['accomodation']
 
             user, created = User.objects.get_or_create(email=mail)
             if created:
@@ -37,7 +38,7 @@ def booking_form(request):
                 user.save()
 
             customer, created = Customer.objects.get_or_create(user=user, phone_number=phone_number)
-            booking_created = Booking.objects.create(customer=customer, age_above=adults, age_below=childeren, start_date=start, end_date=end)
+            booking_created = Booking.objects.create(customer=customer, age_above=adults, age_below=childeren, start_date=start, end_date=end, plek_type_id=accomodation)
             booking = booking_created if isinstance(booking_created, Booking) else None
             created = True  # Assuming the object is always created in this context
 
@@ -61,25 +62,25 @@ def booking_form(request):
             plain_message = strip_tags(html_message)
 
             message = EmailMultiAlternatives(
-            subject = 'Bevestiging voor uw reservering op Camping de Groene Weide', 
-            body = plain_message,
-            from_email = None ,
-            to= {mail}
-                )
+                subject = 'Bevestiging voor uw reservering op Camping de Groene Weide', 
+                body = plain_message,
+                from_email = None ,
+                to= {mail}
+            )
 
             message.attach_alternative(html_message, "text/html")
             message.send()
 
-                # Second email to the specified email address
+            # Second email to the specified email address
             html_message_admin = render_to_string("boer/booking/confirmation_mail_admin.html", context=context)
             plain_message_admin = strip_tags(html_message_admin)
 
             message_admin = EmailMultiAlternatives(
-            subject='Nieuwe boeking ontvangen',
-            body=plain_message_admin,
-            from_email=mail,  # Use your default email address or specify one
-            to=[settings.DEFAULT_FROM_EMAIL],  # Use a list for the 'to' parameter
-                )
+                subject='Nieuwe boeking ontvangen',
+                body=plain_message_admin,
+                from_email=mail,  # Use your default email address or specify one
+                to=[settings.DEFAULT_FROM_EMAIL],  # Use a list for the 'to' parameter
+            )
             message_admin.attach_alternative(html_message_admin, "text/html")
             message_admin.send()
 

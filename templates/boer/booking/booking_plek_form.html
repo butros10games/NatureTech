@@ -66,6 +66,8 @@
                     {% endfor %}
                 </div>
             </div>
+
+            <input type="hidden" name="accomodation" id="accomodation">
         </div>
     </div>
     <div id="PlaceSearchContainerPsudo" style="transition: 0.5s ease;"></div>
@@ -123,11 +125,29 @@
 </script>
 
 <script>
-    // JavaScript function to toggle the checkbox
+    // JavaScript function to toggle the checkbox and update the hidden input
     function toggleCheckbox(id) {
-        var checkbox = document.getElementById(id);
-        checkbox.checked = !checkbox.checked;
-        // Add class to visually represent the checkbox check state
-        checkbox.nextElementSibling.classList.toggle('checked');
+        // Retrieve all checkboxes
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        // Iterate over each checkbox
+        checkboxes.forEach(function(checkbox) {
+            // Uncheck all checkboxes and remove the 'checked' class
+            if (checkbox.id !== id) {
+                checkbox.checked = false;
+                checkbox.nextElementSibling.classList.remove('checked');
+            }
+        });
+
+        // Toggle the selected checkbox
+        var selectedCheckbox = document.getElementById(id);
+        selectedCheckbox.checked = !selectedCheckbox.checked;
+
+        // Toggle the 'checked' class for the selected checkbox
+        selectedCheckbox.nextElementSibling.classList.toggle('checked');
+
+        // Update the hidden input with the selected checkbox's ID, or clear it if none are selected
+        var campingPlekInput = document.getElementById('accomodation');
+        campingPlekInput.value = selectedCheckbox.checked ? id : '';
     }
 </script>

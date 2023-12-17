@@ -85,6 +85,7 @@
         let houseNumber = document.getElementById('HouseNumber').value;
         let city = document.getElementById('City').value;
         let street = document.getElementById('Street').value;
+        let accomodation = document.getElementById('Accomodation').value;
 
         const data = {
             'csrfmiddlewaretoken': '{{ csrf_token }}',
@@ -102,6 +103,7 @@
             'houseNumber': houseNumber,
             'city': city,
             'street': street,
+            'accomodation': accomodation
         }
 
         console.log(data)

@@ -13,10 +13,15 @@ function renderDay(result, dayData, dateString) {
     // Format the date
     const formattedDate = formatDateString(dateString);
 
+    // Create a container for the weather-related elements
+    var weatherContainer = document.createElement("div");
+    weatherContainer.classList.add("weather-container");
+    result.appendChild(weatherContainer);
+
     // Create a container for date and icon
     var dateContainer = document.createElement("div");
-    dateContainer.classList.add("date-container");
-    result.appendChild(dateContainer);
+    dateContainer.classList.add("icon-container");
+    weatherContainer.appendChild(dateContainer);
 
     var iconCode = dayData.weather[0].icon;
     var iconUrl = "https://openweathermap.org/img/wn/" + iconCode + ".png";
@@ -24,32 +29,37 @@ function renderDay(result, dayData, dateString) {
     icon.classList.add("icon");
     icon.src = iconUrl;
     icon.alt = "Weather Icon";
-    dateContainer.appendChild(icon);
+    dateContainer.appendChild(icon);  // Move icon to dateContainer
 
-    var dateElement = document.createElement("p");
-    dateElement.classList.add("date");
-    dateElement.textContent = formattedDate;
-    dateContainer.appendChild(dateElement);
+    // Create a container for additional weather details
+    var detailsContainer = document.createElement("div");
+    detailsContainer.classList.add("details-container");
+    weatherContainer.appendChild(detailsContainer);
 
     var temp = document.createElement("p");
     temp.classList.add("temp");
     temp.textContent = "Temperatuur " + ": " + dayData.main.temp + "°C";
-    result.appendChild(temp);
+    detailsContainer.appendChild(temp);
 
     var feelsLike = document.createElement("p");
     feelsLike.classList.add("feelsLike");
     feelsLike.textContent = "Gevoel: " + dayData.main.feels_like + "°C";
-    result.appendChild(feelsLike);
+    detailsContainer.appendChild(feelsLike);
 
     var humidity = document.createElement("p");
     humidity.classList.add("humidity");
     humidity.textContent = "Luchtvochtigheid: " + dayData.main.humidity + "%";
-    result.appendChild(humidity);
+    detailsContainer.appendChild(humidity);
 
     var wind = document.createElement("p");
     wind.classList.add("wind");
     wind.textContent = "Wind: " + dayData.wind.speed + "km/h";
-    result.appendChild(wind);
+    detailsContainer.appendChild(wind);
+
+    var dateElement = document.createElement("p");
+    dateElement.classList.add("date");
+    dateElement.textContent = formattedDate;
+    detailsContainer.appendChild(dateElement);  // Keep dateElement in detailsContainer
 }
 
 function formatDateString(dateString) {

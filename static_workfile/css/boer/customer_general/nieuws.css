@@ -4,39 +4,15 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-#weer {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start;
-}
 
-.date-container {
-    display: flex;
-    align-items: center;
-}
 
-.icon {
-    width: 50px;
-    /* Adjust the width as needed */
-    height: auto;
-    margin-right: 10px;
-    /* Adjust the margin as needed */
-}
-
-.temp,
-.feelsLike,
-humidity,
-.wind {
-    margin-left: 10px;
-    /* Adjust the margin as needed */
-}
 
 .box-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
     margin: 20px;
-    margin-top: 300px;
+    margin-top: 20px;
 }
 
 .box {
@@ -77,6 +53,15 @@ img {
     text-align: center;
 }
 
+
+#weer {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    position: relative;
+    margin-top: 20px;
+}
+
 .temp {
     font-size: 12px;
     color: #1DA1F2;
@@ -101,15 +86,45 @@ img {
     text-align: left;
 }
 
-.icon {
-    width: 200px;
-    height: 200px;
-    object-fit: contain;
+.weather-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    background-color: rgb(234, 236, 235);
+    /* Adjust as needed */
+}
+
+.details-container {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    /* Change to column */
+    align-items: flex-start;
+    /* Align items to the start (left side) */
+
+}
+
+
+.icon-container {
+    display: flex;
+    align-items: ver;
     margin-right: 10px;
+
+}
+
+.icon {
+    width: 100px;
+    height: 100px;
+    margin-right: 10px;
+    /* Adjust as needed */
+    margin-left: 0;
+    /* Set margin-left to 0 to move the icon to the left */
 }
 
 .date {
-    font-size: 12px;
+    font-size: 18px;
     color: #1DA1F2;
     text-align: left;
-}
+    font-weight: bold;
+} 

@@ -5,6 +5,9 @@ table {
   font-family: sans-serif;
   min-width: 400px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  margin-left: 288px;
+  width: calc(100% - 288px);
+  margin-top: 0;
 }
 
 th {
@@ -34,6 +37,9 @@ tfoot {
 }
 .pagination {
  size: 100px;
+ margin-left: 288px;
+ width: calc(100% - 288px);
+ margin-top: 0;
 }
  
 

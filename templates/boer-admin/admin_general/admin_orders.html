@@ -3,13 +3,14 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="{% static 'css/boer-admin/orders/admin_orders.css' %}" />
+    {% include 'boer-admin/overlays/navbar.html' %}
   </head>
   <body>
     <table id="booking-table">
       <thead>
         <tr>
           <th data-sort="order_number" data-order="asc">Order Nummer</th>
-          <th data-sort="firstname" data-order="asc">Naam</th>
+          <th data-sort="lastname" data-order="asc">Naam</th>
           <th data-sort="start_date" data-order="asc">CheckIn datum</th>
           <th data-sort="end_date" data-order="asc">CheckOut datum</th>
           <th data-sort="age_below" data-order="asc">Kinderen</th>
@@ -40,26 +41,26 @@
       </tbody>
     </table>
     <div class="pagination">
-      <span class="step-links"><a id="prev" pageNumber="0" class="ajax-link">Vorige</a></span>
+      <span class="step-links"><a id="prev" pageNumber="1" class="ajax-link">Vorige</a></span>
 
-      <span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}.</span>
+      <span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
 
-      <span class="step-links"><a id="next" pageNumber="0" class="ajax-link">Volgende</a></span>
+      <span class="step-links"><a id="next" pageNumber="1" class="ajax-link">Volgende</a></span>
     </div>
   </body>
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
-      // Load the initial data and show the first page
-      request_data(1)
+    
+      // Call the initial data load with default sorting
+      request_data(1);
+      
     
       // Add click events to the table headers for sorting
       const tableHeaders = document.querySelectorAll('#booking-table th[data-sort]')
       tableHeaders.forEach((header) => {
         header.addEventListener('click', function () {
-          console.log('Header clicked') 
-    
           const currentSortOrder = header.getAttribute('data-order')
           const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc'
           const sortBy = header.getAttribute('data-sort')
@@ -74,6 +75,7 @@
     
           // Request data with sorting parameters
           sort_data(sortBy, newSortOrder, pageNumber)
+          request_data(pageNumber, sortBy, newSortOrder)
         })
       })
     
@@ -88,8 +90,8 @@
         // Get the page number
         let pageNumber = parseInt(this.getAttribute('pageNumber'))
     
-        // If the page number is 0, then we are on the first page
-        if (pageNumber === 0) {
+        // If the page number is 1, then we are on the first page
+        if (pageNumber === 1) {
           // Disable the prev button
           this.classList.add('disabled')
         } else {
@@ -127,13 +129,15 @@
         request_data(nextPageNumber)
       })
     
-      function request_data(pageNumber) {
+      function request_data(pageNumber, sortBy, sortOrder) {
         // Get the URL
         let url = window.location.href
     
         const data = {
           csrfmiddlewaretoken: '{{ csrf_token }}',
-          page: pageNumber
+          page: pageNumber,
+          sort_by: sortBy,
+          order: sortOrder
         }
 		console.log(data);
     
@@ -151,14 +155,14 @@
           }
         })
       }
-	  function sort_data(sortBy, sortOrder) {
-        let url = window.location.href
+	  function sort_data(sortBy, sortOrder, pageNumber) {
+        let url = "/sort_bookings/"
     
         const data = {
           csrfmiddlewaretoken: '{{ csrf_token }}',
           sort_by: sortBy,
           order: sortOrder,
-		  
+          page: pageNumber
         }
 		console.log(data);
     

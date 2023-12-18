@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="{% static 'css/boer-admin/orders/admin_orders.css' %}" />
   </head>
   <body>
+    {% include 'boer-admin/overlays/navbar.html' %}
     <table id="booking-table">
       <thead>
         <tr>
@@ -40,11 +41,11 @@
       </tbody>
     </table>
     <div class="pagination">
-      <span class="step-links"><a id="prev" pageNumber="0" class="ajax-link">Vorige</a></span>
+      <span class="step-links"><a id="prev" pageNumber="1" class="ajax-link">Vorige</a></span>
 
       <span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}.</span>
 
-      <span class="step-links"><a id="next" pageNumber="0" class="ajax-link">Volgende</a></span>
+      <span class="step-links"><a id="next" pageNumber="1" class="ajax-link">Volgende</a></span>
     </div>
   </body>
 
@@ -89,7 +90,7 @@
         let pageNumber = parseInt(this.getAttribute('pageNumber'))
     
         // If the page number is 0, then we are on the first page
-        if (pageNumber === 0) {
+        if (pageNumber === 1) {
           // Disable the prev button
           this.classList.add('disabled')
         } else {
@@ -152,7 +153,7 @@
         })
       }
 	  function sort_data(sortBy, sortOrder) {
-        let url = window.location.href
+        let url = '/sort_bookings/'
     
         const data = {
           csrfmiddlewaretoken: '{{ csrf_token }}',

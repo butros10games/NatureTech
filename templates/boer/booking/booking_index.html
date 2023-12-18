@@ -58,6 +58,8 @@
         </div>
 
         {% include 'boer/overlays/footer.html' %}
+
+        <p id="csrfmiddlewaretoken" style="display: none;">{{ csrf_token }}</p>
     </body>
 
     <script src="{% static 'js/boer/booking/index.js' %}"></script>
@@ -85,7 +87,7 @@
         let houseNumber = document.getElementById('HouseNumber').value;
         let city = document.getElementById('City').value;
         let street = document.getElementById('Street').value;
-        let accomodation = document.getElementById('Accomodation').value;
+        let accomodation = document.getElementById('accomodation').value;
 
         const data = {
             'csrfmiddlewaretoken': '{{ csrf_token }}',

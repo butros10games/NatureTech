@@ -13,24 +13,9 @@ def admin_index(request):
     return render(request, 'boer-admin/admin_general/admin_index.html')
 
 def booking_context(request):
-    bookings = Booking.objects.none()
     if request.method == 'POST':
         page_number = request.POST.get('page', 1)
-        sort_by = request.POST.get('sort_by', 'id')  # Set default to 'id'
-        order = request.POST.get('order', 'asc')
-        
-        # Modify the order_by clause based on the 'sort_by' value
-        if sort_by == 'id':
-            if order == 'asc':
-                bookings = Booking.objects.prefetch_related('customer', 'customer__user').order_by('start_date').all().order_by(F('id').asc(nulls_last=True))
-            elif order == 'desc':
-                bookings = Booking.objects.prefetch_related('customer', 'customer__user').all().order_by(F('id').desc(nulls_last=True))
-        if sort_by == 'sort_by':
-            if order == 'asc':
-                bookings = Booking.objects.prefetch_related('customer', 'customer__user').all().order_by(F('sort_by').asc(nulls_last=True))
-            elif order == 'desc':
-                bookings = Booking.objects.prefetch_related('customer', 'customer__user').all().order_by(F('sort_by').desc(nulls_last=True))
-        
+        bookings = Booking.objects.prefetch_related('customer', 'customer__user').order_by('start_date').all()
         paginator = Paginator(bookings, 10)
 
         page_obj_dict = []
@@ -48,6 +33,7 @@ def booking_context(request):
                 'pdf': booking.pdf,
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
+                'id': booking.id,
             })
 
         data = page_obj_dict
@@ -71,7 +57,7 @@ def sort_bookings(request):
                 bookings = bookings.order_by(F(sort_by).asc(nulls_last=True))
             elif order == 'desc':
                 bookings = bookings.order_by(F(sort_by).desc(nulls_last=True))
-        elif sort_by == 'firstname':
+        elif sort_by == 'lastname':
             if order == 'asc':
                 bookings = bookings.order_by(F('customer__user__last_name').asc(nulls_last=True))
             elif order == 'desc':
@@ -106,6 +92,8 @@ def sort_bookings(request):
                 'pdf': booking.pdf,
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
+                'id': booking.id,	
+                
 
             })
 
@@ -114,3 +102,32 @@ def sort_bookings(request):
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
  
+def create_modal(request):
+    if request.method == 'POST':
+        modal_data = request.POST.get('modal_data')
+
+        # Fetch the booking, customer and user data using the id's from the modal_data
+        booking = Booking.objects.prefetch_related('customer', 'customer__user').get(id=modal_data['booking_id'])
+
+        # Create a dictionary with the data from the booking, customer and user
+        booking_data = {
+            'firstname': booking.customer.user.first_name,
+            'lastname': booking.customer.user.last_name,
+            'email': booking.customer.user.email,
+            'phone_number': booking.customer.phone_number,
+            'order_number': booking.order_number,
+            'start_date': booking.start_date,
+            'end_date': booking.end_date,
+            'age_below': booking.age_below,
+            'age_above': booking.age_above,
+            'pdf': booking.pdf,
+            'checked_in': booking.checked_in,
+            'paid': booking.paid,
+            'id': booking.id,
+        }
+
+        return JsonResponse(booking_data, safe=False)
+    
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
+        

@@ -3,7 +3,6 @@
 <html lang="en">
   <head>
     <link rel="stylesheet" href="{% static 'css/boer-admin/orders/admin_orders.css' %}" />
-    {% include 'boer-admin/overlays/navbar.html' %}
   </head>
   <body>
     {% include 'boer-admin/overlays/navbar.html' %}
@@ -14,40 +13,19 @@
           <th data-sort="lastname" data-order="asc">Naam</th>
           <th data-sort="start_date" data-order="asc">CheckIn datum</th>
           <th data-sort="end_date" data-order="asc">CheckOut datum</th>
-          <th data-sort="age_below" data-order="asc">Kinderen</th>
-          <th data-sort="age_above" data-order="asc">Volwasssenen</th>
-          <th data-sort="pdf" data-order="asc">PDF</th>
-          <th data-sort="checked_in" data-order="asc">Ingecheckt</th>
-          <th data-sort="paid" data-order="asc">Betaald</th>
-          <th data-sort="phone_number" data-order="asc">Telefoon nummer</th>
-          <th data-sort="email" data-order="asc">Email</th>
+          <th data-sort="actions" data-order="asc">Acties</th>
         </tr>
       </thead>
       <tbody id="table_content">
         {% for booking in page_obj %}
           <tr>
             <td>{{ booking.order_number }}</td>
-            <td>{{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}
-              <div class="modal" id="modal{{ booking.id }}">
-                <div class="modal-content">
-                  <span class="close" id="close{{ booking.id }}">&times;</span>
-                  <p>Naam: {{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</p>
-                  <p>Telefoon nummer: {{ booking.customer.phone_number }}</p>
-                  <p>Email: {{ booking.customer.user.email }}</p>
-                  <p>Adres: {{ booking.customer.address }}</p>
-                  <p>Postcode: {{ booking.customer.postal_code }}</p>
-                  <p>Woonplaats: {{ booking.customer.city }}</p>
-                </div>
-            </td>
+            <td>{{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</td>
             <td>{{ booking.start_date }}</td>
             <td>{{ booking.end_date }}</td>
-            <td>{{ booking.age_below }}</td>
-            <td>{{ booking.age_above }}</td>
-            <td>{{ booking.pdf }}</td>
-            <td>{{ booking.checked_in }}</td>
-            <td>{{ booking.paid }}</td>
-            <td>{{ booking.customer.phone_number }}</td>
-            <td>{{ booking.customer.user.email }}</td>
+            <td>
+              <span><a class="ajax-link modal-trigger" data-modal-id="modal_{{ booking.id }}">bewerken</a></span>
+          </td>          
           </tr>
         {% endfor %}
       </tbody>
@@ -59,6 +37,16 @@
 
       <span class="step-links"><a id="next" pageNumber="1" class="ajax-link">Volgende</a></span>
     </div>
+    <div class="modal" id="modal_{{ booking.id }}">
+      <div class="modal-content">
+        <span class="close" id="close{{ booking.id }}">&times;</span>
+        <p>Naam: {{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</p>
+        <p>Telefoon nummer: {{ booking.customer.phone_number }}</p>
+        <p>Email: {{ booking.customer.user.email }}</p>
+        <p>Adres: {{ booking.customer.address }}</p>
+        <p>Postcode: {{ booking.customer.postal_code }}</p>
+        <p>Woonplaats: {{ booking.customer.city }}</p>
+      </div>
   </body>
 
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -67,31 +55,52 @@
     
       // Call the initial data load with default sorting
       request_data(1);
-      
-
-      
-    
+  
       // Add click events to the table headers for sorting
-      const tableHeaders = document.querySelectorAll('#booking-table th[data-sort]')
+      const tableHeaders = document.querySelectorAll('#booking-table th[data-sort]');
       tableHeaders.forEach((header) => {
-        header.addEventListener('click', function () {
-          const currentSortOrder = header.getAttribute('data-order')
-          const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc'
-          const sortBy = header.getAttribute('data-sort')
+          header.addEventListener('click', function () {
+              const currentSortOrder = header.getAttribute('data-order');
+              const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+              const sortBy = header.getAttribute('data-sort');
+      
+              // Set the new sort order
+              header.setAttribute('data-order', newSortOrder);
+  
+              // Request data with sorting parameters
+              sort_data(sortBy, newSortOrder);
+          });
+      });
+    
+      //add click events to the bewerken buttons for loading the modal
+      const modalTriggers = document.querySelectorAll('.modal-trigger');
+      modalTriggers.forEach((trigger) => {
+          trigger.addEventListener('click', function () {
+              const modalId = trigger.getAttribute('data-modal-id');
+              const modal = document.getElementById(modalId);
+              console.log(modalId);
+  
+              // Display the modal
+              modal.style.display = 'block';
+  
+              // Request the modal data
+              requestModalData(modalId);
+  
+              // Close the modal when the user clicks outside of it
+              window.onclick = function (event) {
+                  if (event.target == modal) {
+                      modal.style.display = 'none';
+                  }
+              };
+  
+              // Close the modal when the user clicks on the close button
+              const close = document.getElementById('close' + modalId.split('_')[1]);
+              close.addEventListener('click', function () {
+                  modal.style.display = 'none';
+              });
+          });
+      });
 
-		  console.log('Sort By:', sortBy);  // Debugging log
-    
-          // Set the new sort order
-          header.setAttribute('data-order', newSortOrder)
-    
-          // Get the current page number
-          const pageNumber = parseInt(prevButton.getAttribute('pageNumber'))
-    
-          // Request data with sorting parameters
-          sort_data(sortBy, newSortOrder, pageNumber)
-          request_data(pageNumber, sortBy, newSortOrder)
-        })
-      })
     
       const prevButton = document.getElementById('prev')
       const nextButton = document.getElementById('next')
@@ -142,19 +151,43 @@
     
         request_data(nextPageNumber)
       })
+
+
+
+      //Function to request data of the modal
+      function requestModalData(modalId) {
+        // Get the URL
+        let url = '/create_modal/';
+
+        const data = {
+          csrfmiddlewaretoken: '{{ csrf_token }}',
+          id: modalId,
+
+        }
+      
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: data,
+          success: function fill_modal(data) {
+            // Fill the table
+            fill_modal(data);
+          },
+          error: function (data) {
+            console.log(data);
+          },
+        });
+      }
     
-      function request_data(pageNumber, sortBy, sortOrder) {
+      function request_data(pageNumber) {
         // Get the URL
         let url = window.location.href
     
         const data = {
           csrfmiddlewaretoken: '{{ csrf_token }}',
           page: pageNumber,
-          sort_by: sortBy,
-          order: sortOrder
         }
-		console.log(data);
-    
+  
         $.ajax({
           type: 'POST',
           url: url,
@@ -167,7 +200,7 @@
           error: function (data) {
             console.log(data)
           }
-        })
+        }) 
       }
 	  function sort_data(sortBy, sortOrder) {
         let url = '/sort_bookings/'
@@ -176,7 +209,6 @@
           csrfmiddlewaretoken: '{{ csrf_token }}',
           sort_by: sortBy,
           order: sortOrder,
-          page: pageNumber
         }
 		console.log(data);
     
@@ -210,39 +242,22 @@
           let orderNumber = document.createElement('td')
           let name = document.createElement('td')
           let checkOutDate = document.createElement('td')
-          let children = document.createElement('td')
-          let adults = document.createElement('td')
-          let pdf = document.createElement('td')
-          let checkedIn = document.createElement('td')
-          let paid = document.createElement('td')
-          let phoneNumber = document.createElement('td')
-          let email = document.createElement('td')
+          let actions = document.createElement('td')
     
           // Set the text of the columns
           orderNumber.innerText = field.order_number
           name.innerText = field.firstname + ' ' + field.lastname
           checkInDate.innerText = field.start_date
           checkOutDate.innerText = field.end_date
-          children.innerText = field.age_below
-          adults.innerText = field.age_above
-          pdf.innerText = field.pdf
-          checkedIn.innerText = field.checked_in
-          paid.innerText = field.paid
-          phoneNumber.innerText = field.phone_number
-          email.innerText = field.email
+          actions.innerHTML = '<span><a class="ajax-link modal-trigger" data-modal-id="modal_' + field.id + '">bewerken</a></span>'
+
     
           // Append the columns to the row
           row.appendChild(orderNumber)
           row.appendChild(name)
           row.appendChild(checkInDate)
           row.appendChild(checkOutDate)
-          row.appendChild(children)
-          row.appendChild(adults)
-          row.appendChild(pdf)
-          row.appendChild(checkedIn)
-          row.appendChild(paid)
-          row.appendChild(phoneNumber)
-          row.appendChild(email)
+          row.appendChild(actions)
     
           // Append the row to the table
           tableContent.appendChild(row)

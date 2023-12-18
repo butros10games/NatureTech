@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from booking_system.models import Booking, Customer 
+from booking_system.models import Booking, Customer, CampingSpot, PlekType
 from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
@@ -22,7 +22,7 @@ def booking_context(request):
         # Modify the order_by clause based on the 'sort_by' value
         if sort_by == 'id':
             if order == 'asc':
-                bookings = Booking.objects.prefetch_related('customer', 'customer__user').all().order_by(F('id').asc(nulls_last=True))
+                bookings = Booking.objects.prefetch_related('customer', 'customer__user').order_by('start_date').all().order_by(F('id').asc(nulls_last=True))
             elif order == 'desc':
                 bookings = Booking.objects.prefetch_related('customer', 'customer__user').all().order_by(F('id').desc(nulls_last=True))
         if sort_by == 'sort_by':
@@ -59,17 +59,19 @@ def sort_bookings(request):
     if request.method == 'POST':
         page_number = request.POST.get('page', 1)
         sort_by = request.POST.get('sort_by') 
-        order = request.POST.get('order', 'asc') 
+        order = request.POST.get('order', 'asc')
+
         # Retrieve and sort the bookings
         bookings = Booking.objects.prefetch_related('customer', 'customer__user').all()
+
         valid_sort_fields = ['order_number', 'start_date', 'end_date', 'age_below', 'age_above', 'pdf', 'checked_in', 'paid']
 
         if sort_by in valid_sort_fields:
             if order == 'asc':
                 bookings = bookings.order_by(F(sort_by).asc(nulls_last=True))
             elif order == 'desc':
-                bookings = bookings.order_by(F(sort_by).desc(nulls_last=True))	
-        if sort_by == 'lastname':
+                bookings = bookings.order_by(F(sort_by).desc(nulls_last=True))
+        elif sort_by == 'firstname':
             if order == 'asc':
                 bookings = bookings.order_by(F('customer__user__last_name').asc(nulls_last=True))
             elif order == 'desc':
@@ -78,14 +80,15 @@ def sort_bookings(request):
             if order == 'asc':
                 bookings = bookings.order_by(F('customer__user__email').asc(nulls_last=True))
             elif order == 'desc':
-                bookings = bookings.order_by(F('customer__user__email').desc(nulls_last=True)) 
+                bookings = bookings.order_by(F('customer__user__email').desc(nulls_last=True))
         elif sort_by == 'phone_number':
             if order == 'asc':
                 bookings = bookings.order_by(F('customer__phone_number').asc(nulls_last=True))
             elif order == 'desc':
                 bookings = bookings.order_by(F('customer__phone_number').desc(nulls_last=True))
-            
-        
+
+
+
         # Apply pagination
         paginator = Paginator(bookings, 10)
         page_obj_dict = []
@@ -103,6 +106,7 @@ def sort_bookings(request):
                 'pdf': booking.pdf,
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
+
             })
 
         data = page_obj_dict

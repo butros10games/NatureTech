@@ -6,6 +6,7 @@
     {% include 'boer-admin/overlays/navbar.html' %}
   </head>
   <body>
+    {% include 'boer-admin/overlays/navbar.html' %}
     <table id="booking-table">
       <thead>
         <tr>
@@ -26,7 +27,18 @@
         {% for booking in page_obj %}
           <tr>
             <td>{{ booking.order_number }}</td>
-            <td>{{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</td>
+            <td>{{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}
+              <div class="modal" id="modal{{ booking.id }}">
+                <div class="modal-content">
+                  <span class="close" id="close{{ booking.id }}">&times;</span>
+                  <p>Naam: {{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</p>
+                  <p>Telefoon nummer: {{ booking.customer.phone_number }}</p>
+                  <p>Email: {{ booking.customer.user.email }}</p>
+                  <p>Adres: {{ booking.customer.address }}</p>
+                  <p>Postcode: {{ booking.customer.postal_code }}</p>
+                  <p>Woonplaats: {{ booking.customer.city }}</p>
+                </div>
+            </td>
             <td>{{ booking.start_date }}</td>
             <td>{{ booking.end_date }}</td>
             <td>{{ booking.age_below }}</td>
@@ -55,6 +67,8 @@
     
       // Call the initial data load with default sorting
       request_data(1);
+      
+
       
     
       // Add click events to the table headers for sorting
@@ -90,7 +104,7 @@
         // Get the page number
         let pageNumber = parseInt(this.getAttribute('pageNumber'))
     
-        // If the page number is 1, then we are on the first page
+        // If the page number is 0, then we are on the first page
         if (pageNumber === 1) {
           // Disable the prev button
           this.classList.add('disabled')
@@ -155,8 +169,8 @@
           }
         })
       }
-	  function sort_data(sortBy, sortOrder, pageNumber) {
-        let url = "/sort_bookings/"
+	  function sort_data(sortBy, sortOrder) {
+        let url = '/sort_bookings/'
     
         const data = {
           csrfmiddlewaretoken: '{{ csrf_token }}',
@@ -192,9 +206,9 @@
           let row = document.createElement('tr')
     
           // Create the columns
+          let checkInDate = document.createElement('td')
           let orderNumber = document.createElement('td')
           let name = document.createElement('td')
-          let checkInDate = document.createElement('td')
           let checkOutDate = document.createElement('td')
           let children = document.createElement('td')
           let adults = document.createElement('td')
@@ -234,6 +248,7 @@
           tableContent.appendChild(row)
         }
       }
+      
     
     })
   </script>

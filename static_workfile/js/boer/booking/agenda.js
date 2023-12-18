@@ -59,8 +59,15 @@ const updateDateSelection = (selectedYear, selectedMonth, selectedDay) => {
         endDate = null;
     } else if (!startDate || (endDate && Math.abs(newDate - startDate) < Math.abs(newDate - endDate))) {
         startDate = newDate;
+
+        if (endDate != null && startDate != null) {
+            availability_request()
+        }
+        
     } else if (!endDate || (startDate && Math.abs(newDate - endDate) < Math.abs(newDate - startDate))) {
         endDate = newDate;
+
+        availability_request()
     } else {
         startDate = newDate;
         endDate = null;
@@ -145,3 +152,59 @@ prevNextIcon.forEach(icon => {
 });
 
 renderCalendar();
+
+function plekSelectionUpdate(available_places) {
+    const plekSelectieContainer = document.getElementById('plekSelectieContainer');
+
+    plekSelectieContainer.innerHTML = '';
+
+    available_places.forEach(place => {
+        const placeElement = document.createElement('div');
+        placeElement.className = 'w-full sm:w-1/2 px-2 mb-4';
+        placeElement.innerHTML = `
+            <div class="flex items-center border p-2 cursor-pointer" onclick="toggleCheckbox('${place.id}')">
+                <input type="checkbox" id="${place.id}" name="${place.id}" value="${place.id}" class="mr-2 hidden">
+                <span class="checkbox-custom mr-2"></span>
+                <div class="flex-grow">
+                    <p class="mr-2">${place.name}</p>
+                </div>
+                <p>€ ${place.price}</p>
+            </div>
+        `;
+        plekSelectieContainer.appendChild(placeElement);
+    });
+}
+
+function availability_request() {
+    // Format the dates to YYYY-MM-DD before sending
+    let formattedStartDate = startDate.toISOString().split('T')[0];
+    let formattedEndDate = endDate.toISOString().split('T')[0];
+
+    let availability_data = {
+        'csrfmiddlewaretoken': document.getElementById('csrfmiddlewaretoken').innerHTML,
+        'startDate': formattedStartDate,
+        'endDate': formattedEndDate
+    };
+
+    $.ajax({
+        type: 'POST',
+        url: "beschikbaarheidsCheck/",
+        data: availability_data,
+        success: function (data) {
+            console.log(data)
+            if (data['status'] == 'success') {
+                plekSelectionUpdate(data.available_places)
+            } else {
+                alert('Er is iets fout gegaan, probeer het later opnieuw.')
+            }
+        },
+        error: function (data) {
+            console.log(data)
+            if (data.type === 'rate_limit') {
+                alert(data.message)
+            } else {
+                alert('Er is iets fout gegaan, probeer het later opnieuw.')
+            }
+        }
+    });
+}

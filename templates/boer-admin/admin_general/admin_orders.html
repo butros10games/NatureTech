@@ -26,7 +26,18 @@
         {% for booking in page_obj %}
           <tr>
             <td>{{ booking.order_number }}</td>
-            <td>{{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</td>
+            <td>{{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}
+              <div class="modal" id="modal{{ booking.id }}">
+                <div class="modal-content">
+                  <span class="close" id="close{{ booking.id }}">&times;</span>
+                  <p>Naam: {{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</p>
+                  <p>Telefoon nummer: {{ booking.customer.phone_number }}</p>
+                  <p>Email: {{ booking.customer.user.email }}</p>
+                  <p>Adres: {{ booking.customer.address }}</p>
+                  <p>Postcode: {{ booking.customer.postal_code }}</p>
+                  <p>Woonplaats: {{ booking.customer.city }}</p>
+                </div>
+            </td>
             <td>{{ booking.start_date }}</td>
             <td>{{ booking.end_date }}</td>
             <td>{{ booking.age_below }}</td>
@@ -54,6 +65,8 @@
     document.addEventListener('DOMContentLoaded', function () {
       // Load the initial data and show the first page
       request_data(1)
+
+      
     
       // Add click events to the table headers for sorting
       const tableHeaders = document.querySelectorAll('#booking-table th[data-sort]')
@@ -189,9 +202,9 @@
           let row = document.createElement('tr')
     
           // Create the columns
+          let checkInDate = document.createElement('td')
           let orderNumber = document.createElement('td')
           let name = document.createElement('td')
-          let checkInDate = document.createElement('td')
           let checkOutDate = document.createElement('td')
           let children = document.createElement('td')
           let adults = document.createElement('td')
@@ -231,6 +244,7 @@
           tableContent.appendChild(row)
         }
       }
+      
     
     })
   </script>

@@ -15,7 +15,7 @@ def admin_index(request):
 def booking_context(request):
     if request.method == 'POST':
         page_number = request.POST.get('page', 1)
-        bookings = Booking.objects.prefetch_related('customer', 'customer__user').all()
+        bookings = Booking.objects.prefetch_related('customer', 'customer__user').order_by('start_date').all()
         paginator = Paginator(bookings, 10)
 
         page_obj_dict = []

@@ -1,0 +1,124 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Boer bert</title>
+    </head>
+    <body>
+        {% include 'boer-admin/overlays/navbar.html' %}
+
+        <div class="md:ml-72 mt-16 md:mt-0 w-full md:w-auto h-screen md:h-auto flex justify-between items-center flex-col"  style="height: calc(100vh - 64px);">
+            <p>GPS</p>
+            <p id="Latitude"></p>
+            <p id="Longitude"></p>
+            <p id="demo"></p>
+
+            <div id="location_display" style="width: 95%; height: calc(100vh - 196px); border: 1px solid black;">
+            </div>
+
+            <button id="startLocationMapping" onclick="startLocationMapping()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">start location tracking</button>
+        </div>
+
+        <script>
+            var startingPosition = null;
+            var watchId = null;
+            var furthestDistance = 0;
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            };
+    
+            function startLocationMapping() {
+                var button = document.getElementById("startLocationMapping");
+    
+                if (navigator.geolocation) {
+                    if (watchId) {
+                        // Stop tracking
+                        navigator.geolocation.clearWatch(watchId);
+                        watchId = null;
+                        startingPosition = null;
+                        button.innerHTML = "start location tracking";
+                        button.className = "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800";
+                    } else {
+                        // Start tracking
+                        watchId = navigator.geolocation.watchPosition(showPosition, showError, options);
+                        button.innerHTML = "stop location tracking";
+                        button.className = "text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800";
+                    }
+                } else {
+                    alert("Geolocation is not supported by this browser.");
+                }
+            }
+    
+            function showPosition(position) {
+                if (!startingPosition) {
+                    startingPosition = position.coords;
+                }
+            
+                var currentCoords = position.coords;
+            
+                document.getElementById("Latitude").innerHTML = "Latitude: " + currentCoords.latitude;
+                document.getElementById("Longitude").innerHTML = "Longitude: " + currentCoords.longitude;
+            
+                displayPoint(currentCoords);
+            }     
+    
+            function displayPoint(currentCoords) {
+                var locationDisplay = document.getElementById('location_display');
+                var xScale = 50000; // Scale for longitude - adjust as needed
+                var yScale = 50000; // Scale for latitude - adjust as needed
+            
+                if (!startingPosition) {
+                    // Set the starting position if not set
+                    startingPosition = currentCoords;
+                }
+            
+                // Calculate x and y differences in coordinates
+                var xDiff = currentCoords.longitude - startingPosition.longitude;
+                var yDiff = currentCoords.latitude - startingPosition.latitude;
+            
+                // Convert coordinate differences to pixels
+                var xPos = xDiff * xScale;
+                var yPos = -yDiff * yScale; // Negative because screen coordinates go down as latitude increases
+            
+                // Adjust positions to set the first point in the middle
+                var centerX = locationDisplay.offsetWidth / 2;
+                var centerY = locationDisplay.offsetHeight / 2;
+                xPos += centerX;
+                yPos += centerY;
+            
+                // Create the point div
+                var pointDiv = document.createElement('div');
+                pointDiv.style.width = '5px';
+                pointDiv.style.height = '5px';
+                pointDiv.style.backgroundColor = 'red';
+                pointDiv.style.position = 'absolute';
+                pointDiv.style.left = xPos + 'px';
+                pointDiv.style.top = yPos + 'px';
+            
+                locationDisplay.appendChild(pointDiv);
+            }
+    
+            function showError(error) {
+                switch(error.code) {
+                    case error.PERMISSION_DENIED:
+                        alert("User denied the request for Geolocation. Please enable it in your browser settings.");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert("Location information is unavailable. Please check your internet connection.");
+                        break;
+                    case error.TIMEOUT:
+                        alert("The request to get user location timed out. Please try again.");
+                        break;
+                    case error.UNKNOWN_ERROR:
+                        alert("An unknown error occurred. Please try again.");
+                        break;
+                }
+            }
+        </script>
+    </body>
+</html>

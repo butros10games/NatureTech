@@ -1,22 +1,21 @@
-import re
+# Standard library imports
+from datetime import datetime
+import traceback
+
+# Related third party imports
 from django.shortcuts import render
 from django.contrib import messages
+from django.contrib.auth.models import User
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.http import JsonResponse
 from django.conf import settings
-
+from django.db.models import Q
 from django_ratelimit.decorators import ratelimit
 
+# Local application/library specific imports
 from .models import Booking, Customer, PlekType, Price, CampingSpot, Veldvulling, Veld
-from django.contrib.auth.models import User
-
-from django.db.models import Q
-
-import traceback
-
-import datetime
 
 @ratelimit(key='ip', rate='3/60m')  # Limit to 5 requests per 15 minutes per IP address
 def booking_form(request):
@@ -97,6 +96,8 @@ def booking_form(request):
 
             ## reload booking out of the database
             booking.refresh_from_db()
+            
+            total_price = calc_full_price(booking)
 
             context = {
                 "first_name": first_name,
@@ -105,7 +106,7 @@ def booking_form(request):
                 "date_of_departure": end,
                 "accomodation": accomodation_object.plekType.name,
                 "order_number": booking.order_number,
-                "price": end,
+                "price": total_price,
                 "method_of_paying": end,
                 "adults": adults,
                 "children": childeren
@@ -153,7 +154,7 @@ def booking_index(request):
     
     # get the price of the places
     ## get the current date and time
-    now = datetime.datetime.now()
+    now = datetime.now()
     
     ## loop trough all the places and request the price at the current time
     for place in places:
@@ -194,20 +195,66 @@ def beschikbaarheidsCheck(request):
         # Get all available CampingSpots excluding the booked ones
         available_spots = CampingSpot.objects.exclude(id__in=booked_place_ids)
 
+        start_date = datetime.strptime(start, "%Y-%m-%d")
+        end_date = datetime.strptime(end, "%Y-%m-%d")
+
+        total_nights = (end_date - start_date).days - 1
+
         # Prepare the list of available PlekTypes
         available_places_dict = []
-        for place in available_spots.distinct('plekType').values('plekType', 'plekType__name'):
-            price = Price.objects.filter(
-                startDateTime__lte=start, endDateTime__gte=end, PlekType_id=place['plekType']
+        for place in available_spots.distinct('plekType').values('plekType', 'plekType__name', 'plekType__fixed_price', 'plekType__daily_price'):
+            fixed_price = Price.objects.filter(
+                startDateTime__lte=start, endDateTime__gte=end, PlekType_id=place['plekType'], name=place['plekType__fixed_price']
             ).first()
+            
+            daily_price = Price.objects.filter(
+                startDateTime__lte=start, endDateTime__gte=end, PlekType_id=place['plekType'], name=place['plekType__daily_price']
+            ).first()
+            
             available_places_dict.append({
                 'id': place['plekType'],
                 'name': place['plekType__name'],
-                'price': price.price if price else None
+                'nights': total_nights,
+                'total_price': fixed_price.price + (daily_price.price * total_nights),
+                'booking_fee': fixed_price.price,
+                'daily_price': daily_price.price,
             })
 
-        return JsonResponse({"status": "success", "available_places": available_places_dict, 'booked_place_ids': list(booked_place_ids)})
+        return JsonResponse({"status": "success", "available_places": available_places_dict})
 
     except Exception as e:
         # Log the error if needed
         return JsonResponse({"status": "error", "message": str(e), "traceback": traceback.format_exc()})
+    
+def get_full_price(request):
+    # Respond only to POST requests
+    if request.method != 'POST':
+        return JsonResponse({"status": "error", "message": "This is not a POST request."})
+
+    try:
+        start = request.POST['startDate']
+        end = request.POST['endDate']
+        accomodation = request.POST['accomodation']
+
+        # Get the IDs of all booked CampingSpots within the specified date range
+        plek_type_object = PlekType.objects.get(id=accomodation)
+        
+        total_price = calc_full_price(start, end, plek_type_object)
+        
+        return JsonResponse({"status": "success", "price": total_price})
+
+    except Exception as e:
+        # Log the error if needed
+        return JsonResponse({"status": "error", "message": str(e), "traceback": traceback.format_exc()})
+
+def calc_full_price(start_date, end_date, plek_type_object):
+    ## get the total number of days the customer is staying
+    total_days = (end_date - start_date).days - 1
+    
+    ## get the price of the place
+    fixed_price = Price.objects.filter(startDateTime__lte=start_date, endDateTime__gte=end_date, PlekType=plek_type_object, name=plek_type_object.fixed_price).first()
+    daily_price = Price.objects.filter(startDateTime__lte=start_date, endDateTime__gte=end_date, PlekType=plek_type_object, name=plek_type_object.daily_price).first()
+    
+    total_days_price = total_days * daily_price.price
+    
+    return (fixed_price.price + total_days_price)

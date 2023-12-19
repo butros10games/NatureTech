@@ -160,7 +160,10 @@ function plekSelectionUpdate(available_places) {
 
     available_places.forEach(place => {
         const placeElement = document.createElement('div');
-        placeElement.className = 'w-full sm:w-1/2 px-2 mb-4';
+        placeElement.className = 'w-full sm:w-1/2 px-2 mb-4 tooltip';
+        
+        const tooltipText = `Prijs opbouw: € ${place.daily_price} per nacht x ${place.nights} nachten. plus boekingskosten: € ${place.booking_fee}`;
+
         placeElement.innerHTML = `
             <div class="flex items-center border p-2 cursor-pointer" onclick="toggleCheckbox('${place.id}')">
                 <input type="checkbox" id="${place.id}" name="${place.id}" value="${place.id}" class="mr-2 hidden">
@@ -168,8 +171,9 @@ function plekSelectionUpdate(available_places) {
                 <div class="flex-grow">
                     <p class="mr-2">${place.name}</p>
                 </div>
-                <p>€ ${place.price}</p>
+                <p>€ ${place.total_price}</p>
             </div>
+            <span class="tooltiptext">${tooltipText}</span>
         `;
         plekSelectieContainer.appendChild(placeElement);
     });
@@ -185,6 +189,8 @@ function availability_request() {
         'startDate': formattedStartDate,
         'endDate': formattedEndDate
     };
+
+    console.log(availability_data)
 
     $.ajax({
         type: 'POST',

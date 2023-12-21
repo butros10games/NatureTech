@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.db.models import F
+import json
 
 
 def admin_index(request):
@@ -104,30 +105,40 @@ def sort_bookings(request):
  
 def create_modal(request):
     if request.method == 'POST':
-        modal_data = request.POST.get('modal_data')
+        try:
+            modal_data = json.loads(request.POST.get('modal_data'))
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data in modal_data'}, status=400)
 
-        # Fetch the booking, customer and user data using the id's from the modal_data
-        booking = Booking.objects.prefetch_related('customer', 'customer__user').get(id=modal_data['booking_id'])
+        # Fetch the booking, customer, and user data using the id's from the modal_data
+        booking_id = modal_data.get('booking_id')
+        if booking_id is not None:
+            try:
+                booking = Booking.objects.prefetch_related('customer', 'customer__user').get(id=booking_id)
+            except Booking.DoesNotExist:
+                return JsonResponse({'error': 'Booking not found'}, status=404)
 
-        # Create a dictionary with the data from the booking, customer and user
-        booking_data = {
-            'firstname': booking.customer.user.first_name,
-            'lastname': booking.customer.user.last_name,
-            'email': booking.customer.user.email,
-            'phone_number': booking.customer.phone_number,
-            'order_number': booking.order_number,
-            'start_date': booking.start_date,
-            'end_date': booking.end_date,
-            'age_below': booking.age_below,
-            'age_above': booking.age_above,
-            'pdf': booking.pdf,
-            'checked_in': booking.checked_in,
-            'paid': booking.paid,
-            'id': booking.id,
-        }
+            # Create a dictionary with the data from the booking, customer, and user
+            booking_data = {
+                'firstname': booking.customer.user.first_name,
+                'lastname': booking.customer.user.last_name,
+                'email': booking.customer.user.email,
+                'phone_number': booking.customer.phone_number,
+                'order_number': booking.order_number,
+                'start_date': booking.start_date,
+                'end_date': booking.end_date,
+                'age_below': booking.age_below,
+                'age_above': booking.age_above,
+                'pdf': booking.pdf,
+                'checked_in': booking.checked_in,
+                'paid': booking.paid,
+                'id': booking.id,
+            }
 
-        return JsonResponse(booking_data, safe=False)
-    
+            return JsonResponse(booking_data, safe=False)
+        else:
+            return JsonResponse({'error': 'Missing booking_id in modal_data'}, status=400)
+
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
         

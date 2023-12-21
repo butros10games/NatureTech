@@ -6,20 +6,16 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Boer bert</title>
+        <script src="{% static 'js/programs/mobile_view.js' %}"></script>
     </head>
     <body>
         {% include 'boer-admin/overlays/navbar.html' %}
 
-        <div class="md:ml-72 mt-16 md:mt-0 w-full md:w-auto h-screen md:h-auto flex justify-between items-center flex-col"  style="height: calc(100vh - 64px);">
-            <p>GPS</p>
-            <p id="Latitude"></p>
-            <p id="Longitude"></p>
-            <p id="demo"></p>
-
-            <div id="location_display" style="width: 95%; height: calc(100vh - 196px); border: 1px solid black;">
+        <div class="flex flex-col justify-between items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72">
+            <div id="map" style="height: 100%; width: 100%;">
             </div>
 
-            <button id="startLocationMapping" onclick="startLocationMapping()" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">start location tracking</button>
+            <button style="position: absolute; bottom: 0; z-index: 9999;" id="startLocationMapping" onclick="startLocationMapping()" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mx-auto mb-8 focus:outline-none">start location tracking</button>
         </div>
 
         <script>
@@ -31,7 +27,43 @@
                 timeout: 5000,
                 maximumAge: 0
             };
-    
+
+            var mapOptions = {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 19, // Adjust the zoom level as needed
+                mapTypeControl: false, // Disable map type control
+                streetViewControl: false, // Disable Street View control
+                styles: [
+                    {
+                        featureType: "poi",
+                        elementType: "labels",
+                        stylers: [
+                            { visibility: "off" }
+                        ]
+                    }
+                ]
+            };
+
+            var map;
+            var pathLine; // Polyline object to draw the path
+            var pointer = 0; // Used to determine when to initialize the polyline
+
+            function initMap() {
+                map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+                // Initialize the polyline
+                if (pointer % 5 == 0 || pointer == 1) {
+                    pathLine = new google.maps.Polyline({
+                        strokeColor: '#FF0000', // Red line
+                        strokeOpacity: 1.0,
+                        strokeWeight: 2,
+                        map: map
+                    });
+                }
+                
+                pointer++;
+            }
+            
             function startLocationMapping() {
                 var button = document.getElementById("startLocationMapping");
     
@@ -42,12 +74,12 @@
                         watchId = null;
                         startingPosition = null;
                         button.innerHTML = "start location tracking";
-                        button.className = "text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800";
+                        button.className = "text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mx-auto mb-8 focus:outline-none";
                     } else {
                         // Start tracking
                         watchId = navigator.geolocation.watchPosition(showPosition, showError, options);
                         button.innerHTML = "stop location tracking";
-                        button.className = "text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800";
+                        button.className = "text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 mx-auto mb-8 focus:outline-none";
                     }
                 } else {
                     alert("Geolocation is not supported by this browser.");
@@ -59,48 +91,18 @@
                     startingPosition = position.coords;
                 }
             
-                var currentCoords = position.coords;
-            
-                document.getElementById("Latitude").innerHTML = "Latitude: " + currentCoords.latitude;
-                document.getElementById("Longitude").innerHTML = "Longitude: " + currentCoords.longitude;
-            
-                displayPoint(currentCoords);
-            }     
-    
-            function displayPoint(currentCoords) {
-                var locationDisplay = document.getElementById('location_display');
-                var xScale = 50000; // Scale for longitude - adjust as needed
-                var yScale = 50000; // Scale for latitude - adjust as needed
-            
-                if (!startingPosition) {
-                    // Set the starting position if not set
-                    startingPosition = currentCoords;
-                }
-            
-                // Calculate x and y differences in coordinates
-                var xDiff = currentCoords.longitude - startingPosition.longitude;
-                var yDiff = currentCoords.latitude - startingPosition.latitude;
-            
-                // Convert coordinate differences to pixels
-                var xPos = xDiff * xScale;
-                var yPos = -yDiff * yScale; // Negative because screen coordinates go down as latitude increases
-            
-                // Adjust positions to set the first point in the middle
-                var centerX = locationDisplay.offsetWidth / 2;
-                var centerY = locationDisplay.offsetHeight / 2;
-                xPos += centerX;
-                yPos += centerY;
-            
-                // Create the point div
-                var pointDiv = document.createElement('div');
-                pointDiv.style.width = '5px';
-                pointDiv.style.height = '5px';
-                pointDiv.style.backgroundColor = 'red';
-                pointDiv.style.position = 'absolute';
-                pointDiv.style.left = xPos + 'px';
-                pointDiv.style.top = yPos + 'px';
-            
-                locationDisplay.appendChild(pointDiv);
+                var currentLocation = {lat: position.coords.latitude, lng: position.coords.longitude};
+                map.setCenter(currentLocation);
+
+                // Add current location to the path
+                var path = pathLine.getPath();
+                path.push(new google.maps.LatLng(currentLocation.lat, currentLocation.lng));
+
+                // Create a marker for the current position
+                var marker = new google.maps.Marker({
+                    position: currentLocation,
+                    map: map
+                });
             }
     
             function showError(error) {
@@ -120,5 +122,7 @@
                 }
             }
         </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHbEU4gBrlH8zGMfObMDvzjUBHEFR7F0o&callback=initMap" async defer></script>
     </body>
 </html>

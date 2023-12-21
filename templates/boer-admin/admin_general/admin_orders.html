@@ -1,270 +1,267 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <link rel="stylesheet" href="{% static 'css/boer-admin/orders/admin_orders.css' %}" />
-  </head>
-  <body>
-    {% include 'boer-admin/overlays/navbar.html' %}
-    <table id="booking-table">
-      <thead>
-        <tr>
-          <th data-sort="order_number" data-order="asc">Order Nummer</th>
-          <th data-sort="lastname" data-order="asc">Naam</th>
-          <th data-sort="start_date" data-order="asc">CheckIn datum</th>
-          <th data-sort="end_date" data-order="asc">CheckOut datum</th>
-          <th data-sort="actions" data-order="asc">Acties</th>
-        </tr>
-      </thead>
-      <tbody id="table_content">
-        {% for booking in page_obj %}
-          <tr>
-            <td>{{ booking.order_number }}</td>
-            <td>{{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</td>
-            <td>{{ booking.start_date }}</td>
-            <td>{{ booking.end_date }}</td>
-            <td>
-              <span><a class="ajax-link modal-trigger" data-modal-id="modal_{{ booking.id }}">bewerken</a></span>
-          </td>          
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <div class="pagination">
-      <span class="step-links"><a id="prev" pageNumber="1" class="ajax-link">Vorige</a></span>
+	<head>
+		<meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="{% static 'css/boer-admin/orders/admin_orders.css' %}" />
+		<title>Boekingen overzicht</title>
+	</head>
+	<body>
+		{% include 'boer-admin/overlays/navbar.html' %}
+		<div class="flex flex-col justify-between items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72">
+			<table id="booking-table">
+				<thead>
+					<tr>
+						<th data-sort="order_number" data-order="asc">Order Nummer</th>
+						<th data-sort="lastname" data-order="asc">Naam</th>
+						<th data-sort="start_date" data-order="asc">CheckIn datum</th>
+						<th data-sort="end_date" data-order="asc">CheckOut datum</th>
+					</tr>
+				</thead>
+				<tbody id="table_content">
+					{% for booking in page_obj %}
+					<tr>
+						<td>{{ booking.order_number }}</td>
+						<td>{{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</td>
+						<td>{{ booking.start_date }}</td>
+						<td>{{ booking.end_date }}</td>     
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="pagination">
+				<span class="step-links"><a id="prev" pageNumber="1" class="ajax-link">Vorige</a></span>
 
-      <span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
+				<span class="current">{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span>
 
-      <span class="step-links"><a id="next" pageNumber="1" class="ajax-link">Volgende</a></span>
-    </div>
-    <div class="modal" id="modal_{{ booking.id }}">
-      <div class="modal-content">
-        <span class="close" id="close{{ booking.id }}">&times;</span>
-        <p>Naam: {{ booking.customer.user.first_name }} {{ booking.customer.user.last_name }}</p>
-        <p>Telefoon nummer: {{ booking.customer.phone_number }}</p>
-        <p>Email: {{ booking.customer.user.email }}</p>
-        <p>Adres: {{ booking.customer.address }}</p>
-        <p>Postcode: {{ booking.customer.postal_code }}</p>
-        <p>Woonplaats: {{ booking.customer.city }}</p>
-      </div>
-  </body>
+				<span class="step-links"><a id="next" pageNumber="1" class="ajax-link">Volgende</a></span>
+			</div>
+			<div id="myModal" class="modal">
+				<div class="modal-content">
+					<span class="close">&times;</span>
+					<div id="modal-content"></div>
+				</div>
+			</div>
+		</div>
+	</body>
 
-  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-  <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    
-      // Call the initial data load with default sorting
-      request_data(1);
-  
-      // Add click events to the table headers for sorting
-      const tableHeaders = document.querySelectorAll('#booking-table th[data-sort]');
-      tableHeaders.forEach((header) => {
-          header.addEventListener('click', function () {
-              const currentSortOrder = header.getAttribute('data-order');
-              const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
-              const sortBy = header.getAttribute('data-sort');
-      
-              // Set the new sort order
-              header.setAttribute('data-order', newSortOrder);
-  
-              // Request data with sorting parameters
-              sort_data(sortBy, newSortOrder);
-          });
-      });
-    
-      //add click events to the bewerken buttons for loading the modal
-      const modalTriggers = document.querySelectorAll('.modal-trigger');
-      modalTriggers.forEach((trigger) => {
-          trigger.addEventListener('click', function () {
-              const modalId = trigger.getAttribute('data-modal-id');
-              const modal = document.getElementById(modalId);
-              console.log(modalId);
-  
-              // Display the modal
-              modal.style.display = 'block';
-  
-              // Request the modal data
-              requestModalData(modalId);
-  
-              // Close the modal when the user clicks outside of it
-              window.onclick = function (event) {
-                  if (event.target == modal) {
-                      modal.style.display = 'none';
-                  }
-              };
-  
-              // Close the modal when the user clicks on the close button
-              const close = document.getElementById('close' + modalId.split('_')[1]);
-              close.addEventListener('click', function () {
-                  modal.style.display = 'none';
-              });
-          });
-      });
+	<script>
+		let prevButton = null;
+		let nextButton = null;
+		let tableContent = null;
+		let csrfToken = '{{ csrf_token }}';
 
-    
-      const prevButton = document.getElementById('prev')
-      const nextButton = document.getElementById('next')
-      const tableContent = document.getElementById('table_content')
-    
-      // Add click event to the prev button
-      prevButton.addEventListener('click', function () {
-        console.log('clicked')
-    
-        // Get the page number
-        let pageNumber = parseInt(this.getAttribute('pageNumber'))
-    
-        // If the page number is 0, then we are on the first page
-        if (pageNumber === 1) {
-          // Disable the prev button
-          this.classList.add('disabled')
-        } else {
-          // Enable the next button
-          nextButton.classList.remove('disabled')
-    
-          // Get the previous page number
-          let prevPageNumber = pageNumber - 1
-    
-          // Set the page number
-          this.setAttribute('pageNumber', prevPageNumber)
-          nextButton.setAttribute('pageNumber', prevPageNumber)
-    
-          request_data(prevPageNumber)
-        }
-      })
-    
-      // Add click event to the next button
-      nextButton.addEventListener('click', function () {
-        console.log('clicked')
-    
-        // Get the page number
-        let pageNumber = parseInt(this.getAttribute('pageNumber'))
-    
-        // Enable the next button
-        nextButton.classList.remove('disabled')
-    
-        // Get the next page number
-        let nextPageNumber = pageNumber + 1
-    
-        // Set the page number
-        this.setAttribute('pageNumber', nextPageNumber)
-        prevButton.setAttribute('pageNumber', nextPageNumber)
-    
-        request_data(nextPageNumber)
-      })
+		document.addEventListener('DOMContentLoaded', function () {
+			prevButton = document.getElementById('prev');
+			nextButton = document.getElementById('next');
+			tableContent = document.getElementById('table_content');
 
+			// Call the initial data load with default sorting
+			request_data(1);
 
+			setupButtons();
+		})
 
-      //Function to request data of the modal
-      function requestModalData(modalId) {
-        // Get the URL
-        let url = '/create_modal/';
+		function setupButtons() {
+			setupTableHeaders();
+			setupPrevButton();
+			setupNextButton();
+			modelCloseEvent();
+		}
 
-        const data = {
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          id: modalId,
+		function setupTableHeaders() {
+			const tableHeaders = document.querySelectorAll('#booking-table th[data-sort]');
+			tableHeaders.forEach((header) => {
+				header.addEventListener('click', function () {
+					const currentSortOrder = header.getAttribute('data-order');
+					const newSortOrder = currentSortOrder === 'asc' ? 'desc' : 'asc';
+					const sortBy = header.getAttribute('data-sort');
 
-        }
-      
-        $.ajax({
-          type: 'POST',
-          url: url,
-          data: data,
-          success: function fill_modal(data) {
-            // Fill the table
-            fill_modal(data);
-          },
-          error: function (data) {
-            console.log(data);
-          },
-        });
-      }
-    
-      function request_data(pageNumber) {
-        // Get the URL
-        let url = window.location.href
-    
-        const data = {
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          page: pageNumber,
-        }
-  
-        $.ajax({
-          type: 'POST',
-          url: url,
-          data: data,
-          success: function (data) {
-    
-            // Fill the table
-            fill_table(data)
-          },
-          error: function (data) {
-            console.log(data)
-          }
-        }) 
-      }
-	  function sort_data(sortBy, sortOrder) {
-        let url = '/sort_bookings/'
-    
-        const data = {
-          csrfmiddlewaretoken: '{{ csrf_token }}',
-          sort_by: sortBy,
-          order: sortOrder,
-        }
-		console.log(data);
-    
-        $.ajax({
-          type: 'POST',
-          url: url,
-          data: data,
-          success: function (data) {
-			console.log(data);
-            // Fill the table with sorted data
-            fill_table(data)
-          },
-          error: function (data) {
-            console.log(data)
-          }
-        })
-      }
-    
-      function fill_table(datas) {
-        // Clear the table
-        tableContent.innerHTML = ''
-    
-        // Loop through the data
-        for (let i = 0; i < datas.length; i++) {
-          field = datas[i]
-          // Create a new row
-          let row = document.createElement('tr')
-    
-          // Create the columns
-          let checkInDate = document.createElement('td')
-          let orderNumber = document.createElement('td')
-          let name = document.createElement('td')
-          let checkOutDate = document.createElement('td')
-          let actions = document.createElement('td')
-    
-          // Set the text of the columns
-          orderNumber.innerText = field.order_number
-          name.innerText = field.firstname + ' ' + field.lastname
-          checkInDate.innerText = field.start_date
-          checkOutDate.innerText = field.end_date
-          actions.innerHTML = '<span><a class="ajax-link modal-trigger" data-modal-id="modal_' + field.id + '">bewerken</a></span>'
+					header.setAttribute('data-order', newSortOrder);
+					sort_data(sortBy, newSortOrder);
+				});
+			});
+		}
 
-    
-          // Append the columns to the row
-          row.appendChild(orderNumber)
-          row.appendChild(name)
-          row.appendChild(checkInDate)
-          row.appendChild(checkOutDate)
-          row.appendChild(actions)
-    
-          // Append the row to the table
-          tableContent.appendChild(row)
-        }
-      }
-      
-    
-    })
-  </script>
+		function setupPrevButton() {
+			prevButton.addEventListener('click', function () {
+				let pageNumber = parseInt(this.getAttribute('pageNumber'))
+
+				if (pageNumber === 1) {
+					this.classList.add('disabled')
+				} else {
+					nextButton.classList.remove('disabled')
+
+					let prevPageNumber = pageNumber - 1
+
+					this.setAttribute('pageNumber', prevPageNumber)
+					nextButton.setAttribute('pageNumber', prevPageNumber)
+
+					request_data(prevPageNumber)
+				}
+			})
+		}
+
+		function setupNextButton() {
+			nextButton.addEventListener('click', function () {
+				let pageNumber = parseInt(this.getAttribute('pageNumber'))
+
+				nextButton.classList.remove('disabled')
+
+				let nextPageNumber = pageNumber + 1
+
+				this.setAttribute('pageNumber', nextPageNumber)
+				prevButton.setAttribute('pageNumber', nextPageNumber)
+
+				request_data(nextPageNumber)
+			})
+		}
+
+		//Function to request data of the modal
+		function requestModalData(modalId) {
+			const url = '/create_modal/';
+			const data = {
+				'csrfmiddlewaretoken': csrfToken,
+				'modal_id': modalId
+			};
+		
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrfToken
+				},
+				body: JSON.stringify(data)
+			})
+			.then(response => response.json())
+			.then(data => fill_modal(data))
+			.catch(error => console.error('Error:', error));
+		}
+		
+		function request_data(pageNumber) {
+			const url = window.location.href;
+			const data = {
+				'csrfmiddlewaretoken': csrfToken,
+				'page': pageNumber
+			};
+		
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrfToken
+				},
+				body: JSON.stringify(data)
+			})
+			.then(response => response.json())
+			.then(data => fill_table(data))
+			.catch(error => console.error('Error:', error));
+		}
+		
+
+		function sort_data(sortBy, sortOrder) {
+			const url = '/sort_bookings/';
+			const data = {
+				'csrfmiddlewaretoken': csrfToken,
+				'sort_by': sortBy,
+				'order': sortOrder
+			};
+		
+			fetch(url, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'X-CSRFToken': csrfToken
+				},
+				body: JSON.stringify(data)
+			})
+			.then(response => response.json())
+			.then(data => fill_table(data))
+			.catch(error => console.error('Error:', error));
+		}
+		
+		function fill_table(datas) {
+			// Clear the table
+			tableContent.innerHTML = ''
+		
+			// Loop through the data
+			for (const field of datas) {
+				// Create a new row
+				let row = document.createElement('tr')
+			
+				// Create the columns
+				let checkInDate = document.createElement('td')
+				let orderNumber = document.createElement('td')
+				let name = document.createElement('td')
+				let checkOutDate = document.createElement('td')
+			
+				// Set the text of the columns
+				orderNumber.innerText = field.order_number
+				name.innerText = field.firstname + ' ' + field.lastname
+				checkInDate.innerText = field.start_date
+				checkOutDate.innerText = field.end_date
+			
+				// Append the columns to the row
+				row.appendChild(orderNumber)
+				row.appendChild(name)
+				row.appendChild(checkInDate)
+				row.appendChild(checkOutDate)
+			
+				addRowClickEvents(row, field);
+
+				// Append the row to the table
+				tableContent.appendChild(row)
+			}
+		}
+
+		function addRowClickEvents(row, field) {
+			row.addEventListener('click', function () {
+				openModal(field);
+			});
+		}
+	  
+		function openModal(booking) {
+			const modalContent = document.getElementById('modal-content');
+			modalContent.innerHTML = `
+			<div id='contact-informatie'>
+				<h1>Contact Informatie</h1>
+				<p>id: ${booking.id}</p>
+				<p>Naam: ${booking.firstname} ${booking.lastname}</p>
+				<p>Email: ${booking.email}</p>
+				<p>Telefoonnummer: ${booking.phone_number}</p>
+			</div>
+			<div id='booking-informatie'>
+				<h1>Boeking Informatie</h1>
+				<p>CheckIn datum: ${booking.start_date}</p>
+				<p>CheckOut datum: ${booking.end_date}</p>
+				<p>Order nummer: ${booking.order_number}</p>
+				<p>Opmerkingen: ${booking.comments}</p>
+			</div>
+			`;
+	
+			const modal = document.getElementById('myModal');
+			modal.style.display = 'block';
+		}
+
+		//close modal when clicking anywhere outside modal
+		function modelCloseEvent() {
+			const modalClose = document.querySelector('.close');
+			modalClose.addEventListener('click', function () {
+				closeModal();
+			});
+
+			window.onclick = function (event) {
+				const modal = document.getElementById('myModal');
+				if (event.target == modal) {
+					modal.style.display = 'none';
+				}
+			};
+		}
+
+		function closeModal() {
+			const modal = document.getElementById('myModal');
+			modal.style.display = 'none';
+		}
+	</script>
 </html>

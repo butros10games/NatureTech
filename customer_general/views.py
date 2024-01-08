@@ -132,8 +132,8 @@ def pir_state_display(request):
 
     return render(request, 'boer/customer_general/pir_state_display.html', context=context)
 
-def ble_logger(request, ip_adress, BLE_rssi, BLE_adress, BLE_name, BLE_count):
-    BtMACAdress.objects.create(ip_adress=ip_adress, BLE_rssi=BLE_rssi, BLE_adress=BLE_adress, BLE_name=BLE_name, BLE_count=BLE_count)
+def ble_logger(request, ip_adress, hostname, BLE_rssi, BLE_adress, BLE_name, BLE_count):
+    BtMACAdress.objects.create(ip_adress=ip_adress, hostname=hostname,BLE_rssi=BLE_rssi, BLE_adress=BLE_adress, BLE_name=BLE_name, BLE_count=BLE_count)
     
     return JsonResponse({'status': 'Ok'})
 

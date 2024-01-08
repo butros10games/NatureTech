@@ -23,6 +23,7 @@ while True:
     try:
         # 10.0 sec scanning
         ble_list = Scanner().scan(10.0)
+        BLE_count = len(ble_list)  # count of scanned BLE addresses
         for dev in ble_list:
             name = str(dev.rawData).split('\\t')
             if len(name) > 1:
@@ -34,11 +35,13 @@ while True:
                 print(f"rssi: {dev.rssi} ; mac: {dev.addr} ; Name: {name}")
 
             # Send data to the server
-            server_url = f"https://boer.butrosgroot.com/api/ble/{local_ip}/{dev.rssi}/{dev.addr}/{name}"
+            server_url = f"https://boer.butrosgroot.com/api/ble/{local_ip}/{dev.rssi}/{dev.addr}/{name}/{BLE_count}"
             # server_url = f"https://boer.butrosgroot.com/api/ble/{local_ip}/{dev.addr}"  
 
             response = requests.get(server_url)
             print(f"Server Response: {response.text}")
+            print(f"Number of scanned BLE addresses: {BLE_count}")  # print the count
+
 
     except Exception as e:
         print(f"Error occurred: {e}")

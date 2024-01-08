@@ -97,7 +97,7 @@ def booking_form(request):
             ## reload booking out of the database
             booking.refresh_from_db()
             
-            total_price = calc_full_price(booking)
+            total_price = calc_full_price(booking.start_date, booking.end_date, plek_type_object)
 
             context = {
                 "first_name": first_name,
@@ -118,7 +118,7 @@ def booking_form(request):
             message = EmailMultiAlternatives(
                 subject = 'Bevestiging voor uw reservering op Camping de Groene Weide', 
                 body = plain_message,
-                from_email = None ,
+                from_email = [settings.DEFAULT_FROM_EMAIL] ,
                 to= {mail}
             )
 

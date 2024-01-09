@@ -16,7 +16,9 @@
         {% for ble in BLE_adresses %}
             <div style="display: flex; flex-direction: row;">
                 {{ ble.ip_adress }} -
-                {{ ble.date }}, 
+                {{ ble.hostname }} -
+                {{ ble.date }} - 
+                Count: {{ ble.BLE_count }} - 
                 RSSI: {{ ble.BLE_rssi }}, 
                 MAC: {{ ble.BLE_adress }}, 
                 Name: {{ ble.BLE_name }}

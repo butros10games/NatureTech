@@ -14,10 +14,12 @@ def admin_index(request):
     return render(request, 'boer-admin/admin_general/admin_index.html')
 
 def booking_context(request):
+    # respond to the JS fetch request
     if request.method == 'POST':
-        page_number = request.POST.get('page', 1)
+        data = json.loads(request.body.decode('utf-8'))
         bookings = Booking.objects.prefetch_related('customer', 'customer__user').order_by('start_date').all()
         paginator = Paginator(bookings, 10)
+        page_number = data.get('page', 1)
 
         page_obj_dict = []
         for booking in paginator.page(page_number).object_list:
@@ -44,9 +46,10 @@ def booking_context(request):
 
 def sort_bookings(request):
     if request.method == 'POST':
-        page_number = request.POST.get('page', 1)
-        sort_by = request.POST.get('sort_by') 
-        order = request.POST.get('order', 'asc')
+        data = json.loads(request.body.decode('utf-8'))
+        page_number = data.get('page', 1)
+        sort_by = data.get('sort_by') 
+        order = data.get('order', 'asc')
 
         # Retrieve and sort the bookings
         bookings = Booking.objects.prefetch_related('customer', 'customer__user').all()

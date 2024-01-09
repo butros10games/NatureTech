@@ -8,11 +8,12 @@
     <title>Reservation Confirmation</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Inter', sans-serif;
             background-color: #ffffff;
             color: #004d00;
             margin: 0;
-            padding: 20px;
+            padding: 0px;
+            text-align: center
         }
 
         p {
@@ -20,21 +21,37 @@
             text-color: black;
         }
 
-        div {
-            background-color: #ffffff;
-            padding: 10px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        .start{
+            width: 100%;
+            height: 64px;
+            background-color: #355E3B;
+            text-align: left;
+            font-size: 20px;
+            color: white;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
         }
 
-        h1 {
+        img{
+            width: 56px;
+            height: 100%; 
+            object-fit: contain;
+        }
+
+        h2 {
             color: #355E3B;
+            margin-bottom: 30px;
+            margin-top: 30px;
+            font-size: 50px;
         }
 
         ul {
             list-style-type: none;
             padding: 0;
-            color: ffffff;
+            font-size: 20px;
+            
         }
 
         li {
@@ -46,43 +63,139 @@
             height: auto;
             margin-bottom: 10px;
         }
+
+        .groteTekst{
+            font-size: 20px;
+            width: 100%;
+            height: 150px;
+            background-color: #355E3B;
+            color: white;
+        }
+
+        .achtergrondeinde{
+            font-size: 20px;
+            width: 100%;
+            height: 350px;
+            background-color: #355E3B;
+            color: white;
+            margin-top: 30px;
+        }
+
+        .contactachtergrond{
+            width: 100%;
+            height: 130px;
+            background-color: #355E3B;
+            color: white;
+            font-family: 'Inter';
+        }
+
+        .contact{
+            width: 100%;
+            height: 100px;
+            background-color: #355E3B;
+            color: white;
+            font-family: 'Inter';
+            margin-bottom: 30px;
+        }
+
+        .service{
+            font-size: 28px;
+            margin-bottom: 30px;
+        }
+
+        .gegevens{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 100%%;
+            margin-right: 20px;
+        }
+
+        .icon{
+            height: 50px;
+            width: 50px;
+        }
+
+        .logo{
+            width: 56px;
+            height: 100%;
+            object-fit: contain;
+            
+        }
+
+        .camping-title {
+            margin-left: 10px; 
+            text-align: center;
+        }
+
+        .title-container {
+            flex-grow: 1;
+        }
+
+        .einde{
+            margin-top: 150px;
+        }
     </style>
 </head>
 
 <body>
-    <h1>Reserveringsbevestiging</h1>
-
+    <div class= "start">
+    <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="Icon">
+    <div class="title-container">
+    <h1 class = "camping-title"> De Groene Weide</h1>
+    </div>
+    </div>
+    <h2>Reserveringsbevestiging</h2>
+    <div class ="grotetekst">
     <p>Geachte {{first_name}} {{last_name}},</p>
 
-    <p>Hartelijk dank voor uw reservering bij camping de Groene weide. We zijn verheugd u als onze gewaardeerde gast te mogen verwelkomen op onze sfeervolle camping.</p>
+    <p> Hartelijke dank voor uw reservering bij camping De Groene weide. 
+        We zijn verheugd u als onze gewaardeerde gast te mogen verwelkomen op onze sfeervolle camping.
+        
+    </p>
 
     <p>Hier zijn de details van uw boeking:</p>
-
+    </div>
     <div>
         <ul>
-            <li><strong>Naam gast(en):</strong> {{first_name}} {{last_name}}</li>
+            <li><strong>Naam gast:</strong> {{first_name}} {{last_name}}</li>
             <li><strong>Aankomstdatum:</strong> {{date_of_arrival}}</li>
             <li><strong>Vertrekdatum:</strong> {{date_of_departure}}</li>
             <li><strong>Type accommodatie:</strong> {{Accomodation}}</li>
             <li><strong>Reserveringsnummer:</strong> {{order_number}}</li>
+            <li><strong>TotaalBedrag:</strong> {{price}}</li>
         </ul>
     </div>
 
-    <p>Gelieve te controleren of alle gegevens correct zijn. Indien er wijzigingen of onjuistheden zijn, neem dan zo spoedig mogelijk contact met ons op via (850) 2 18 111/999 of butrosgroot@gmail.com.
-    Inchecken: U kunt inchecken op de dag van aankomst tussen 14:00 en 17:00. Mocht u later arriveren, laat het ons dan weten. Uitchecken: Op de dag van vertrek verzoeken wij u vriendelijk om uit te checken voor 12:00.
-    Betaalinformatie: Het totale bedrag van uw verblijf bedraagt {{price}}. Betaling kan contant bij aankomst of via {{method_of_paying}} worden voldaan.</p>
-    <p>Wij kijken ernaar uit om u een aangenaam verblijf te bieden op Camping de Groene Weide. Mocht u nog vragen of speciale verzoeken hebben, aarzel dan niet om contact met ons op te nemen.</p>
+    <div class = "achtergrondeinde">
+            <br>
+    <p> Neem bij wijzigingen contact op via (850) 2 18 111/999 of butrosgroot@gmail.com.
 
-    <p>Met vriendelijke groet,</p>
-    <img src="{% static 'img/boer/overlays/icon.svg' %}" alt="Camping de Groene Weide Logo" style="max-width: 200px; margin-bottom: 10px;">
+        Inchecken: 14:00-17:00, laat ons weten bij late aankomst. 
+       Uitchecken: Voor 12:00 op vertrekdag. 
+       Betaling: Contant bij aankomst of  digitale-betaling op dezelfde dag. 
+    
+       </p>
+    <p class = "einde">Vragen? Neem contact op. We kijken uit naar uw verblijf bij Camping de Groene Weide</p>
 
-    <div>
-        <ul>
-            <li><strong>Adres:</strong> Vijverlaan 1, 3737 RE Groenekan</li>
-            <li><strong>Telefoon:</strong> (850) 2 18 111/999</li>
-            <li><strong>Email:</strong> butrosgroot@gmail.com</li>
-            <li><strong>Openingstijden:</strong> 7:00 tot 22:00 (ma-zo)</li>
-        </ul>
+</div>
+
+    <div class= "ContactAchtergrond">
+        <div class = "Contact">
+        <div><p  class = "service">Service & Contact</P>
+            <div class = "gegevens">
+            <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="logo">
+            <img class= "icon" src="{% static 'img/boer/mail/clock.svg'%}">
+            <p class = "adres">Adres:<br> Vijverlaan 1, 3737 RE Groenekan</P> 
+            <img class= "icon" src="{% static 'img/boer/mail/phone.svg'%}">
+            <p class = "telefoon">Telefoon: <br> (850) 2 18 111/999</P>
+            <img class= "icon" src="{% static 'img/boer/mail/map-pin-filled.svg'%}">
+            <p class= "openingstijden">Openingstijden: <br> 7:00 tot 22:00 (ma-zo)</P> 
+            </div>
+        </div>
+        </div>
+    </div>
+
     </div>
 </body>
 

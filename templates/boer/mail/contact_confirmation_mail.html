@@ -1,18 +1,58 @@
-<DOCTYPE html>
+<!DOCTYPE html>
     <html>
-
-    <div>
-        <p> Beste heer/mevrouw {{last_name}},</p>
+    <body style= "font-family: 'Inter', sans-serif; margin:0;">
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+        <link rel="stylesheet" href="{% static 'css/boer/mail/contact_confirmation_mail.css' %}">
+        <div class= "Groene Box" style= "width: 100%;
+        height: 64px;
+        background-color: #355E3B;
+        text-align: center;
+        font-size: 20px;
+        color: white;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;    
+        justify-content: space-between;
+        padding: 0 20px;" >
+        <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="Icon" style="width: 56px; height: 100%; object-fit: contain; align-content :start; display:flex; left: 0px">
+        <div class= "Titel" style="display:flex;"> 
+            <h1> Camping de Groene Weide </h1>
+        </div>
+        <div></div>
+    </div>
+            <div class= "h2" style = "color: #355E3B;; text-align: center; font-size: 30px; margin-bottom: 10px;" > 
+            <h2> Contact Bevestiging </h2>  
+            </div>
+    
+        <div class = "AchtergrondIntro" style = " width: 100%; height: 280px; background-color: #355E3B; color: white; font-family: 'Inter'; margin-bottom: 30px; text-align: center;">
+        <p class= "Intro" style= > Beste Heer/Mevrouw {{last_name}},</p>
         
-        <p> Wij hebben uw vraag ontvangen en geven hier zo spoedig mogelijk antwoord op.</p>
+        <p> 
+            Hartelijk dank voor uw bericht. Wij hebben uw e-mail ontvangen en waarderen het dat u contact met ons heeft opgenomen.
+            Ons team zal uw bericht zo spoedig mogelijk bekijken en indien nodig zo snel mogelijk reageren. Houd er rekening mee dat onze reactietijd afhankelijk is van de aard van uw verzoek en de hoeveelheid ontvangen berichten.
+        </p>
+        <br>
+        <p>
+            Indien uw vraag dringend is, raden wij u aan om telefonisch contact met ons op te nemen
+            
+            </p>
+        </div>
+    </div>
+            <div class= "ContactAchtergrond" style= "width: 100%; height: 130px; background-color: #355E3B; color: white; font-family: 'Inter';">
+            <div class = "Contact" style = "width: 100%; height: 100px; background-color: #355E3B; color: white; font-family: 'Inter'; margin-bottom: 30px; ">
+            <div><p  class = "service" style = "text-align: center; font-size: 28px;">Service & Contact</P>
+                <div class = "gegevens" style="display: flex;
+                justify-content: space-evenly;
+                align-items: center;">
+                <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="Icon" style="width: 56px; height: 100%; object-fit: contain;">
+            <p class = "adres" style= "align-items: center;">Adres:<br> Vijverlaan 1, 3737 RE Groenekan</P> <img src="{% static 'img/boer/mail/clock.svg'%}" style = "height: 50px; width: 50px;">
+            <p class = "telefoon">Telefoon: <br> (850) 2 18 111/999</P><img src="{% static 'img/boer/mail/phone.svg'%}" style = "height: 50px; width: 50px;">
+            <p class= "openingstijden">Openingstijden: <br> 7:00 tot 22:00 (ma-zo)</P> <img src="{% static 'img/boer/mail/map-pin-filled.svg'%}" style = "height: 50px; width: 50px;"></div>
+            </div>
+            </div>
+        </div>
 
-        <p>Met vriendelijke groet,</P>
-
-            <div><p>Camping de Groene Weide</P>
-            <p>Adres: Vijverlaan 1, 3737 RE Groenekan</P>
-            <p>Telefoon: (850) 2 18 111/999</P>
-            <p>Email: butrosgroot@gmail.com</P>
-            <p>Openingstijden: 7:00 tot 22:00 (ma-zo)</P></div>
-            <html>
+    </body>
+    </html>
 
 

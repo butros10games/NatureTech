@@ -118,7 +118,7 @@ def booking_form(request):
             message = EmailMultiAlternatives(
                 subject = 'Bevestiging voor uw reservering op Camping de Groene Weide', 
                 body = plain_message,
-                from_email = [settings.DEFAULT_FROM_EMAIL] ,
+                from_email = settings.DEFAULT_FROM_EMAIL ,
                 to= {mail}
             )
 

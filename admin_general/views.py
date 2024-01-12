@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.db.models import F
+from customer_general.models import BtIpAdress, BtnState, pirState, BtMACAdress
 import json
 
 
@@ -144,4 +145,34 @@ def create_modal(request):
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-        
+
+def usage_data(request):
+    bt_ip_data = BtIpAdress.objects.values('ip_adress')
+    btn_state_data = BtnState.objects.values('ip_adress', 'state')
+    pir_state_data = pirState.objects.values('ip_adress', 'PIR_state')
+    bt_mac_data = BtMACAdress.objects.values('ip_adress', 'hostname', 'BLE_count')
+
+    combined_data = {}
+
+    for data in bt_ip_data:
+        ip_adress = data['ip_adress']
+        if ip_adress not in combined_data:
+            combined_data[ip_adress] = {'ip_adress': ip_adress}
+
+    for data in btn_state_data:
+        ip_adress = data['ip_adress']
+        if ip_adress in combined_data:
+            combined_data[ip_adress].update(data)
+
+    for data in pir_state_data:
+        ip_adress = data['ip_adress']
+        if ip_adress in combined_data:
+            combined_data[ip_adress].update(data)
+
+    for data in bt_mac_data:
+        ip_adress = data['ip_adress']
+        if ip_adress in combined_data:
+            combined_data[ip_adress].update(data)
+
+    return render(request, 'boer-admin/admin_general/usage_data.html', {'data': list(combined_data.values())})
+    # return JsonResponse(list(combined_data.values()), safe=False)

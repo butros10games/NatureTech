@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Usage Data</title>
+    <style>
+        /* Add your CSS styles here */
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>Local IP</th>
+                <th>Hostname</th>
+                <th>PIR State</th>
+                <th>BLE Count</th>
+                <th>BTN State</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in data %}
+                <tr>
+                    <td>{{ item.ip_adress }}</td>
+                    <td>{{ item.hostname }}</td>
+                    <td>{{ item.PIR_state }}</td>
+                    <td>{{ item.BLE_count }}</td>
+                    <td>{{ item.state }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html> 

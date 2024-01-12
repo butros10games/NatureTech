@@ -40,7 +40,7 @@
       </table>
       <div class="pagination">
         <span class="step-links"
-          ><a id="prev" pageNumber="1" class="ajax-link">Vorige</a></span
+          ><a id="prev" pageNumber="1" class="ajax-link">&larr;</a></span
         >
 
         <span class="current"
@@ -48,13 +48,17 @@
         >
 
         <span class="step-links"
-          ><a id="next" pageNumber="1" class="ajax-link">Volgende</a></span
+          ><a id="next" pageNumber="1" class="ajax-link">&rarr;</a></span
         >
       </div>
       <div id="myModal" class="modal">
         <div class="modal-content">
           <div class="modal-header">
-			<span class="close">&times;</span>
+            <div class="modal-header-left"></div>
+            <div class="modal-header-right">
+              <span class="edit">&#x2713;</span>
+              <span class="close">&#x2715;</span>
+            </div>
           </div>
           <div id="modal-content"></div>
         </div>
@@ -241,37 +245,43 @@
     function openModal(booking) {
       const modalContent = document.getElementById("modal-content");
       modalContent.innerHTML = `
-	  <div class="modal-header">
-		<h2>Boeking ${booking.id}</h2>
-		</div>
-		<div class="modal-body">
-		<div class="modal-body-left">
-			<h2>Contactgegevens</h2>
-			<p>Naam: ${booking.firstname} ${booking.lastname}</p>
-			<p>Email: ${booking.email}</p>
-			<p>Telefoonnummer: ${booking.phone_number}</p>
-			<h2>Adres</h2>
-			<p>Straat en huisnummer: ${booking.street} ${booking.house_number}</p>
-			<p>Postcode: ${booking.postal_code}</p>
-			<p>Stad: ${booking.city}</p>
-			</div>
-		<div class="modal-body-right">
-			<h2> Boeking details</h2>
-			<p>Checkin datum: ${booking.start_date}</p>
-			<p>Checkout datum: ${booking.end_date}</p>
-			<p>Aantal volwassenen: ${booking.age_above}</p>
-			<p>Aantal kinderen: ${booking.age_below}</p>
-			<p>Plek: ${booking.Campingspot}</p>
-			<p>Boeking gemaakt op: ${booking.time_of_booking}</p>
-			</div>
-		</div>
-		<div class="modal-notes">
-			<h2>Opmerkingen van klant</h2>
-			<p>${booking.notes}</p>
-			<h2>Opmerkingen van personeel</h2>
-			<p>${booking.notes_staff}</p>
-			</div>
-			`;
+          <div class="modal-body">
+            <div class="modal-body-left">
+                <h2>Contactgegevens</h2>
+                <form>
+                <span><label for="Name">Naam:</label> <input type="text" name="Name" value="${booking.firstname} ${booking.lastname}"></span>
+                <span><label for="Email">Email:</label> <input type="text" name="Email" value="${booking.email}"></span>
+                <span><label for="Phonenumber">Telefoonnummer:</label> <input type="text" name="Phonenumber" value="${booking.phone_number}"></span>
+                <h2>Adres</h2>
+                <span><label for="Adress">Straat en huisnummer:</label> <input type="text" name="Adress" value="${booking.street} ${booking.house_number}"></span>
+                <span><label for="Postalcode">Postcode:</label> <input type="text" name="Postalcode" value="${booking.postal_code}"></span>
+                <span><label for="City">Stad:</label> <input type="text" name="City" value="${booking.city}"></span>
+                </form>
+                </div>
+            <div class="modal-body-right">
+                <h2> Boeking details</h2>
+                <form>
+                <span><label for="Checkin">Checkin datum:</label> <input type="date" name="Checkin" value="${booking.start_date}"></span>
+                <span><label for="Checkout">Checkout datum:</label> <input type="date" name="Checkout" value="${booking.end_date}"></span>
+                <span><label for="Adults">Aantal volwassenen:</label> <input type="number" name="Adults" value="${booking.age_above}"></span>
+                <span><label for="Children">Aantal kinderen:</label> <input type="number" name="Children" value="${booking.age_below}"></span>
+                <span><label for="Spot">Plek:</label> <input type="text" name="Spot" value="${booking.Campingspot}"></span>
+                </form>
+                </div>
+            </div>
+            <div class="modal-notes">
+    <h2>Opmerkingen</h2>
+                <form>
+                <span><label for="Notes">Opmerkingen van klant:</label> <input type="textarea" name="Notes" value="${booking.notes}"></span>
+                <span><label for="Notes">Opmerkingen van personeel:</label> <input type="textarea" name="Notes" value="${booking.admin_notes}"></span>
+                </form>
+            </div>
+    			`;
+
+      const modalHeaderContent = document.querySelector(".modal-header-left");
+      modalHeaderContent.innerHTML = `
+          <h2>Boeking ${booking.id}</h2>
+          `;
 
       const modal = document.getElementById("myModal");
       modal.style.display = "block";
@@ -295,6 +305,52 @@
     function closeModal() {
       const modal = document.getElementById("myModal");
       modal.style.display = "none";
+    }
+
+    function modalSaveEvent() {
+      const modalSave = document.querySelector(".edit");
+      modalSave.addEventListener("click", function () {
+        const modalData = {
+          firstname: document.querySelector("input[name='Name']").value,
+          lastname: document.querySelector("input[name='Name']").value,
+          email: document.querySelector("input[name='Email']").value,
+          phone_number: document.querySelector("input[name='Phonenumber']")
+            .value,
+          street: document.querySelector("input[name='Adress']").value,
+          house_number: document.querySelector("input[name='Adress']").value,
+          postal_code: document.querySelector("input[name='Postalcode']").value,
+          city: document.querySelector("input[name='City']").value,
+          start_date: document.querySelector("input[name='Checkin']").value,
+          end_date: document.querySelector("input[name='Checkout']").value,
+          age_above: document.querySelector("input[name='Adults']").value,
+          age_below: document.querySelector("input[name='Children']").value,
+          Campingspot: document.querySelector("input[name='Spot']").value,
+          notes: document.querySelector("input[name='Notes']").value,
+          admin_notes: document.querySelector("input[name='Notes']").value,
+        };
+        saveModalData(modalData);
+      });
+    }
+
+    //Send data to backend to save
+    function saveModalData(modalData) {
+      const url = "/save_modal/";
+      const data = {
+        csrfmiddlewaretoken: csrfToken,
+        modal_data: modalData,
+      };
+
+      fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify(data),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error("Error:", error));
     }
   </script>
 </html>

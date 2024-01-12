@@ -174,5 +174,7 @@ def usage_data(request):
         if ip_adress in combined_data:
             combined_data[ip_adress].update(data)
 
-    return render(request, 'boer-admin/admin_general/usage_data.html', {'data': list(combined_data.values())})
+    sorted_data = sorted(combined_data.values(), key=lambda x: x['ip_adress'])
+
+    return render(request, 'boer-admin/admin_general/usage_data.html', {'data': sorted_data})
     # return JsonResponse(list(combined_data.values()), safe=False)

@@ -3,112 +3,24 @@
 <html>
     <head>
         <title>Contact Confirmation</title>
-        <style>
-            body {
-                font-family: 'Inter', sans-serif;
-                margin: 0;
-            }
-
-            .GroeneBox {
-                width: 100%;
-                height: 64px;
-                background-color: #355E3B;
-                text-align: center;
-                font-size: 20px;
-                color: white;
-                margin-bottom: 10px;
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 0 20px;
-            }
-
-            .GroeneBox img {
-                width: 56px;
-                height: 100%;
-                object-fit: contain;
-                align-content: start;
-                display: flex;
-                left: 0px;
-            }
-
-            .Titel {
-                display: flex;
-            }
-
-            .h2 {
-                color: #355E3B;
-                text-align: center;
-                font-size: 30px;
-                margin-bottom: 10px;
-            }
-
-            .AchtergrondIntro {
-                width: 100%;
-                height: 280px;
-                background-color: #355E3B;
-                color: white;
-                font-family: 'Inter';
-                margin-bottom: 30px;
-                text-align: center;
-            }
-
-            .Intro {
-                margin: 0;
-            }
-
-            .ContactAchtergrond {
-                width: 100%;
-                height: 130px;
-                background-color: #355E3B;
-                color: white;
-                font-family: 'Inter';
-            }
-
-            .Contact {
-                width: 100%;
-                height: 100px;
-                background-color: #355E3B;
-                color: white;
-                font-family: 'Inter';
-                margin-bottom: 30px;
-            }
-
-            .service {
-                text-align: center;
-                font-size: 28px;
-                margin-bottom: 30px;
-            }
-
-            .gegevens {
-                display: flex;
-                justify-content: space-evenly;
-                align-items: center;
-            }
-
-            .gegevens img {
-                width: 56px;
-                height: 100%;
-                object-fit: contain;
-            }
-        </style>
+        
     </head>
 
-    <body>
-        <div class="GroeneBox">
-            <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="Icon">
-            <div class="Titel">
+    <body style="font-family: 'Inter', sans-serif;margin: 0;">
+        <div class="GroeneBox" style="width: 100%;height: 80px;background-color: #355E3B;text-align: center;font-size: 20px;color: white;margin-bottom: 10px;display: flex;align-items: center;justify-content: space-between;padding: 0 20px;">
+            <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="Icon" style="width: 56px;height: 100%;object-fit: contain;align-content: start;display: flex;left: 0px;">
+            <div class="Titel" style="display: flex;">
                 <h1> Camping de Groene Weide </h1>
             </div>
             <div></div>
         </div>
 
-        <div class="h2">
+        <div class="h2" style="color: #355E3B;text-align: center;font-size: 30px;margin-bottom: 10px;">
             <h2> Contact Bevestiging </h2>
         </div>
 
-        <div class="AchtergrondIntro">
-            <p class="Intro"> Beste Heer/Mevrouw {{last_name}},</p>
+        <div class="AchtergrondIntro" style="width: 100%;height: 280px;background-color: #355E3B;color: white;font-family: 'Inter';margin-bottom: 30px;text-align: center;">
+            <p class="Intro" style="margin: 0;"> Beste Heer/Mevrouw {{last_name}},</p>
             <p> Hartelijk dank voor uw bericht. Wij hebben uw e-mail ontvangen en waarderen het dat u contact met ons
                 heeft opgenomen. Ons team zal uw bericht zo spoedig mogelijk bekijken en indien nodig zo snel mogelijk
                 reageren. Houd er rekening mee dat onze reactietijd afhankelijk is van de aard van uw verzoek en de
@@ -117,18 +29,18 @@
             <p> Indien uw vraag dringend is, raden wij u aan om telefonisch contact met ons op te nemen </p>
         </div>
 
-        <div class="ContactAchtergrond">
-            <div class="Contact">
+        <div class="ContactAchtergrond" style="width: 100%;height: 130px;background-color: #355E3B;color: white;font-family: 'Inter';">
+            <div class="Contact" style="width: 100%;height: 100px;background-color: #355E3B;color: white;font-family: 'Inter';margin-bottom: 30px;">
                 <div>
-                    <p class="service">Service & Contact</p>
-                    <div class="gegevens">
-                        <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="Icon">
+                    <p class="service" style="text-align: center;font-size: 28px;margin-bottom: 30px;">Service & Contact</p>
+                    <div class="gegevens" style="display: flex;justify-content: space-evenly;align-items: center;">
+                        <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="Icon" style="width: 56px;height: 100%;object-fit: contain;">
                         <p class="adres">Adres:<br> Vijverlaan 1, 3737 RE Groenekan</p>
-                        <img src="{% static 'img/boer/mail/clock.svg'%}" style="height: 50px; width: 50px;">
+                        <img src="{% static 'img/boer/mail/clock.svg'%}" style="height: 50px;width: 50px;object-fit: contain;">
                         <p class="telefoon">Telefoon: <br> (850) 2 18 111/999</p>
-                        <img src="{% static 'img/boer/mail/phone.svg'%}" style="height: 50px; width: 50px;">
+                        <img src="{% static 'img/boer/mail/phone.svg'%}" style="height: 50px;width: 50px;object-fit: contain;">
                         <p class="openingstijden">Openingstijden: <br> 7:00 tot 22:00 (ma-zo)</p>
-                        <img src="{% static 'img/boer/mail/map-pin-filled.svg'%}" style="height: 50px; width: 50px;">
+                        <img src="{% static 'img/boer/mail/map-pin-filled.svg'%}" style="height: 50px;width: 50px;object-fit: contain;">
                     </div>
                 </div>
             </div>

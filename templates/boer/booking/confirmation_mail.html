@@ -6,197 +6,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservation Confirmation</title>
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
-            color: #004d00;
-            margin: 0;
-            padding: 0px;
-            text-align: center
-        }
-
-        p {
-            margin-bottom: 10px;
-            text-color: black;
-        }
-
-        .start{
-            width: 100%;
-            height: 64px;
-            background-color: #355E3B;
-            text-align: left;
-            font-size: 20px;
-            color: white;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-        }
-
-        img{
-            width: 56px;
-            height: 100%; 
-            object-fit: contain;
-        }
-
-        h2 {
-            color: #355E3B;
-            margin-bottom: 30px;
-            margin-top: 30px;
-            font-size: 50px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-            font-size: 20px;
-            
-        }
-
-        li {
-            margin-bottom: 8px;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-bottom: 10px;
-        }
-
-        .groteTekst{
-            font-size: 20px;
-            width: 100%;
-            height: 150px;
-            background-color: #355E3B;
-            color: white;
-        }
-
-        .achtergrondeinde{
-            font-size: 20px;
-            width: 100%;
-            height: 350px;
-            background-color: #355E3B;
-            color: white;
-            margin-top: 30px;
-        }
-
-        .contactachtergrond{
-            width: 100%;
-            height: 130px;
-            background-color: #355E3B;
-            color: white;
-            font-family: 'Inter';
-        }
-
-        .contact{
-            width: 100%;
-            height: 100px;
-            background-color: #355E3B;
-            color: white;
-            font-family: 'Inter';
-            margin-bottom: 30px;
-        }
-
-        .service{
-            font-size: 28px;
-            margin-bottom: 30px;
-        }
-
-        .gegevens{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            max-width: 100%%;
-            margin-right: 20px;
-        }
-
-        .icon{
-            height: 50px;
-            width: 50px;
-        }
-
-        .logo{
-            width: 56px;
-            height: 100%;
-            object-fit: contain;
-            
-        }
-
-        .camping-title {
-            margin-left: 10px; 
-            text-align: center;
-        }
-
-        .title-container {
-            flex-grow: 1;
-        }
-
-        .einde{
-            margin-top: 150px;
-        }
-    </style>
+    
 </head>
 
-<body>
-    <div class= "start">
-    <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="Icon">
-    <div class="title-container">
-    <h1 class = "camping-title"> De Groene Weide</h1>
+<body style="font-family: 'Inter', sans-serif;background-color: #ffffff;color: #004d00;margin: 0;padding: 0px;text-align: center;">
+    <div class="start" style="width: 100%;height: 64px;background-color: #355E3B;text-align: left;font-size: 20px;color: white;margin-bottom: 10px;display: flex;align-items: center;padding: 0 20px;">
+    <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="Icon" style="width: 56px;height: auto;object-fit: contain;max-width: 100%;margin-bottom: 10px;">
+    <div class="title-container" style="flex-grow: 1;">
+    <h1 class="camping-title" style="margin-left: 10px;text-align: center;"> De Groene Weide</h1>
     </div>
     </div>
-    <h2>Reserveringsbevestiging</h2>
-    <div class ="grotetekst">
-    <p>Geachte {{first_name}} {{last_name}},</p>
+    <h2 style="color: #355E3B;margin-bottom: 30px;margin-top: 30px;font-size: 50px;">Reserveringsbevestiging</h2>
+    <div class="grotetekst">
+    <p style="margin-bottom: 10px;text-color: black;">Geachte {{first_name}} {{last_name}},</p>
 
-    <p> Hartelijke dank voor uw reservering bij camping De Groene weide. 
+    <p style="margin-bottom: 10px;text-color: black;"> Hartelijke dank voor uw reservering bij camping De Groene weide. 
         We zijn verheugd u als onze gewaardeerde gast te mogen verwelkomen op onze sfeervolle camping.
         
     </p>
 
-    <p>Hier zijn de details van uw boeking:</p>
+    <p style="margin-bottom: 10px;text-color: black;">Hier zijn de details van uw boeking:</p>
     </div>
     <div>
-        <ul>
-            <li><strong>Naam gast:</strong> {{first_name}} {{last_name}}</li>
-            <li><strong>Aankomstdatum:</strong> {{date_of_arrival}}</li>
-            <li><strong>Vertrekdatum:</strong> {{date_of_departure}}</li>
-            <li><strong>Type accommodatie:</strong> {{Accomodation}}</li>
-            <li><strong>Reserveringsnummer:</strong> {{order_number}}</li>
-            <li><strong>TotaalBedrag:</strong> {{price}}</li>
+        <ul style="list-style-type: none;padding: 0;font-size: 20px;">
+            <li style="margin-bottom: 8px;"><strong>Naam gast:</strong> {{first_name}} {{last_name}}</li>
+            <li style="margin-bottom: 8px;"><strong>Aankomstdatum:</strong> {{date_of_arrival}}</li>
+            <li style="margin-bottom: 8px;"><strong>Vertrekdatum:</strong> {{date_of_departure}}</li>
+            <li style="margin-bottom: 8px;"><strong>Type accommodatie:</strong> {{Accomodation}}</li>
+            <li style="margin-bottom: 8px;"><strong>Reserveringsnummer:</strong> {{order_number}}</li>
+            <li style="margin-bottom: 8px;"><strong>TotaalBedrag:</strong> {{price}}</li>
         </ul>
     </div>
 
-    <div class = "achtergrondeinde">
+    <div class="achtergrondeinde" style="font-size: 20px;width: 100%;height: 350px;background-color: #355E3B;color: white;margin-top: 30px;">
             <br>
-    <p> Neem bij wijzigingen contact op via (850) 2 18 111/999 of butrosgroot@gmail.com.
+    <p style="margin-bottom: 10px;text-color: black;"> Neem bij wijzigingen contact op via (850) 2 18 111/999 of butrosgroot@gmail.com.
 
         Inchecken: 14:00-17:00, laat ons weten bij late aankomst. 
        Uitchecken: Voor 12:00 op vertrekdag. 
        Betaling: Contant bij aankomst of  digitale-betaling op dezelfde dag. 
     
        </p>
-    <p class = "einde">Vragen? Neem contact op. We kijken uit naar uw verblijf bij Camping de Groene Weide</p>
+    <p class="einde" style="margin-bottom: 10px;text-color: black;margin-top: 150px;">Vragen? Neem contact op. We kijken uit naar uw verblijf bij Camping de Groene Weide</p>
 
 </div>
 
-    <div class= "ContactAchtergrond">
-        <div class = "Contact">
-        <div><p  class = "service">Service & Contact</P>
-            <div class = "gegevens">
-            <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="logo">
-            <img class= "icon" src="{% static 'img/boer/mail/clock.svg'%}">
-            <p class = "adres">Adres:<br> Vijverlaan 1, 3737 RE Groenekan</P> 
-            <img class= "icon" src="{% static 'img/boer/mail/phone.svg'%}">
-            <p class = "telefoon">Telefoon: <br> (850) 2 18 111/999</P>
-            <img class= "icon" src="{% static 'img/boer/mail/map-pin-filled.svg'%}">
-            <p class= "openingstijden">Openingstijden: <br> 7:00 tot 22:00 (ma-zo)</P> 
+    <div class="ContactAchtergrond">
+        <div class="Contact">
+        <div><p class="service" style="margin-bottom: 30px;text-color: black;font-size: 28px;">Service & Contact</p>
+            <div class="gegevens" style="display: flex;justify-content: space-between;align-items: center;max-width: 100%%;margin-right: 20px;">
+            <img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="logo" style="width: 56px;height: auto;object-fit: contain;max-width: 100%;margin-bottom: 10px;">
+            <img class="icon" src="{% static 'img/boer/mail/clock.svg'%}" style="width: 50px;height: 50px;object-fit: contain;max-width: 100%;margin-bottom: 10px;">
+            <p class="adres" style="margin-bottom: 10px;text-color: black;">Adres:<br> Vijverlaan 1, 3737 RE Groenekan</p> 
+            <img class="icon" src="{% static 'img/boer/mail/phone.svg'%}" style="width: 50px;height: 50px;object-fit: contain;max-width: 100%;margin-bottom: 10px;">
+            <p class="telefoon" style="margin-bottom: 10px;text-color: black;">Telefoon: <br> (850) 2 18 111/999</p>
+            <img class="icon" src="{% static 'img/boer/mail/map-pin-filled.svg'%}" style="width: 50px;height: 50px;object-fit: contain;max-width: 100%;margin-bottom: 10px;">
+            <p class="openingstijden" style="margin-bottom: 10px;text-color: black;">Openingstijden: <br> 7:00 tot 22:00 (ma-zo)</p> 
             </div>
         </div>
         </div>
     </div>
 
-    </div>
+    
 </body>
 
 </html>

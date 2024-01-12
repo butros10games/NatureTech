@@ -6,6 +6,7 @@ from django.forms.models import model_to_dict
 from django.db.models import F
 from customer_general.models import BtIpAdress, BtnState, pirState, BtMACAdress
 import json
+from django.db import transaction
 
 
 def admin_index(request):
@@ -148,24 +149,44 @@ def create_modal(request):
 def save_modal(request):
     if request.method == 'POST':
         try:
-            modal_data = json.loads(request.POST.get('modal_data'))
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data in modal_data'}, status=400)
+            modal_data = json.loads(request.body.decode('utf-8')).get('modal_data')
+            if modal_data is None:
+                raise ValueError('Missing or invalid modal_data')
+        except (json.JSONDecodeError, ValueError) as e:
+            return JsonResponse({'error': f'Missing or invalid modal_data: {e}'}, status=400)
 
         booking_id = modal_data.get('id')
         if booking_id is not None:
             try:
-                booking = Booking.objects.get(id=booking_id)
+                booking = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot', ).get(id=booking_id)
             except Booking.DoesNotExist:
                 return JsonResponse({'error': 'Booking not found'}, status=404)
 
             # Update the booking data
-            
+            booking.customer.first_name = modal_data.get('first_name')
+            booking.customer.last_name = modal_data.get('last_name')
+            booking.customer.user.email = modal_data.get('email')
+            booking.customer.phone_number = modal_data.get('phone_number')
+            booking.customer.street = modal_data.get('street')
+            booking.customer.house_number = modal_data.get('house_number')
+            booking.customer.postal_code = modal_data.get('postal_code')
+            booking.customer.city = modal_data.get('city')
+            booking.start_date = modal_data.get('start_date')
+            booking.end_date = modal_data.get('end_date')
+            booking.age_above = modal_data.get('age_above')
+            booking.age_below = modal_data.get('age_below')
+            # booking.CampingSpot.plekNummer = modal_data.get('Campingspot')
             booking.checked_in = modal_data.get('checked_in')
             booking.paid = modal_data.get('paid')
-            # Update other fields...
-
-            booking.save()
+            booking.notes = modal_data.get('notes')
+            booking.admin_notes = modal_data.get('admin_notes')
+            
+            #Save the update booking data to the database (Booking, Customer, User)
+            with transaction.atomic():
+                booking.customer.user.save()
+                booking.customer.save()
+                booking.save()
+        
 
             return JsonResponse({'success': True})
         else:
@@ -173,33 +194,6 @@ def save_modal(request):
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
-def save_modal(request):
-    if request.method == 'POST':
-        try:
-            modal_data = json.loads(request.POST.get('modal_data'))
-        except json.JSONDecodeError:
-            return JsonResponse({'error': 'Invalid JSON data in modal_data'}, status=400)
-
-        booking_id = modal_data.get('id')
-        if booking_id is not None:
-            try:
-                booking = Booking.objects.get(id=booking_id)
-            except Booking.DoesNotExist:
-                return JsonResponse({'error': 'Booking not found'}, status=404)
-
-            # Update the booking data
-            
-            booking.checked_in = modal_data.get('checked_in')
-            booking.paid = modal_data.get('paid')
-            # Update other fields...
-
-            booking.save()
-
-            return JsonResponse({'success': True})
-        else:
-            return JsonResponse({'error': 'Missing booking_id in modal_data'}, status=400)
-
-    return JsonResponse({'error': 'Invalid request'}, status=400)
 
 
 def usage_data(request):

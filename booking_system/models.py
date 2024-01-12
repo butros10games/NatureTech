@@ -34,6 +34,10 @@ class Customer(models.Model):
     newsletter = models.BooleanField(default=False)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='customer')
     kenteken_auto = models.CharField(max_length=255, blank=True, null=True)
+    postal_code = models.CharField(max_length=255, blank=True, null=True)
+    street = models.CharField(max_length=255, blank=True, null=True)
+    house_number = models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=255, blank=True, null=True)
 
 class CampingSpot(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid7, editable=False)

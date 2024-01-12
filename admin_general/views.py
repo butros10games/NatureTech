@@ -144,4 +144,32 @@ def create_modal(request):
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
 
+def save_modal(request):
+    if request.method == 'POST':
+        try:
+            modal_data = json.loads(request.POST.get('modal_data'))
+        except json.JSONDecodeError:
+            return JsonResponse({'error': 'Invalid JSON data in modal_data'}, status=400)
+
+        booking_id = modal_data.get('id')
+        if booking_id is not None:
+            try:
+                booking = Booking.objects.get(id=booking_id)
+            except Booking.DoesNotExist:
+                return JsonResponse({'error': 'Booking not found'}, status=404)
+
+            # Update the booking data
+            
+            booking.checked_in = modal_data.get('checked_in')
+            booking.paid = modal_data.get('paid')
+            # Update other fields...
+
+            booking.save()
+
+            return JsonResponse({'success': True})
+        else:
+            return JsonResponse({'error': 'Missing booking_id in modal_data'}, status=400)
+
+    return JsonResponse({'error': 'Invalid request'}, status=400)
+
         

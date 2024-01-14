@@ -88,6 +88,7 @@
       setupPrevButton();
       setupNextButton();
       modelCloseEvent();
+      modalSaveEvent();
     }
 
     function setupTableHeaders() {
@@ -249,32 +250,67 @@
             <div class="modal-body-left">
                 <h2>Contactgegevens</h2>
                 <form>
-                <span><label for="Name">Naam:</label> <input type="text" name="Name" value="${booking.firstname} ${booking.lastname}"></span>
-                <span><label for="Email">Email:</label> <input type="text" name="Email" value="${booking.email}"></span>
-                <span><label for="Phonenumber">Telefoonnummer:</label> <input type="text" name="Phonenumber" value="${booking.phone_number}"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Name">Naam:</label><p> ${
+                  booking.firstname
+                } ${booking.lastname}</p></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Email">Email:</label> <input type="text" name="Email" value="${
+                  booking.email
+                }"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Phonenumber">Telefoonnummer:</label> <input type="text" name="Phonenumber" value="${
+                  booking.phone_number
+                }"></span>
                 <h2>Adres</h2>
-                <span><label for="Adress">Straat en huisnummer:</label> <input type="text" name="Adress" value="${booking.street} ${booking.house_number}"></span>
-                <span><label for="Postalcode">Postcode:</label> <input type="text" name="Postalcode" value="${booking.postal_code}"></span>
-                <span><label for="City">Stad:</label> <input type="text" name="City" value="${booking.city}"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Adress">Straat en huisnummer:</label> <input type="text" name="Adress" value="${
+                  booking.street
+                } ${booking.house_number}"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Postalcode">Postcode:</label> <input type="text" name="Postalcode" value="${
+                  booking.postal_code
+                }"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="City">Stad:</label> <input type="text" name="City" value="${
+                  booking.city
+                }"></span>
                 </form>
                 </div>
             <div class="modal-body-right">
                 <h2> Boeking details</h2>
                 <form>
-                <span><label for="Checkin">Checkin datum:</label> <input type="date" name="Checkin" value="${booking.start_date}"></span>
-                <span><label for="Checkout">Checkout datum:</label> <input type="date" name="Checkout" value="${booking.end_date}"></span>
-                <span><label for="Adults">Aantal volwassenen:</label> <input type="number" name="Adults" value="${booking.age_above}"></span>
-                <span><label for="Children">Aantal kinderen:</label> <input type="number" name="Children" value="${booking.age_below}"></span>
-                <span><label for="Spot">Plek:</label> <input type="text" name="Spot" value="${booking.Campingspot}"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Checkin">Checkin datum:</label> <input type="date" name="Checkin" value="${
+                  booking.start_date
+                }"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Checkout">Checkout datum:</label> <input type="date" name="Checkout" value="${
+                  booking.end_date
+                }"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Adults">Aantal volwassenen:</label> <input type="number" name="Adults" value="${
+                  booking.age_above
+                }"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Children">Aantal kinderen:</label> <input type="number" name="Children" value="${
+                  booking.age_below
+                }"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Spot">Plek:</label> <input type="text" name="Spot" value="${
+                  booking.Campingspot
+                }"></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Checkedin">Ingecheckt:</label> <input type="checkbox" name="Checkedin" ${
+                  booking.checked_in ? "checked" : ""
+                }></span>
+                <span style="display:flex; justify-content:space-between;"><label for="Paid">Betaald:</label> <input type="checkbox" name="Paid" ${
+                  booking.paid ? "checked" : ""
+                }><label for="Price">Bedrag:</label><p>${booking.price}</span>
                 </form>
                 </div>
             </div>
             <div class="modal-notes">
     <h2>Opmerkingen</h2>
                 <form>
-                <span><label for="Notes">Opmerkingen van klant:</label> <input type="textarea" name="Notes" value="${booking.notes}"></span>
-                <span><label for="Notes">Opmerkingen van personeel:</label> <input type="textarea" name="Notes" value="${booking.admin_notes}"></span>
+                <span><label for="Notes">Opmerkingen van klant:</label> <input type="textarea" name="Notes" value="${
+                  booking.notes
+                }"></span>
+                <span><label for="Notes">Opmerkingen van personeel:</label> <input type="textarea" name="Notes" value="${
+                  booking.admin_notes
+                }"></span>
                 </form>
+                <span><label for="Id" hidden="hidden">Booking ID:</label> <input type="text" name="Id" value="${
+                  booking.id
+                }" hidden="hidden"></span>
             </div>
     			`;
 
@@ -310,9 +346,9 @@
     function modalSaveEvent() {
       const modalSave = document.querySelector(".edit");
       modalSave.addEventListener("click", function () {
+        const bookingId = document.querySelector("input[name='Id']").value;
         const modalData = {
-          firstname: document.querySelector("input[name='Name']").value,
-          lastname: document.querySelector("input[name='Name']").value,
+          id: bookingId,
           email: document.querySelector("input[name='Email']").value,
           phone_number: document.querySelector("input[name='Phonenumber']")
             .value,
@@ -325,6 +361,8 @@
           age_above: document.querySelector("input[name='Adults']").value,
           age_below: document.querySelector("input[name='Children']").value,
           Campingspot: document.querySelector("input[name='Spot']").value,
+          checked_in: document.querySelector("input[name='Checkedin']").checked,
+          paid: document.querySelector("input[name='Paid']").checked,
           notes: document.querySelector("input[name='Notes']").value,
           admin_notes: document.querySelector("input[name='Notes']").value,
         };
@@ -349,7 +387,13 @@
         body: JSON.stringify(data),
       })
         .then((response) => response.json())
-        .then((data) => console.log(data))
+        .then((data) => {
+          console.log(data);
+          if (data.success) {
+            closeModal();
+            location.reload();
+          }
+        })
         .catch((error) => console.error("Error:", error));
     }
   </script>

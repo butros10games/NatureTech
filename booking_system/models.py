@@ -88,3 +88,12 @@ class Veldvulling(models.Model):
     
     def __str__(self):
         return str(self.Veld)
+    
+class VeldGps(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
+    veld = models.ForeignKey('Veld', on_delete=models.SET_NULL, null=True)
+    lat = models.FloatField()
+    lng = models.FloatField()
+    
+    def __str__(self):
+        return str(self.veld)

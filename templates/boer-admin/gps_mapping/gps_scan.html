@@ -15,6 +15,7 @@
             </div>
 
             <button style="position: absolute; bottom: 0; z-index: 9999;" id="startLocationMapping" onclick="startLocationMapping()" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mx-auto mb-8 focus:outline-none">start location tracking</button>
+            <button style="position: absolute; bottom: 48px; z-index: 9999; display: none;" id="save_gps_data" onclick="save_gps_data()" class="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mx-auto mb-8 focus:outline-none">save data</button>
         </div>
 
         <script>
@@ -26,6 +27,8 @@
                 timeout: 5000,
                 maximumAge: 0
             };
+
+            var loaction_tracked = false;
 
             var mapOptions = {
                 center: {lat: -34.397, lng: 150.644},
@@ -74,11 +77,16 @@
                         startingPosition = null;
                         button.innerHTML = "start location tracking";
                         button.className = "text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mx-auto mb-8 focus:outline-none";
+
+                        if (loaction_tracked) {
+                            document.getElementById("save_gps_data").style.display = "block";
+                        }
                     } else {
                         // Start tracking
                         watchId = navigator.geolocation.watchPosition(showPosition, showError, options);
                         button.innerHTML = "stop location tracking";
                         button.className = "text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 mx-auto mb-8 focus:outline-none";
+                        loaction_tracked = true;
                     }
                 } else {
                     alert("Geolocation is not supported by this browser.");
@@ -120,6 +128,45 @@
                         break;
                 }
             }
+
+            function save_gps_data() {
+                var path = pathLine.getPath();
+                var pathArray = [];
+            
+                for (var i = 0; i < path.getLength(); i++) {
+                    var lat = path.getAt(i).lat();
+                    var lng = path.getAt(i).lng();
+            
+                    pathArray.push({ 'lat': lat, 'lng': lng });
+                }
+            
+                var csrftoken = '{{ csrf_token }}';
+            
+                fetch("/gps/api/veld_gps_saving/", {
+                    method: "POST",
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': csrftoken
+                    },
+                    body: JSON.stringify({
+                        'path': pathArray
+                    })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Network response was not ok.');
+                    }
+                })
+                .then(data => {
+                    alert("Path saved successfully!");
+                })
+                .catch(error => {
+                    console.error('There has been a problem with your fetch operation:', error);
+                    alert("An error occurred while saving the path. Please try again.");
+                });
+            }            
         </script>
 
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHbEU4gBrlH8zGMfObMDvzjUBHEFR7F0o&callback=initMap" async defer></script>

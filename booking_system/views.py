@@ -15,7 +15,7 @@ from django.db.models import Q
 from django_ratelimit.decorators import ratelimit
 
 # Local application/library specific imports
-from .models import Booking, Customer, PlekType, Price, CampingSpot, Veldvulling, Veld
+from .models import Booking, Customer, PlekType, Price, CampingSpot, Veldvulling, Veld, VeldGps
 
 @ratelimit(key='ip', rate='3/60m')  # Limit to 5 requests per 15 minutes per IP address
 def booking_form(request):

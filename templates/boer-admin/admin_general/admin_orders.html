@@ -313,6 +313,8 @@
                 }" hidden="hidden"></span>
             </div>
     			`;
+          console.log(booking.Campingspot);
+
 
       const modalHeaderContent = document.querySelector(".modal-header-left");
       modalHeaderContent.innerHTML = `
@@ -361,7 +363,7 @@
           end_date: document.querySelector("input[name='Checkout']").value,
           age_above: document.querySelector("input[name='Adults']").value,
           age_below: document.querySelector("input[name='Children']").value,
-          Campingspot: document.querySelector("input[name='Spot']").value,
+          PlekNummer: document.querySelector("input[name='Spot']").value,
           checked_in: document.querySelector("input[name='Checkedin']").checked,
           paid: document.querySelector("input[name='Paid']").checked,
           notes: document.querySelector("input[name='Notes']").value,

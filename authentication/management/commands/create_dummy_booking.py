@@ -4,6 +4,8 @@ from django.utils import timezone
 from faker import Faker
 from booking_system.models import Booking, Customer, CampingSpot, PlekType, Veld
 from django.contrib.auth.models import User
+from booking_system.views import calc_full_price
+
 
 class Command(BaseCommand):
     help = 'Creates 10 dummy bookings with random names for testing purposes'
@@ -27,6 +29,7 @@ class Command(BaseCommand):
             city = fake.city()
 
 
+
             # Create or get user
             user, created = User.objects.get_or_create(email=email)
             if created:
@@ -48,6 +51,10 @@ class Command(BaseCommand):
                 end_date=end_date
 
             )
+
+            
+
+
 
             # Display information
             if created:

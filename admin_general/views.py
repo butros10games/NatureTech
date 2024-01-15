@@ -16,16 +16,17 @@ def admin_index(request):
     
     return render(request, 'boer-admin/admin_general/admin_index.html')
 
+
 def booking_context(request):
-    # respond to the JS fetch request
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         bookings = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot').order_by('start_date').all()
         paginator = Paginator(bookings, 10)
         page_number = data.get('page', 1)
         page_obj_dict = []
+        
         for booking in paginator.page(page_number).object_list:
-            page_obj_dict.append({
+            booking_dict = {
                 'firstname': booking.customer.user.first_name,
                 'lastname': booking.customer.user.last_name,
                 'email': booking.customer.user.email,
@@ -43,14 +44,20 @@ def booking_context(request):
                 'street': booking.customer.street,
                 'house_number': booking.customer.house_number,
                 'postal_code': booking.customer.postal_code,
+            }
 
-                
-            })
+            if booking.CampingSpot is not None:
+                booking_dict['Campingspot'] = booking.CampingSpot.PlekNummer
+            else:
+                booking_dict['Campingspot'] = None
+            
 
-        data = page_obj_dict
-        return JsonResponse(data, safe=False)
+            page_obj_dict.append(booking_dict)
+
+        return JsonResponse(page_obj_dict, safe=False)
 
     return render(request, 'boer-admin/admin_general/admin_orders.html')
+
 
 def sort_bookings(request):
     if request.method == 'POST':
@@ -60,7 +67,7 @@ def sort_bookings(request):
         order = data.get('order', 'asc')
 
         # Retrieve and sort the bookings
-        bookings = Booking.objects.prefetch_related('customer', 'customer__user').all()
+        bookings = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot').all()
 
         valid_sort_fields = ['order_number', 'start_date', 'end_date', 'age_below', 'age_above', 'pdf', 'checked_in', 'paid']
 
@@ -85,13 +92,11 @@ def sort_bookings(request):
             elif order == 'desc':
                 bookings = bookings.order_by(F('customer__phone_number').desc(nulls_last=True))
 
-
-
         # Apply pagination
         paginator = Paginator(bookings, 10)
         page_obj_dict = []
         for booking in paginator.page(page_number).object_list:
-            page_obj_dict.append({
+            booking_dict = {
                 'firstname': booking.customer.user.first_name,
                 'lastname': booking.customer.user.last_name,
                 'email': booking.customer.user.email,
@@ -109,14 +114,20 @@ def sort_bookings(request):
                 'street': booking.customer.street,
                 'house_number': booking.customer.house_number,
                 'postal_code': booking.customer.postal_code,
-                
+            }
 
-            })
+            if booking.CampingSpot is not None:
+                booking_dict['Campingspot'] = booking.CampingSpot.plekNummer  
+            else:
+                booking_dict['Campingspot'] = None
 
-        data = page_obj_dict
-        return JsonResponse(data, safe=False)
+            page_obj_dict.append(booking_dict)
+
+        return JsonResponse(page_obj_dict, safe=False)
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
  
 def create_modal(request):
     if request.method == 'POST':
@@ -155,9 +166,15 @@ def create_modal(request):
                 'house_number': booking.customer.house_number,
                 'postal_code': booking.customer.postal_code,
                 'total_price': total_price,
-                'Campingspot': booking.CampingSpot
-                
+                'Campingspot': booking.CampingSpot.PlekNummer, 
             }
+            if booking.CampingSpot is not None:
+                booking_data['Campingspot'] = booking.CampingSpot.PlekNummer
+            else:
+                booking_data['Campingspot'] = None
+
+
+
 
             return JsonResponse(booking_data, safe=False)
         else:

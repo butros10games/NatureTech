@@ -33,6 +33,10 @@ def booking_form(request):
             start = request.POST['startDate']
             end = request.POST['endDate']
             accomodation = request.POST['accomodation']
+            city = request.POST['city']
+            street = request.POST['street']
+            house_number = request.POST['houseNumber']
+            postal_code = request.POST['postalCode']
 
             user, created = User.objects.get_or_create(email=mail)
             if created:
@@ -109,7 +113,11 @@ def booking_form(request):
                 "price": total_price,
                 "method_of_paying": end,
                 "adults": adults,
-                "children": childeren
+                "children": childeren,
+                "city": city,
+                "street": street,
+                "house_number": house_number,
+                "postal_code": postal_code,
             }
 
             html_message = render_to_string("boer/booking/confirmation_mail.html", context=context)

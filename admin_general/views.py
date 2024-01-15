@@ -8,6 +8,8 @@ from customer_general.models import BtIpAdress, BtnState, pirState, BtMACAdress
 import json
 from django.db import transaction
 
+from booking_system.views import calc_full_price
+
 
 def admin_index(request):
     if not request.user.is_authenticated:
@@ -131,6 +133,8 @@ def create_modal(request):
             except Booking.DoesNotExist:
                 return JsonResponse({'error': 'Booking not found'}, status=404)
 
+            total_price = calc_full_price(booking.start_date, booking.end_date, booking.CampingSpot.plekType)
+
             # Create a dictionary with the data from the booking, customer, and user
             booking_data = {
                 'firstname': booking.customer.user.first_name,
@@ -150,7 +154,11 @@ def create_modal(request):
                 'street': booking.customer.street,
                 'house_number': booking.customer.house_number,
                 'postal_code': booking.customer.postal_code,
+<<<<<<< HEAD
                 
+=======
+                'total_price': total_price,
+>>>>>>> bd76dfb (Project Name: NatureTech)
             }
 
             return JsonResponse(booking_data, safe=False)

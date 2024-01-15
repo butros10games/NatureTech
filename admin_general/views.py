@@ -150,6 +150,7 @@ def create_modal(request):
                 'street': booking.customer.street,
                 'house_number': booking.customer.house_number,
                 'postal_code': booking.customer.postal_code,
+                
             }
 
             return JsonResponse(booking_data, safe=False)

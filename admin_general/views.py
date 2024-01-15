@@ -8,6 +8,8 @@ from customer_general.models import BtIpAdress, BtnState, pirState, BtMACAdress
 import json
 from django.db import transaction
 
+from booking_system.views import calc_full_price
+
 
 def admin_index(request):
     if not request.user.is_authenticated:
@@ -19,7 +21,7 @@ def booking_context(request):
     # respond to the JS fetch request
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        bookings = Booking.objects.prefetch_related('customer', 'customer__user').order_by('start_date').all()
+        bookings = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot').order_by('start_date').all()
         paginator = Paginator(bookings, 10)
         page_number = data.get('page', 1)
 
@@ -39,6 +41,10 @@ def booking_context(request):
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
                 'id': booking.id,
+                'city': booking.customer.city,
+                'street': booking.customer.street,
+                'house_number': booking.customer.house_number,
+                'postal_code': booking.customer.postal_code,
             })
 
         data = page_obj_dict
@@ -98,7 +104,11 @@ def sort_bookings(request):
                 'pdf': booking.pdf,
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
-                'id': booking.id,	
+                'id': booking.id,
+                'city': booking.customer.city,
+                'street': booking.customer.street,
+                'house_number': booking.customer.house_number,
+                'postal_code': booking.customer.postal_code,	
                 
 
             })
@@ -123,6 +133,8 @@ def create_modal(request):
             except Booking.DoesNotExist:
                 return JsonResponse({'error': 'Booking not found'}, status=404)
 
+            total_price = calc_full_price(booking.start_date, booking.end_date, booking.CampingSpot.plekType)
+
             # Create a dictionary with the data from the booking, customer, and user
             booking_data = {
                 'firstname': booking.customer.user.first_name,
@@ -138,6 +150,15 @@ def create_modal(request):
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
                 'id': booking.id,
+                'city': booking.customer.city,
+                'street': booking.customer.street,
+                'house_number': booking.customer.house_number,
+                'postal_code': booking.customer.postal_code,
+<<<<<<< HEAD
+                
+=======
+                'total_price': total_price,
+>>>>>>> bd76dfb (Project Name: NatureTech)
             }
 
             return JsonResponse(booking_data, safe=False)

@@ -12,9 +12,9 @@
   </head>
   <body>
     {% include 'boer-admin/overlays/navbar.html' %}
-    {% comment %} <div
+     <div
       class="flex flex-col justify-between items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72"
-    > {% endcomment %}
+    >
     <div class="pagination">
       <span class="step-links"
         ><a id="prev" pageNumber="1" class="ajax-link">&larr;</a></span
@@ -321,6 +321,7 @@
 
       const modal = document.getElementById("myModal");
       modal.style.display = "block";
+      
     }
 
     //close modal when clicking anywhere outside modal

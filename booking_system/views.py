@@ -118,6 +118,7 @@ def booking_form(request):
                 "street": street,
                 "house_number": house_number,
                 "postal_code": postal_code,
+                "total_price": total_price,
             }
 
             html_message = render_to_string("boer/booking/confirmation_mail.html", context=context)

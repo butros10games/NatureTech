@@ -7,7 +7,6 @@ from django.db.models import F
 from customer_general.models import BtIpAdress, BtnState, pirState, BtMACAdress
 import json
 from django.db import transaction
-
 from booking_system.views import calc_full_price
 
 
@@ -24,7 +23,6 @@ def booking_context(request):
         bookings = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot').order_by('start_date').all()
         paginator = Paginator(bookings, 10)
         page_number = data.get('page', 1)
-
         page_obj_dict = []
         for booking in paginator.page(page_number).object_list:
             page_obj_dict.append({
@@ -45,6 +43,8 @@ def booking_context(request):
                 'street': booking.customer.street,
                 'house_number': booking.customer.house_number,
                 'postal_code': booking.customer.postal_code,
+
+                
             })
 
         data = page_obj_dict
@@ -108,7 +108,7 @@ def sort_bookings(request):
                 'city': booking.customer.city,
                 'street': booking.customer.street,
                 'house_number': booking.customer.house_number,
-                'postal_code': booking.customer.postal_code,	
+                'postal_code': booking.customer.postal_code,
                 
 
             })
@@ -154,11 +154,9 @@ def create_modal(request):
                 'street': booking.customer.street,
                 'house_number': booking.customer.house_number,
                 'postal_code': booking.customer.postal_code,
-<<<<<<< HEAD
-                
-=======
                 'total_price': total_price,
->>>>>>> bd76dfb (Project Name: NatureTech)
+                'Campingspot': booking.CampingSpot
+                
             }
 
             return JsonResponse(booking_data, safe=False)

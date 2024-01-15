@@ -12,9 +12,22 @@
   </head>
   <body>
     {% include 'boer-admin/overlays/navbar.html' %}
-    <div
+    {% comment %} <div
       class="flex flex-col justify-between items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72"
-    >
+    > {% endcomment %}
+    <div class="pagination">
+      <span class="step-links"
+        ><a id="prev" pageNumber="1" class="ajax-link">&larr;</a></span
+      >
+
+      <span class="current"
+        >{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span
+      >
+
+      <span class="step-links"
+        ><a id="next" pageNumber="1" class="ajax-link">&rarr;</a></span
+      >
+    </div>
       <table id="booking-table">
         <thead>
           <tr>
@@ -38,19 +51,6 @@
           {% endfor %}
         </tbody>
       </table>
-      <div class="pagination">
-        <span class="step-links"
-          ><a id="prev" pageNumber="1" class="ajax-link">&larr;</a></span
-        >
-
-        <span class="current"
-          >{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span
-        >
-
-        <span class="step-links"
-          ><a id="next" pageNumber="1" class="ajax-link">&rarr;</a></span
-        >
-      </div>
       <div id="myModal" class="modal">
         <div class="modal-content">
           <div class="modal-header">

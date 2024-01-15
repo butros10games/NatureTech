@@ -2,7 +2,7 @@ import random
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from faker import Faker  # Install faker using: pip install faker
-from booking_system.models import Booking, Customer
+from booking_system.models import Booking, Customer, CampingSpot, PlekType, Veld
 from django.contrib.auth.models import User
 
 class Command(BaseCommand):
@@ -21,6 +21,7 @@ class Command(BaseCommand):
             email = fake.email()
             start_date = timezone.now().date() + timezone.timedelta(days=random.randint(1, 30))  # Vary check-in date within 30 days
             end_date = start_date + timezone.timedelta(days=random.randint(1, 14))  # Vary check-out date within 14 days
+            
 
 
             # Create or get user

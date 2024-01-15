@@ -19,7 +19,7 @@ def booking_context(request):
     # respond to the JS fetch request
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        bookings = Booking.objects.prefetch_related('customer', 'customer__user').order_by('start_date').all()
+        bookings = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot').order_by('start_date').all()
         paginator = Paginator(bookings, 10)
         page_number = data.get('page', 1)
 
@@ -39,6 +39,10 @@ def booking_context(request):
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
                 'id': booking.id,
+                'city': booking.customer.city,
+                'street': booking.customer.street,
+                'house_number': booking.customer.house_number,
+                'postal_code': booking.customer.postal_code,
             })
 
         data = page_obj_dict
@@ -98,7 +102,11 @@ def sort_bookings(request):
                 'pdf': booking.pdf,
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
-                'id': booking.id,	
+                'id': booking.id,
+                'city': booking.customer.city,
+                'street': booking.customer.street,
+                'house_number': booking.customer.house_number,
+                'postal_code': booking.customer.postal_code,	
                 
 
             })
@@ -138,6 +146,10 @@ def create_modal(request):
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
                 'id': booking.id,
+                'city': booking.customer.city,
+                'street': booking.customer.street,
+                'house_number': booking.customer.house_number,
+                'postal_code': booking.customer.postal_code,
             }
 
             return JsonResponse(booking_data, safe=False)

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse
 import traceback
 
@@ -8,9 +8,15 @@ from booking_system.models import Veld, VeldGps
 
 # Create your views here.
 def gps_index(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('login')
+    
     return render(request, 'boer-admin/gps_mapping/gps_index.html')
 
 def gps_scan(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('login')
+    
     context = {
         'csrf_token': get_token(request),
     }

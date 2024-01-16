@@ -12,22 +12,24 @@
   </head>
   <body>
     {% include 'boer-admin/overlays/navbar.html' %}
-     <div
-      class="flex flex-col justify-between items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72"
+    <div
+      class="flex flex-col items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72"
     >
-    <div class="pagination">
-      <span class="step-links"
-        ><a id="prev" pageNumber="1" class="ajax-link">&larr;</a></span
-      >
+      <header>
+        <div class="pagination">
+          <span class="step-links"
+            ><a id="prev" pageNumber="1" class="ajax-link">&larr;</a></span
+          >
 
-      <span class="current"
-        >{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span
-      >
+          <span class="current"
+            >{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span
+          >
 
-      <span class="step-links"
-        ><a id="next" pageNumber="1" class="ajax-link">&rarr;</a></span
-      >
-    </div>
+          <span class="step-links"
+            ><a id="next" pageNumber="1" class="ajax-link">&rarr;</a></span
+          >
+        </div>
+      </header>
       <table id="booking-table">
         <thead>
           <tr>
@@ -245,6 +247,7 @@
 
     function openModal(booking) {
       const modalContent = document.getElementById("modal-content");
+      const total_price = booking.total_price;
       modalContent.innerHTML = `
           <div class="modal-body">
             <div class="modal-body-left">
@@ -294,7 +297,7 @@
                 }></span>
                 <span style="display:flex; justify-content:space-between;"><label for="Paid">Betaald:</label> <input type="checkbox" name="Paid" ${
                   booking.paid ? "checked" : ""
-                }><label for="Price">Bedrag:</label><p>${booking.total_price}</span>
+                }><label for="Price">Bedrag:</label><p>€${total_price}.-</span>
                 </form>
                 </div>
             </div>
@@ -313,8 +316,7 @@
                 }" hidden="hidden"></span>
             </div>
     			`;
-          console.log(booking.Campingspot);
-
+      console.log(booking.Campingspot);
 
       const modalHeaderContent = document.querySelector(".modal-header-left");
       modalHeaderContent.innerHTML = `
@@ -323,7 +325,6 @@
 
       const modal = document.getElementById("myModal");
       modal.style.display = "block";
-      
     }
 
     //close modal when clicking anywhere outside modal

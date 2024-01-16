@@ -47,9 +47,17 @@ def booking_context(request):
             }
 
             if booking.CampingSpot is not None:
-                booking_dict['Campingspot'] = booking.CampingSpot.PlekNummer
+                booking_dict['Campingspot'] = booking.CampingSpot.PlekNummer if booking.CampingSpot is not None else None
             else:
                 booking_dict['Campingspot'] = None
+
+            if booking.CampingSpot is not None:
+                total_days_price = calc_full_price(booking.start_date, booking.end_date, booking.CampingSpot.plekType)
+            else:
+                total_days_price = 0 
+
+            booking_dict['total_price'] = total_days_price
+
             
 
             page_obj_dict.append(booking_dict)
@@ -120,6 +128,12 @@ def sort_bookings(request):
                 booking_dict['Campingspot'] = booking.CampingSpot.plekNummer  
             else:
                 booking_dict['Campingspot'] = None
+            if booking.CampingSpot is not None:
+                total_days_price = calc_full_price(booking.start_date, booking.end_date, booking.CampingSpot.plekType)
+            else:
+                total_days_price = 0 
+
+            booking_dict['total_price'] = total_days_price
 
             page_obj_dict.append(booking_dict)
 
@@ -165,13 +179,17 @@ def create_modal(request):
                 'street': booking.customer.street,
                 'house_number': booking.customer.house_number,
                 'postal_code': booking.customer.postal_code,
-                'total_price': total_price,
                 'Campingspot': booking.CampingSpot.PlekNummer, 
             }
             if booking.CampingSpot is not None:
                 booking_data['Campingspot'] = booking.CampingSpot.PlekNummer
             else:
                 booking_data['Campingspot'] = None
+            if booking.CampingSpot is not None:
+                total_days_price = calc_full_price(booking.start_date, booking.end_date, booking.CampingSpot.plekType)
+            else:
+                total_days_price = 0 
+            booking_data['total_price'] = total_days_price
 
 
 

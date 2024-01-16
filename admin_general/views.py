@@ -11,13 +11,16 @@ from booking_system.views import calc_full_price
 
 
 def admin_index(request):
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated or not request.user.is_staff:
         return redirect('login')
     
     return render(request, 'boer-admin/admin_general/admin_index.html')
 
 
 def booking_context(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('login')
+    
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
         bookings = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot').order_by('start_date').all()
@@ -251,6 +254,9 @@ def save_modal(request):
 
 
 def usage_data(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('login')
+    
     bt_ip_data = BtIpAdress.objects.values('ip_adress')
     btn_state_data = BtnState.objects.values('ip_adress', 'state')
     pir_state_data = pirState.objects.values('ip_adress', 'PIR_state')

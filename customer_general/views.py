@@ -1,5 +1,5 @@
 import http
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -138,6 +138,9 @@ def ble_logger(request, ip_adress, hostname, BLE_rssi, BLE_adress, BLE_name, BLE
     return JsonResponse({'status': 'Ok'})
 
 def ble_state_display(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('login')
+    
     ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
     BLE_adresses = BtMACAdress.objects.all().order_by('-date')[:100]
 

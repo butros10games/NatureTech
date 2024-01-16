@@ -167,7 +167,7 @@ def login_page(request):
     }
     
     ## if user is already logged in, redirect to the index page
-    if request.user.is_authenticated:
+    if not request.user.is_authenticated or not request.user.is_staff:
         return redirect('booking_index')
 
     return render(request, 'boer-admin/authentication/login.html', context)

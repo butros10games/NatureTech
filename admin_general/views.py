@@ -50,14 +50,16 @@ def booking_context(request):
             }
 
             if booking.CampingSpot is not None:
-                booking_dict['Campingspot'] = booking.CampingSpot.PlekNummer if booking.CampingSpot is not None else None
+                booking_dict['Campingspot'] = booking.CampingSpot.plekNummer if booking.CampingSpot.plekNummer is not None else None
             else:
                 booking_dict['Campingspot'] = None
 
             if booking.CampingSpot is not None:
+                booking_dict['Campingspot'] = booking.CampingSpot.plekNummer if booking.CampingSpot.plekNummer is not None else None
                 total_days_price = calc_full_price(booking.start_date, booking.end_date, booking.CampingSpot.plekType)
             else:
-                total_days_price = 0 
+                booking_dict['Campingspot'] = None
+                total_days_price = 0
 
             booking_dict['total_price'] = total_days_price
 
@@ -73,12 +75,12 @@ def booking_context(request):
 def sort_bookings(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        page_number = data.get('page', 1)
-        sort_by = data.get('sort_by') 
+        page_number = data.get('page' , 1)
+        sort_by = data.get('sort_by', 'start_date') 
         order = data.get('order', 'asc')
 
         # Retrieve and sort the bookings
-        bookings = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot').all()
+        bookings = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot').order_by('start_date').all()
 
         valid_sort_fields = ['order_number', 'start_date', 'end_date', 'age_below', 'age_above', 'pdf', 'checked_in', 'paid']
 
@@ -128,7 +130,7 @@ def sort_bookings(request):
             }
 
             if booking.CampingSpot is not None:
-                booking_dict['Campingspot'] = booking.CampingSpot.plekNummer  
+                booking_dict['Campingspot'] = booking.CampingSpot.plekNummer if booking.CampingSpot is not None else None
             else:
                 booking_dict['Campingspot'] = None
             if booking.CampingSpot is not None:

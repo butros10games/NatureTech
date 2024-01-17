@@ -6,11 +6,12 @@ table {
   width: 100%;
   margin-top: 0;
   justify-content: center;
+  table-layout: fixed;
 }
 .pagination {
   display: flex;
   flex-direction: row;
-  float: right; 
+  float: right;
   align-items: center;
   padding: 2px 28px;
 }
@@ -24,6 +25,9 @@ th {
 th,
 td {
   padding: 12px 15px;
+  min-width: fit-content;
+  max-width: 200px;
+  overflow: hidden;
 }
 
 tbody tr {
@@ -45,7 +49,6 @@ tfoot {
   font-weight: bold;
   border-bottom: 2px solid #355e3b;
 }
-
 
 .modal {
   display: none;
@@ -104,7 +107,7 @@ tfoot {
   font-weight: bold;
 }
 input {
-  text-align: right;   
+  text-align: right;
 }
 .modal-notes {
   display: flex;

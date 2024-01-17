@@ -1,22 +1,27 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/boer-admin/orders/admin_orders.css' %}"/>
     <title>Usage Data</title>
     <style>
         /* Add your CSS styles here */
+         
     </style>
 </head>
 <body>
     {% include 'boer-admin/overlays/navbar.html' %}
     <div style="margin-left: 288px;">
-        <table style="text-align: center;">
+        <table>
             <thead>
                 <tr>
-                    <th>Local IP -=</th>
-                    <th>=- Hostname -=</th>
-                    <th>=- Beweging gezien -=</th>
-                    <th>=- Apparaten aanwezig -=</th>
-                    <th>=- Deur open</th>
+                    <th>Local IP</th>
+                    <th>Hostname</th>
+                    <th>Beweging gezien</th>
+                    <th>Apparaten aanwezig</th>
+                    <th>Deur open</th>
                 </tr>
             </thead>
             <tbody>

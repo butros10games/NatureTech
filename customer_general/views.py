@@ -39,7 +39,7 @@ def contact(request):
         message_user = EmailMultiAlternatives(
             subject='Uw vraag is ontvangen',
             body=plain_message_user,
-            from_email=settings.DEFAULT_FROM_EMAIL,  # Use your default email address or specify one
+            from_email=settings.EMAIL_HOST_USER,  # Use your default email address or specify one
             to=[mail],  # Use a list for the 'to' parameter
         )
         message_user.attach_alternative(html_message_user, "text/html")
@@ -53,7 +53,7 @@ def contact(request):
             subject='Nieuwe vraag ontvangen',
             body=plain_message_admin,
             from_email=mail,  # Use your default email address or specify one
-            to=[settings.DEFAULT_FROM_EMAIL],  # Use a list for the 'to' parameter
+            to=[settings.EMAIL_HOST_USER],  # Use a list for the 'to' parameter
         )
         message_admin.attach_alternative(html_message_admin, "text/html")
         message_admin.send()

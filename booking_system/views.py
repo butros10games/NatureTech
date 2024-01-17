@@ -127,7 +127,7 @@ def booking_form(request):
             message = EmailMultiAlternatives(
                 subject = 'Bevestiging voor uw reservering op Camping de Groene Weide', 
                 body = plain_message,
-                from_email = settings.DEFAULT_FROM_EMAIL ,
+                from_email = settings.EMAIL_HOST_USER ,
                 to= {mail}
             )
 
@@ -142,7 +142,7 @@ def booking_form(request):
                 subject='Nieuwe boeking ontvangen',
                 body=plain_message_admin,
                 from_email=mail,  # Use your default email address or specify one
-                to=[settings.DEFAULT_FROM_EMAIL],  # Use a list for the 'to' parameter
+                to=[settings.EMAIL_HOST_USER],  # Use a list for the 'to' parameter
             )
             message_admin.attach_alternative(html_message_admin, "text/html")
             message_admin.send()

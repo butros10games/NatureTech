@@ -358,15 +358,24 @@ def usage_data(request):
         ip_adress = data['ip_adress']
         if ip_adress in combined_data:
             combined_data[ip_adress].update(data)
+        else:
+            combined_data[ip_adress] = {'ip_adress': ip_adress}
+            combined_data[ip_adress].update(data)
 
     for data in pir_state_data:
         ip_adress = data['ip_adress']
         if ip_adress in combined_data:
             combined_data[ip_adress].update(data)
+        else:
+            combined_data[ip_adress] = {'ip_adress': ip_adress}
+            combined_data[ip_adress].update(data)
 
     for data in bt_mac_data:
         ip_adress = data['ip_adress']
         if ip_adress in combined_data:
+            combined_data[ip_adress].update(data)
+        else:
+            combined_data[ip_adress] = {'ip_adress': ip_adress}
             combined_data[ip_adress].update(data)
 
     sorted_data = sorted(combined_data.values(), key=lambda x: x['ip_adress'])

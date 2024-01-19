@@ -7,7 +7,7 @@ import requests
 import socket
 from gpiozero import MotionSensor  # For PIR motion
 from signal import pause  # For PIR motion
-from bluepy.btle import Scanner
+# from bluepy.btle import Scanner
 
 
 # Set the GPIO mode to BCM
@@ -50,12 +50,12 @@ def button_handler():
                 if button_state == GPIO.LOW:
                     print("Button is pressed (closed)")
                     print(f"{button_state}")
-                    server_url = f"https://boer.butrosgroot.com/api/btn/{local_ip}/{button_state}"
+                    server_url = f"https://boer-admin.butrosgroot.com/api/btn/{local_ip}/{button_state}"
 
                 else:
                     print("Button is released (open)")
                     print(f"{button_state}")
-                    server_url = f"https://boer.butrosgroot.com/api/btn/{local_ip}/{button_state}"
+                    server_url = f"https://boer-admin.butrosgroot.com/api/btn/{local_ip}/{button_state}"
 
                 # Make an HTTP request to the server
                 response = requests.get(server_url)
@@ -86,7 +86,7 @@ def motion_function():  # if motion detected print
     print("Motion Detected")
     PIR_state = 1
     print(f"{PIR_state}")
-    server_url = f"https://boer.butrosgroot.com/api/pir/{local_ip}/{PIR_state}"
+    server_url = f"https://boer-admin.butrosgroot.com/api/pir/{local_ip}/{PIR_state}"
     # Make an HTTP request to the server
     response = requests.get(server_url)
     # Print the server response
@@ -97,7 +97,7 @@ def no_motion_function():  # if stopped detecting motion print
     print("Motion stopped")
     PIR_state = 0
     print(f"{PIR_state}")
-    server_url = f"https://boer.butrosgroot.com/api/pir/{local_ip}/{PIR_state}"
+    server_url = f"https://boer-admin.butrosgroot.com/api/pir/{local_ip}/{PIR_state}"
 
     # Make an HTTP request to the server
     response = requests.get(server_url)

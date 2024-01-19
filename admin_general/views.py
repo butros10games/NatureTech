@@ -258,41 +258,7 @@ def save_modal(request):
 
 
 
-def usage_data(request):
-    if not request.user.is_authenticated or not request.user.is_staff:
-        return redirect('login')
-    
-    bt_ip_data = BtIpAdress.objects.values('ip_adress')
-    btn_state_data = BtnState.objects.values('ip_adress', 'state')
-    pir_state_data = pirState.objects.values('ip_adress', 'PIR_state')
-    bt_mac_data = BtMACAdress.objects.values('ip_adress', 'hostname', 'BLE_count')
 
-    combined_data = {}
-
-    for data in bt_ip_data:
-        ip_adress = data['ip_adress']
-        if ip_adress not in combined_data:
-            combined_data[ip_adress] = {'ip_adress': ip_adress}
-
-    for data in btn_state_data:
-        ip_adress = data['ip_adress']
-        if ip_adress in combined_data:
-            combined_data[ip_adress].update(data)
-
-    for data in pir_state_data:
-        ip_adress = data['ip_adress']
-        if ip_adress in combined_data:
-            combined_data[ip_adress].update(data)
-
-    for data in bt_mac_data:
-        ip_adress = data['ip_adress']
-        if ip_adress in combined_data:
-            combined_data[ip_adress].update(data)
-
-    sorted_data = sorted(combined_data.values(), key=lambda x: x['ip_adress'])
-
-    return render(request, 'boer-admin/admin_general/usage_data.html', {'data': sorted_data})
-    # return JsonResponse(list(combined_data.values()), safe=False)
 
 
 ########### PI code ###########
@@ -371,3 +337,39 @@ def ble_state_display(request):
     }
 
     return render(request, 'boer-admin/ble/ble_state_display.html', context=context)
+
+def usage_data(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('login')
+    
+    bt_ip_data = BtIpAdress.objects.values('ip_adress')
+    btn_state_data = BtnState.objects.values('ip_adress', 'state')
+    pir_state_data = pirState.objects.values('ip_adress', 'PIR_state')
+    bt_mac_data = BtMACAdress.objects.values('ip_adress', 'hostname', 'BLE_count')
+
+    combined_data = {}
+
+    for data in bt_ip_data:
+        ip_adress = data['ip_adress']
+        if ip_adress not in combined_data:
+            combined_data[ip_adress] = {'ip_adress': ip_adress}
+
+    for data in btn_state_data:
+        ip_adress = data['ip_adress']
+        if ip_adress in combined_data:
+            combined_data[ip_adress].update(data)
+
+    for data in pir_state_data:
+        ip_adress = data['ip_adress']
+        if ip_adress in combined_data:
+            combined_data[ip_adress].update(data)
+
+    for data in bt_mac_data:
+        ip_adress = data['ip_adress']
+        if ip_adress in combined_data:
+            combined_data[ip_adress].update(data)
+
+    sorted_data = sorted(combined_data.values(), key=lambda x: x['ip_adress'])
+
+    return render(request, 'boer-admin/admin_general/usage_data.html', {'data': sorted_data})
+    # return JsonResponse(list(combined_data.values()), safe=False)

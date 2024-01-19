@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'booking_system',
     'customer_general',
     'authentication',
+    'admin_general',
 ]
 
 MIDDLEWARE = [

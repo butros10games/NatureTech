@@ -5,23 +5,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PIR</title>
+    <title>IP tracker</title>
     <link rel="stylesheet" href="{% static 'css/boer/customer_general/contact.css' %}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 </head>
     <body>
-        {% include 'boer/overlays/navbar.html' %}
+        {% include 'boer-admin/overlays/navbar.html' %}
 
-        <div style="display: flex;flex-direction: column;">
-        {% for pir in pir_states %}
-            <div style="display: flex; flex-direction: row;">
-                {{ pir.ip_adress }} -
-                {{ pir.date }} - Persoon gezien =
-                {{ pir.PIR_state }}
+        <div class="flex flex-col items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72">
+        {% for ip in ip_adresses %}
+            <div style="display: flex; flex-direction: row; width: 100%;">
+                {{ ip.date }} - IP adres: 
+                {{ ip.ip_adress }}
             </div>
         {% endfor %}
         </div>
-  
+
         {% include 'boer/overlays/footer.html' %}
     </body>
 </html>

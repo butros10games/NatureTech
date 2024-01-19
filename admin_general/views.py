@@ -4,10 +4,13 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.db.models import F
-from customer_general.models import BtIpAdress, BtnState, pirState, BtMACAdress
+from .models import BtIpAdress, BtnState, pirState, BtMACAdress
 import json
 from django.db import transaction
 from booking_system.views import calc_full_price
+
+from django.http import HttpResponse, JsonResponse
+import http
 
 
 def admin_index(request):
@@ -290,3 +293,81 @@ def usage_data(request):
 
     return render(request, 'boer-admin/admin_general/usage_data.html', {'data': sorted_data})
     # return JsonResponse(list(combined_data.values()), safe=False)
+
+
+########### PI code ###########
+def ip_logger(request, ip_adress):
+    BtIpAdress.objects.create(ip_adress=ip_adress)
+    
+    return HttpResponse(status=http.HTTPStatus.OK) # 200 OK
+
+def ip_adress_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    ip_adresses = BtIpAdress.objects.all().order_by('-date')[:10]
+
+    context = {
+        "ip_adresses": ip_adresses
+    }
+
+    return render(request, 'boer-admin/ble/ip_adress_display.html', context=context)
+
+def btn_logger(request, ip_adress, state):
+    ## string to bool converter
+    if state == "1":
+        state = True
+    elif state == "0":
+        state = False
+    else:
+        return HttpResponse(status=http.HTTPStatus.BAD_REQUEST) # 400 Bad Request
+    
+    BtnState.objects.create(state=state, ip_adress=ip_adress)
+    
+    return HttpResponse(status=http.HTTPStatus.OK) # 200 OK
+
+def btn_state_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    btn_states = BtnState.objects.all().order_by('-date')[:10]
+
+    context = {
+        "btn_states": btn_states
+    }
+
+    return render(request, 'boer-admin/ble/btn_state_display.html', context=context)
+
+def pir_logger(request, ip_adress, PIR_state, ):
+    ## string to bool converter
+    if PIR_state == "1":
+        PIR_state = True
+    elif PIR_state == "0":
+        PIR_state = False
+    else:
+        return HttpResponse(status=http.HTTPStatus.BAD_REQUEST) # 400 Bad Request
+    
+    pirState.objects.create(PIR_state=PIR_state, ip_adress=ip_adress)
+    
+    return JsonResponse({'status': 'Ok'})
+
+def pir_state_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    pir_states = pirState.objects.all().order_by('-date')[:10]
+
+    context = {
+        "pir_states": pir_states
+    }
+
+    return render(request, 'boer-admin/ble/pir_state_display.html', context=context)
+
+def ble_logger(request, ip_adress, hostname, BLE_rssi, BLE_adress, BLE_name, BLE_count):
+    BtMACAdress.objects.create(ip_adress=ip_adress, hostname=hostname,BLE_rssi=BLE_rssi, BLE_adress=BLE_adress, BLE_name=BLE_name, BLE_count=BLE_count)
+    
+    return JsonResponse({'status': 'Ok'})
+
+def ble_state_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    BLE_adresses = BtMACAdress.objects.all().order_by('-date')[:100]
+
+    context = {
+        "BLE_adresses": BLE_adresses
+    }
+
+    return render(request, 'boer-admin/ble/ble_state_display.html', context=context)

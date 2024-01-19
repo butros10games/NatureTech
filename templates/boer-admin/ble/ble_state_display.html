@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 </head>
     <body>
-        {% include 'boer/overlays/navbar.html' %}
+        {% include 'boer-admin/overlays/navbar.html' %}
 
-        <div style="display: flex;flex-direction: column;">
+        <div class="flex flex-col items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72">
         {% for ble in BLE_adresses %}
-            <div style="display: flex; flex-direction: row;">
+            <div style="display: flex; flex-direction: row; width: 100%;">
                 {{ ble.ip_adress }} -
                 {{ ble.hostname }} -
                 {{ ble.date }} - 

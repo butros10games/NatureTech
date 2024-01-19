@@ -12,7 +12,7 @@
     <body>
         {% include 'boer-admin/overlays/navbar.html' %}
 
-        <div class="flex flex-col items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72">
+        <div class="flex flex-col items-center w-full md:w-auto md:min-h-screen min-h-mobile-full mt-16 md:mt-0 md:ml-72">
         {% for ip in ip_adresses %}
             <div style="display: flex; flex-direction: row; width: 100%;">
                 {{ ip.date }} - IP adres: 

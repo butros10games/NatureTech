@@ -1,17 +1,37 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 import traceback
 
 from django.middleware.csrf import get_token
 
-from booking_system.models import Veld, VeldGps
+from booking_system.models import Veld, VeldGps, Veldvulling
 
 # Create your views here.
 def gps_index(request):
     if not request.user.is_authenticated or not request.user.is_staff:
         return redirect('login')
     
-    return render(request, 'boer-admin/gps_mapping/gps_index.html')
+    fields = Veld.objects.all()
+    fields_json = []
+    
+    for field in fields:
+        veldvullingen = Veldvulling.objects.filter(Veld=field)
+        places = []
+        total_places = 0
+        for veldvulling in veldvullingen:
+            places.append({'name': veldvulling.PlekType.name, 'number': veldvulling.number})
+            total_places += veldvulling.number
+            
+            
+        fields_json.append({'name': field.name, 'total_places': total_places, 'places': places})
+    
+    context = {
+        'csrf_token': get_token(request),
+        'fields': fields_json,
+    }
+    
+    return render(request, 'boer-admin/gps_mapping/gps_index.html', context)
 
 def gps_scan(request):
     if not request.user.is_authenticated or not request.user.is_staff:

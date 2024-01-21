@@ -1,33 +1,43 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/boer-admin/orders/admin_orders.css' %}"/>
+    <!-- <link rel="stylesheet" href="{% static 'css\boer-admin\detection\usage_detection.css' %}"/> -->
     <title>Usage Data</title>
     <style>
         /* Add your CSS styles here */
+         
     </style>
 </head>
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th>Local IP</th>
-                <th>Hostname</th>
-                <th>PIR State</th>
-                <th>BLE Count</th>
-                <th>BTN State</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in data %}
+    {% include 'boer-admin/overlays/navbar.html' %}
+    <div style="margin-left: 288px;">
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ item.ip_adress }}</td>
-                    <td>{{ item.hostname }}</td>
-                    <td>{{ item.PIR_state }}</td>
-                    <td>{{ item.BLE_count }}</td>
-                    <td>{{ item.state }}</td>
+                    <th>Local IP</th>
+                    <th>Hostname</th>
+                    <th>Beweging gezien</th>
+                    <th>Apparaten aanwezig</th>
+                    <th>Deur open</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for item in data %}
+                    <tr>
+                        <td>{{ item.ip_adress }}</td>
+                        <td>{{ item.hostname }}</td>
+                        <td>{{ item.PIR_state }}</td>
+                        <td>{{ item.BLE_count }}</td>
+                        <td>{{ item.state }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
 </body>
-</html> 
+</html>

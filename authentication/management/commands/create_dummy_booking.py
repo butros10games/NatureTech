@@ -1,9 +1,11 @@
 import random
 from django.core.management.base import BaseCommand
 from django.utils import timezone
-from faker import Faker  # Install faker using: pip install faker
-from booking_system.models import Booking, Customer
+from faker import Faker
+from booking_system.models import Booking, Customer, CampingSpot, PlekType, Veld
 from django.contrib.auth.models import User
+from booking_system.views import calc_full_price
+
 
 class Command(BaseCommand):
     help = 'Creates 10 dummy bookings with random names for testing purposes'
@@ -21,6 +23,11 @@ class Command(BaseCommand):
             email = fake.email()
             start_date = timezone.now().date() + timezone.timedelta(days=random.randint(1, 30))  # Vary check-in date within 30 days
             end_date = start_date + timezone.timedelta(days=random.randint(1, 14))  # Vary check-out date within 14 days
+            postal_code = fake.postcode()
+            street = fake.street_name()
+            house_number = fake.building_number()
+            city = fake.city()
+
 
 
             # Create or get user
@@ -32,7 +39,7 @@ class Command(BaseCommand):
                 user.save()
 
             # Now, try to get the customer using the user
-            customer, created = Customer.objects.get_or_create(user=user, defaults={'phone_number': phone_number})
+            customer, created = Customer.objects.get_or_create(user=user, defaults={'phone_number': phone_number,'postal_code': postal_code,'street': street,'house_number': house_number,'city': city })
 
 
             # Create booking
@@ -42,7 +49,12 @@ class Command(BaseCommand):
                 age_below=children,
                 start_date=start_date,
                 end_date=end_date
+
             )
+
+            
+
+
 
             # Display information
             if created:

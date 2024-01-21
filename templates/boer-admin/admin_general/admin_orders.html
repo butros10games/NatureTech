@@ -13,8 +13,23 @@
   <body>
     {% include 'boer-admin/overlays/navbar.html' %}
     <div
-      class="flex flex-col justify-between items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72"
+      class="flex flex-col items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72"
     >
+      <header>
+        <div class="pagination">
+          <span class="step-links"
+            ><a id="prev" pageNumber="1" class="ajax-link">&larr;</a></span
+          >
+
+          <span class="current"
+            >{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span
+          >
+
+          <span class="step-links"
+            ><a id="next" pageNumber="1" class="ajax-link">&rarr;</a></span
+          >
+        </div>
+      </header>
       <table id="booking-table">
         <thead>
           <tr>
@@ -38,19 +53,6 @@
           {% endfor %}
         </tbody>
       </table>
-      <div class="pagination">
-        <span class="step-links"
-          ><a id="prev" pageNumber="1" class="ajax-link">&larr;</a></span
-        >
-
-        <span class="current"
-          >{{ page_obj.number }} / {{ page_obj.paginator.num_pages }}</span
-        >
-
-        <span class="step-links"
-          ><a id="next" pageNumber="1" class="ajax-link">&rarr;</a></span
-        >
-      </div>
       <div id="myModal" class="modal">
         <div class="modal-content">
           <div class="modal-header">
@@ -71,6 +73,8 @@
     let nextButton = null;
     let tableContent = null;
     let csrfToken = "{{ csrf_token }}";
+    let sortBy = "";
+    let newSortOrder = "";
 
     document.addEventListener("DOMContentLoaded", function () {
       prevButton = document.getElementById("prev");
@@ -83,10 +87,16 @@
       setupButtons();
     });
 
-    function setupButtons() {
-      setupTableHeaders();
+    window.onload = function () {
+      nextButton.setAttribute("pageNumber", 1);
+      prevButton.setAttribute("pageNumber", 1);
+
       setupPrevButton();
       setupNextButton();
+    };
+
+    function setupButtons() {
+      setupTableHeaders();
       modelCloseEvent();
       modalSaveEvent();
     }
@@ -98,19 +108,23 @@
       tableHeaders.forEach((header) => {
         header.addEventListener("click", function () {
           const currentSortOrder = header.getAttribute("data-order");
-          const newSortOrder = currentSortOrder === "asc" ? "desc" : "asc";
-          const sortBy = header.getAttribute("data-sort");
+          newSortOrder = currentSortOrder === "asc" ? "desc" : "asc";
+          sortBy = header.getAttribute("data-sort");
 
           header.setAttribute("data-order", newSortOrder);
           sort_data(sortBy, newSortOrder);
+          setupPrevButton(sortBy, newSortOrder);
+          setupNextButton(sortBy, newSortOrder);
         });
       });
     }
 
     function setupPrevButton() {
+      let newPrevButton = prevButton.cloneNode(true);
+      prevButton.parentNode.replaceChild(newPrevButton, prevButton);
+      prevButton = newPrevButton;
       prevButton.addEventListener("click", function () {
         let pageNumber = parseInt(this.getAttribute("pageNumber"));
-
         if (pageNumber === 1) {
           this.classList.add("disabled");
         } else {
@@ -120,13 +134,15 @@
 
           this.setAttribute("pageNumber", prevPageNumber);
           nextButton.setAttribute("pageNumber", prevPageNumber);
-
-          request_data(prevPageNumber);
+          sort_data(sortBy, newSortOrder, prevPageNumber);
         }
       });
     }
 
     function setupNextButton() {
+      let newNextButton = nextButton.cloneNode(true);
+      nextButton.parentNode.replaceChild(newNextButton, nextButton);
+      nextButton = newNextButton;
       nextButton.addEventListener("click", function () {
         let pageNumber = parseInt(this.getAttribute("pageNumber"));
 
@@ -136,8 +152,7 @@
 
         this.setAttribute("pageNumber", nextPageNumber);
         prevButton.setAttribute("pageNumber", nextPageNumber);
-
-        request_data(nextPageNumber);
+        sort_data(sortBy, newSortOrder, nextPageNumber);
       });
     }
 
@@ -162,11 +177,12 @@
         .catch((error) => console.error("Error:", error));
     }
 
-    function request_data(pageNumber) {
-      const url = window.location.href;
+    function request_data(pageNumber = 1) {
+      const url = "/booking_context/";
+      console.log(pageNumber);
       const data = {
         csrfmiddlewaretoken: csrfToken,
-        page: pageNumber,
+        pageNumber,
       };
 
       fetch(url, {
@@ -182,12 +198,15 @@
         .catch((error) => console.error("Error:", error));
     }
 
-    function sort_data(sortBy, sortOrder) {
+    function sort_data(sortBy, sortOrder, pageNumber) {
       const url = "/sort_bookings/";
+      console.log(sortBy, sortOrder);
+      console.log(pageNumber, "Click");
       const data = {
         csrfmiddlewaretoken: csrfToken,
         sort_by: sortBy,
         order: sortOrder,
+        page: pageNumber,
       };
 
       fetch(url, {
@@ -245,6 +264,7 @@
 
     function openModal(booking) {
       const modalContent = document.getElementById("modal-content");
+      const total_price = booking.total_price;
       modalContent.innerHTML = `
           <div class="modal-body">
             <div class="modal-body-left">
@@ -294,7 +314,7 @@
                 }></span>
                 <span style="display:flex; justify-content:space-between;"><label for="Paid">Betaald:</label> <input type="checkbox" name="Paid" ${
                   booking.paid ? "checked" : ""
-                }><label for="Price">Bedrag:</label><p>${booking.price}</span>
+                }><label for="Price">Bedrag:</label><p>€${total_price}.-</span>
                 </form>
                 </div>
             </div>
@@ -313,6 +333,7 @@
                 }" hidden="hidden"></span>
             </div>
     			`;
+      console.log(booking.Campingspot);
 
       const modalHeaderContent = document.querySelector(".modal-header-left");
       modalHeaderContent.innerHTML = `
@@ -360,7 +381,7 @@
           end_date: document.querySelector("input[name='Checkout']").value,
           age_above: document.querySelector("input[name='Adults']").value,
           age_below: document.querySelector("input[name='Children']").value,
-          Campingspot: document.querySelector("input[name='Spot']").value,
+          PlekNummer: document.querySelector("input[name='Spot']").value,
           checked_in: document.querySelector("input[name='Checkedin']").checked,
           paid: document.querySelector("input[name='Paid']").checked,
           notes: document.querySelector("input[name='Notes']").value,

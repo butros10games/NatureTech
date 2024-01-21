@@ -4,28 +4,35 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.db.models import F
-from customer_general.models import BtIpAdress, BtnState, pirState, BtMACAdress
+from .models import BtIpAdress, BtnState, pirState, BtMACAdress
 import json
 from django.db import transaction
+from booking_system.views import calc_full_price
+
+from django.http import HttpResponse, JsonResponse
+import http
 
 
 def admin_index(request):
-    if not request.user.is_authenticated:
+    if not request.user.is_authenticated or not request.user.is_staff:
         return redirect('login')
     
     return render(request, 'boer-admin/admin_general/admin_index.html')
 
+
 def booking_context(request):
-    # respond to the JS fetch request
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('login')
+    
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        bookings = Booking.objects.prefetch_related('customer', 'customer__user').order_by('start_date').all()
+        bookings = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot').order_by('start_date').all()
         paginator = Paginator(bookings, 10)
         page_number = data.get('page', 1)
-
         page_obj_dict = []
+        
         for booking in paginator.page(page_number).object_list:
-            page_obj_dict.append({
+            booking_dict = {
                 'firstname': booking.customer.user.first_name,
                 'lastname': booking.customer.user.last_name,
                 'email': booking.customer.user.email,
@@ -39,22 +46,44 @@ def booking_context(request):
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
                 'id': booking.id,
-            })
+                'city': booking.customer.city,
+                'street': booking.customer.street,
+                'house_number': booking.customer.house_number,
+                'postal_code': booking.customer.postal_code,
+            }
 
-        data = page_obj_dict
-        return JsonResponse(data, safe=False)
+            if booking.CampingSpot is not None:
+                booking_dict['Campingspot'] = booking.CampingSpot.plekNummer if booking.CampingSpot.plekNummer is not None else None
+            else:
+                booking_dict['Campingspot'] = None
+
+            if booking.CampingSpot is not None:
+                booking_dict['Campingspot'] = booking.CampingSpot.plekNummer if booking.CampingSpot.plekNummer is not None else None
+                total_days_price = calc_full_price(booking.start_date, booking.end_date, booking.CampingSpot.plekType)
+            else:
+                booking_dict['Campingspot'] = None
+                total_days_price = 0
+
+            booking_dict['total_price'] = total_days_price
+
+            
+
+            page_obj_dict.append(booking_dict)
+
+        return JsonResponse(page_obj_dict, safe=False)
 
     return render(request, 'boer-admin/admin_general/admin_orders.html')
+
 
 def sort_bookings(request):
     if request.method == 'POST':
         data = json.loads(request.body.decode('utf-8'))
-        page_number = data.get('page', 1)
-        sort_by = data.get('sort_by') 
+        page_number = data.get('page' , 1)
+        sort_by = data.get('sort_by', 'start_date') 
         order = data.get('order', 'asc')
 
         # Retrieve and sort the bookings
-        bookings = Booking.objects.prefetch_related('customer', 'customer__user').all()
+        bookings = Booking.objects.prefetch_related('customer', 'customer__user', 'CampingSpot').order_by('start_date').all()
 
         valid_sort_fields = ['order_number', 'start_date', 'end_date', 'age_below', 'age_above', 'pdf', 'checked_in', 'paid']
 
@@ -79,13 +108,11 @@ def sort_bookings(request):
             elif order == 'desc':
                 bookings = bookings.order_by(F('customer__phone_number').desc(nulls_last=True))
 
-
-
         # Apply pagination
         paginator = Paginator(bookings, 10)
         page_obj_dict = []
         for booking in paginator.page(page_number).object_list:
-            page_obj_dict.append({
+            booking_dict = {
                 'firstname': booking.customer.user.first_name,
                 'lastname': booking.customer.user.last_name,
                 'email': booking.customer.user.email,
@@ -98,15 +125,31 @@ def sort_bookings(request):
                 'pdf': booking.pdf,
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
-                'id': booking.id,	
-                
+                'id': booking.id,
+                'city': booking.customer.city,
+                'street': booking.customer.street,
+                'house_number': booking.customer.house_number,
+                'postal_code': booking.customer.postal_code,
+            }
 
-            })
+            if booking.CampingSpot is not None:
+                booking_dict['Campingspot'] = booking.CampingSpot.plekNummer if booking.CampingSpot is not None else None
+            else:
+                booking_dict['Campingspot'] = None
+            if booking.CampingSpot is not None:
+                total_days_price = calc_full_price(booking.start_date, booking.end_date, booking.CampingSpot.plekType)
+            else:
+                total_days_price = 0 
 
-        data = page_obj_dict
-        return JsonResponse(data, safe=False)
+            booking_dict['total_price'] = total_days_price
+
+            page_obj_dict.append(booking_dict)
+
+        return JsonResponse(page_obj_dict, safe=False)
 
     return JsonResponse({'error': 'Invalid request'}, status=400)
+
+
  
 def create_modal(request):
     if request.method == 'POST':
@@ -123,6 +166,8 @@ def create_modal(request):
             except Booking.DoesNotExist:
                 return JsonResponse({'error': 'Booking not found'}, status=404)
 
+            total_price = calc_full_price(booking.start_date, booking.end_date, booking.CampingSpot.plekType)
+
             # Create a dictionary with the data from the booking, customer, and user
             booking_data = {
                 'firstname': booking.customer.user.first_name,
@@ -138,7 +183,24 @@ def create_modal(request):
                 'checked_in': booking.checked_in,
                 'paid': booking.paid,
                 'id': booking.id,
+                'city': booking.customer.city,
+                'street': booking.customer.street,
+                'house_number': booking.customer.house_number,
+                'postal_code': booking.customer.postal_code,
+                'Campingspot': booking.CampingSpot.PlekNummer, 
             }
+            if booking.CampingSpot is not None:
+                booking_data['Campingspot'] = booking.CampingSpot.PlekNummer
+            else:
+                booking_data['Campingspot'] = None
+            if booking.CampingSpot is not None:
+                total_days_price = calc_full_price(booking.start_date, booking.end_date, booking.CampingSpot.plekType)
+            else:
+                total_days_price = 0 
+            booking_data['total_price'] = total_days_price
+
+
+
 
             return JsonResponse(booking_data, safe=False)
         else:
@@ -196,7 +258,90 @@ def save_modal(request):
 
 
 
+
+
+
+########### PI code ###########
+def ip_logger(request, ip_adress):
+    BtIpAdress.objects.create(ip_adress=ip_adress)
+    
+    return HttpResponse(status=http.HTTPStatus.OK) # 200 OK
+
+def ip_adress_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    ip_adresses = BtIpAdress.objects.all().order_by('-date')[:10]
+
+    context = {
+        "ip_adresses": ip_adresses
+    }
+
+    return render(request, 'boer-admin/ble/ip_adress_display.html', context=context)
+
+def btn_logger(request, ip_adress, state):
+    ## string to bool converter
+    if state == "1":
+        state = True
+    elif state == "0":
+        state = False
+    else:
+        return HttpResponse(status=http.HTTPStatus.BAD_REQUEST) # 400 Bad Request
+    
+    BtnState.objects.create(state=state, ip_adress=ip_adress)
+    
+    return HttpResponse(status=http.HTTPStatus.OK) # 200 OK
+
+def btn_state_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    btn_states = BtnState.objects.all().order_by('-date')[:10]
+
+    context = {
+        "btn_states": btn_states
+    }
+
+    return render(request, 'boer-admin/ble/btn_state_display.html', context=context)
+
+def pir_logger(request, ip_adress, PIR_state, ):
+    ## string to bool converter
+    if PIR_state == "1":
+        PIR_state = True
+    elif PIR_state == "0":
+        PIR_state = False
+    else:
+        return HttpResponse(status=http.HTTPStatus.BAD_REQUEST) # 400 Bad Request
+    
+    pirState.objects.create(PIR_state=PIR_state, ip_adress=ip_adress)
+    
+    return JsonResponse({'status': 'Ok'})
+
+def pir_state_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    pir_states = pirState.objects.all().order_by('-date')[:10]
+
+    context = {
+        "pir_states": pir_states
+    }
+
+    return render(request, 'boer-admin/ble/pir_state_display.html', context=context)
+
+def ble_logger(request, ip_adress, hostname, BLE_rssi, BLE_adress, BLE_name, BLE_count):
+    BtMACAdress.objects.create(ip_adress=ip_adress, hostname=hostname,BLE_rssi=BLE_rssi, BLE_adress=BLE_adress, BLE_name=BLE_name, BLE_count=BLE_count)
+    
+    return JsonResponse({'status': 'Ok'})
+
+def ble_state_display(request):
+    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    BLE_adresses = BtMACAdress.objects.all().order_by('-date')[:100]
+
+    context = {
+        "BLE_adresses": BLE_adresses
+    }
+
+    return render(request, 'boer-admin/ble/ble_state_display.html', context=context)
+
 def usage_data(request):
+    if not request.user.is_authenticated or not request.user.is_staff:
+        return redirect('login')
+    
     bt_ip_data = BtIpAdress.objects.values('ip_adress')
     btn_state_data = BtnState.objects.values('ip_adress', 'state')
     pir_state_data = pirState.objects.values('ip_adress', 'PIR_state')
@@ -213,15 +358,24 @@ def usage_data(request):
         ip_adress = data['ip_adress']
         if ip_adress in combined_data:
             combined_data[ip_adress].update(data)
+        else:
+            combined_data[ip_adress] = {'ip_adress': ip_adress}
+            combined_data[ip_adress].update(data)
 
     for data in pir_state_data:
         ip_adress = data['ip_adress']
         if ip_adress in combined_data:
             combined_data[ip_adress].update(data)
+        else:
+            combined_data[ip_adress] = {'ip_adress': ip_adress}
+            combined_data[ip_adress].update(data)
 
     for data in bt_mac_data:
         ip_adress = data['ip_adress']
         if ip_adress in combined_data:
+            combined_data[ip_adress].update(data)
+        else:
+            combined_data[ip_adress] = {'ip_adress': ip_adress}
             combined_data[ip_adress].update(data)
 
     sorted_data = sorted(combined_data.values(), key=lambda x: x['ip_adress'])

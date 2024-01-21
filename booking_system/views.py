@@ -15,7 +15,7 @@ from django.db.models import Q
 from django_ratelimit.decorators import ratelimit
 
 # Local application/library specific imports
-from .models import Booking, Customer, PlekType, Price, CampingSpot, Veldvulling, Veld
+from .models import Booking, Customer, PlekType, Price, CampingSpot, Veldvulling, Veld, VeldGps
 
 @ratelimit(key='ip', rate='3/60m')  # Limit to 5 requests per 15 minutes per IP address
 def booking_form(request):
@@ -33,6 +33,10 @@ def booking_form(request):
             start = request.POST['startDate']
             end = request.POST['endDate']
             accomodation = request.POST['accomodation']
+            city = request.POST['city']
+            street = request.POST['street']
+            house_number = request.POST['houseNumber']
+            postal_code = request.POST['postalCode']
 
             user, created = User.objects.get_or_create(email=mail)
             if created:
@@ -109,7 +113,12 @@ def booking_form(request):
                 "price": total_price,
                 "method_of_paying": end,
                 "adults": adults,
-                "children": childeren
+                "children": childeren,
+                "city": city,
+                "street": street,
+                "house_number": house_number,
+                "postal_code": postal_code,
+                "total_price": total_price,
             }
 
             html_message = render_to_string("boer/booking/confirmation_mail.html", context=context)
@@ -118,7 +127,7 @@ def booking_form(request):
             message = EmailMultiAlternatives(
                 subject = 'Bevestiging voor uw reservering op Camping de Groene Weide', 
                 body = plain_message,
-                from_email = settings.DEFAULT_FROM_EMAIL ,
+                from_email = settings.EMAIL_HOST_USER ,
                 to= {mail}
             )
 
@@ -133,7 +142,7 @@ def booking_form(request):
                 subject='Nieuwe boeking ontvangen',
                 body=plain_message_admin,
                 from_email=mail,  # Use your default email address or specify one
-                to=[settings.DEFAULT_FROM_EMAIL],  # Use a list for the 'to' parameter
+                to=[settings.EMAIL_HOST_USER],  # Use a list for the 'to' parameter
             )
             message_admin.attach_alternative(html_message_admin, "text/html")
             message_admin.send()

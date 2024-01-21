@@ -7,52 +7,35 @@
 <link rel="stylesheet" href="{% static '/css/boer/overlays/footer.css' %}" />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
 
+
 <div class="footer">
+  <a href="{% url 'index' %}"><img src="{% static 'img/boer/overlays/logo_naturetech.png' %}" alt="Icon" style="width: 200px; height: 100%; object-fit: contain;"></a>
   <div class="footer-item">
-    <h2>Contact</h2>
+    <h2><a href="{% url 'contact' %}"  style="color: white; text-decoration: none;">Contact</a></h2>
     <div class="footer-content">
-      <div>Address</div>
+      <div>Vijverlaan 1, 3737 RE Groenekan</div>
       <br />
-      <div>Telefoonnumer</div>
+      <div>(850) 2 18 111/999</div>
       <br />
-      <div>E-mail</div>
-      <br />
-      <div>Row 4</div>
-      <br />
-      <div>Row 5</div>
+      <div>butrosgroot@gmail.com</div>
     </div>
   </div>
 
   <div class="footer-item">
-    <h2>Faciliteiten</h2>
+    <h2> <a href="{% url 'faciliteiten' %}"  style="color: white; text-decoration: none;">Faciliteiten</a></h2>
     <div class="footer-content">
-      <div>Row 1</div>
-      <div>Row 2</div>
-      <div>Row 3</div>
-      <div>Row 4</div>
-      <div>Row 5</div>
     </div>
   </div>
 
   <div class="footer-item">
     <h2>Boeking</h2>
     <div class="footer-content">
-      <div>Row 1</div>
-      <div>Row 2</div>
-      <div>Row 3</div>
-      <div>Row 4</div>
-      <div>Row 5</div>
     </div>
   </div>
 
   <div class="footer-item">
-    <h2>Nieuws</h2>
+    <h2> <a href="{% url 'nieuws' %}"  style="color: white; text-decoration: none;">Nieuws</a></h2>
     <div class="footer-content">
-      <div>Row 1</div>
-      <div>Row 2</div>
-      <div>Row 3</div>
-      <div>Row 4</div>
-      <div>Row 5</div>
     </div>
   </div>
 </div>

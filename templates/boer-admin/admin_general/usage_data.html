@@ -38,6 +38,113 @@
             </tbody>
         </table>
     </div>
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <canvas id="chart6Hours"></canvas>
+            <canvas id="chart24Hours"></canvas>
+        </div>
+    </div>
     
 </body>
+<script>
+window.onload = function () {
+    setupRowClickEvents();
+    setupModalCloseEvent();
+    setupWindowClickEvent();
+};
+    // 
+function graph_data_fetch(ip_address) {
+    // Send data with the body of the request
+    fetch('api/blt_data')
+        .body(JSON.stringify({ "ip_address": ip_address }))
+        .then(response => response.json())
+        .then(data => {
+            createCharts(data.last6Hours.timestamps, data.last6Hours.bleCounts, data.last24Hours.timestamps, data.last24Hours.bleCounts);
+        });
+};
+
+function setupWindowClickEvent() {
+  window.onclick = function(event) {
+    const modal = document.getElementById("myModal");
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+}
+
+function setupRowClickEvents() {
+    const tableRows = document.querySelectorAll("tbody tr");
+    tableRows.forEach((row) => {
+    row.addEventListener("click", function () {
+        // Open the modal and populate it with data from the clicked row
+        const modal = document.getElementById("myModal");
+        modal.style.display = "block";
+        modal.querySelector(".modal-content p").textContent = this.textContent;
+    });
+    });
+}
+    
+function setupModalCloseEvent() {
+    const modal = document.getElementById("myModal");
+    const span = modal.querySelector(".close");
+    span.onclick = function() {
+    modal.style.display = "none";
+    }
+}
+
+src="https://cdn.jsdelivr.net/npm/chart.js"
+
+function createCharts(timestamps6Hours, bleCounts6Hours, timestamps24Hours, bleCounts24Hours) {
+    var ctx6Hours = document.getElementById('chart6Hours').getContext('2d');
+    var chart6Hours = new Chart(ctx6Hours, {
+        type: 'line',
+        data: {
+            labels: timestamps6Hours,
+            datasets: [{
+                label: 'BLE_count',
+                data: bleCounts6Hours,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'hour'
+                    }
+                }
+            }
+        }
+    });
+
+    var ctx24Hours = document.getElementById('chart24Hours').getContext('2d');
+    var chart24Hours = new Chart(ctx24Hours, {
+        type: 'line',
+        data: {
+            labels: timestamps24Hours,
+            datasets: [{
+                label: 'BLE_count',
+                data: bleCounts24Hours,
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'hour'
+                    }
+                }
+            }
+        }
+    });
+}
+    </script>
 </html>

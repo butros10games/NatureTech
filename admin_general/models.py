@@ -53,3 +53,7 @@ class BtMACAdress(models.Model):
     class Meta:
         verbose_name_plural = 'BLEs info'
         verbose_name = 'BLE info'
+class ble_data(models.Model):
+    ip_adress = models.CharField(max_length=20)
+    BLE_count = models.CharField(max_length=4)
+    

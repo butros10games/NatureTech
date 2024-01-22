@@ -4,7 +4,9 @@ from django.core.paginator import Paginator
 from django.http import JsonResponse
 from django.forms.models import model_to_dict
 from django.db.models import F
-from .models import BtIpAdress, BtnState, pirState, BtMACAdress
+from django.utils import timezone
+from datetime import timedelta
+from .models import BtIpAdress, BtnState, pirState, BtMACAdress, ble_data
 import json
 from django.db import transaction
 from booking_system.views import calc_full_price
@@ -382,3 +384,29 @@ def usage_data(request):
 
     return render(request, 'boer-admin/admin_general/usage_data.html', {'data': sorted_data})
     # return JsonResponse(list(combined_data.values()), safe=False)
+
+def ble_data(request):
+    # post request
+    if request.method != 'POST':
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
+
+    data = json.loads(request.body.decode('utf-8'))
+    ip_address = data.get('ip_address')
+
+    if ip_address is None:
+        return JsonResponse({'error': 'Missing ip_address'}, status=400)
+
+    # Get the current time
+    now = timezone.now()
+
+    # Calculate the time 6 hours ago
+    six_hours_ago = now - timedelta(hours=6)
+
+    # Query the database for BLEData records from the last 6 hours for the given IP address
+    ble_data = ble_data.objects.filter(ip_address=ip_address, timestamp__gte=six_hours_ago)
+
+    # Convert the query results to a list of dictionaries
+    ble_data_list = list(ble_data.values('timestamp', 'BLE_count'))
+
+    # Return the data as JSON
+    return JsonResponse(ble_data_list, safe=False)

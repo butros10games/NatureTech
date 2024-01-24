@@ -47,6 +47,10 @@
     </div>
     
 </body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
 <script>
 window.onload = function () {
     setupRowClickEvents();
@@ -54,15 +58,15 @@ window.onload = function () {
     setupWindowClickEvent();
 };
     // 
-function graph_data_fetch(ip_address) {
-    // Send data with the body of the request
-    fetch('api/blt_data')
-        .body(JSON.stringify({ "ip_address": ip_address }))
-        .then(response => response.json())
-        .then(data => {
-            createCharts(data.last6Hours.timestamps, data.last6Hours.bleCounts, data.last24Hours.timestamps, data.last24Hours.bleCounts);
-        });
-};
+// function graph_data_fetch(ip_adress) {
+//     // Send data with the body of the request
+//     fetch('api/blt_data')
+//         .body(JSON.stringify({ "ip_adress": ip_adress }))
+//         .then(response => response.json())
+//         .then(data => {
+//             createCharts(data.last6Hours.timestamps, data.last6Hours.bleCounts, data.last24Hours.timestamps, data.last24Hours.bleCounts);
+//         });
+// };
 
 function setupWindowClickEvent() {
   window.onclick = function(event) {
@@ -93,29 +97,47 @@ function setupModalCloseEvent() {
     }
 }
 
-src="https://cdn.jsdelivr.net/npm/chart.js"
+// fetch('/api/get_ble_data/192.168.3.99')
+//     .then(response => response.json())
+//     .then(data => {
+//         console.log(data.data_6_hours);
+//         console.log(data.data_24_hours);
+//         // const timestamps24Hours = data.data_24_hours.map(item => new Date(item.date));
+//         // const bleCounts24Hours = data.data_24_hours.map(item => item.BLE_count);
 
-function createCharts(timestamps6Hours, bleCounts6Hours, timestamps24Hours, bleCounts24Hours) {
+//         createCharts(data.data_6_hours, data.data_24_hours);
+//     });
+// Add event listener to table rows
+document.querySelectorAll('table tr').forEach(row => {
+    row.addEventListener('click', function() {
+        // Get IP address from clicked row. Adjust this line to match your table structure.
+        const ip_address = this.cells[0].innerText;
+
+        // Use IP address in fetch request
+        fetch(`/api/get_ble_data/${ip_address}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data.data_6_hours);
+                console.log(data.data_24_hours);
+                createCharts(data.data_6_hours, data.data_24_hours);
+            });
+    });
+});
+
+function createCharts(data_6_hours, data_24_hours) {
+    // ... your chart creation code here ...
     var ctx6Hours = document.getElementById('chart6Hours').getContext('2d');
     var chart6Hours = new Chart(ctx6Hours, {
         type: 'line',
         data: {
-            labels: timestamps6Hours,
             datasets: [{
                 label: 'BLE_count',
-                data: bleCounts6Hours,
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
+                data: data_6_hours,
             }]
         },
         options: {
             scales: {
                 x: {
-                    type: 'time',
-                    time: {
-                        unit: 'hour'
-                    }
                 }
             }
         }
@@ -125,22 +147,14 @@ function createCharts(timestamps6Hours, bleCounts6Hours, timestamps24Hours, bleC
     var chart24Hours = new Chart(ctx24Hours, {
         type: 'line',
         data: {
-            labels: timestamps24Hours,
             datasets: [{
                 label: 'BLE_count',
-                data: bleCounts24Hours,
-                fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1
+                data: data_24_hours,
             }]
         },
         options: {
             scales: {
                 x: {
-                    type: 'time',
-                    time: {
-                        unit: 'hour'
-                    }
                 }
             }
         }

@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import admin_index, booking_context, sort_bookings, create_modal, save_modal, usage_data, ip_logger, ip_adress_display, btn_logger, btn_state_display, pir_logger, pir_state_display, ble_logger, ble_state_display, ble_data
+from .views import admin_index, booking_context, sort_bookings, create_modal, save_modal, usage_data, ip_logger, ip_adress_display, btn_logger, btn_state_display, pir_logger, pir_state_display, ble_logger, ble_state_display, get_ble_data
 
 urlpatterns = [
     path('', admin_index, name='booking_index'),
@@ -21,5 +21,5 @@ urlpatterns = [
     path('api/ble/<str:ip_adress>/<str:hostname>/<str:BLE_rssi>/<str:BLE_adress>/<str:BLE_name>/<str:BLE_count>', ble_logger, name='ble_log'),
     path('ble/ble_state_display/', ble_state_display, name='ble_state_display'),
 
-    path('api/ble_data', ble_data, name='ble_data')
+    path('api/get_ble_data/<str:ip_adress>', get_ble_data, name='get_ble_data')
 ] 

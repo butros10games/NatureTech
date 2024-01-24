@@ -74,8 +74,8 @@ class Price(models.Model):
 class Veld(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid7, editable=False)
     name = models.CharField(max_length=255)
-    width = models.IntegerField()
-    length = models.IntegerField()
+    width = models.IntegerField(blank=True, null=True)
+    length = models.IntegerField(blank=True, null=True)
     
     def __str__(self):
         return self.name

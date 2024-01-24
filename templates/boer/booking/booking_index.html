@@ -24,7 +24,7 @@
                     </header>
                     <div class="flex-center" style="width: calc(100% - 32px); height: calc(100% - 48px); box-shadow: 0 0 10px rgba(0,0,0,0.1); border-radius: 4px; justify-content: space-between;">
                         <div></div>
-                        <div id="search-container" class="flex-row">
+                        <!-- <div id="search-container" class="flex-row">
 
                             <div style="min-width: 24px; width: 24px;">
                                 <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="24" height="24" viewBox="0 0 50 50">
@@ -35,6 +35,10 @@
                             <div style="min-width: 24px;"></div>
 
                             <p id="search-text" style="margin: 0; white-space: nowrap;">Camping Kaart</p>
+
+                            
+                        </div> -->
+                        <div id="map" style="height: 100%; width: 100%;">
                         </div>
 
                         <div id="slide-button" class="flex-center" style="height: 100%; cursor: pointer;">
@@ -181,3 +185,53 @@
         updateFormScroll();
     });
 </script>
+
+<script>
+    var startingPosition = null;
+    var watchId = null;
+    var furthestDistance = 0;
+    var options = {
+        enableHighAccuracy: true,
+        timeout: 5000,
+        maximumAge: 0
+    };
+
+    var loaction_tracked = false;
+
+    var mapOptions = {
+        center: {lat: -34.397, lng: 150.644},
+        zoom: 19, // Adjust the zoom level as needed
+        mapTypeControl: false, // Disable map type control
+        streetViewControl: false, // Disable Street View control
+        styles: [
+            {
+                featureType: "poi",
+                elementType: "labels",
+                stylers: [
+                    { visibility: "off" }
+                ]
+            }
+        ]
+    };
+
+    var map;
+    var pathLine; // Polyline object to draw the path
+    var pointer = 0; // Used to determine when to initialize the polyline
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+
+        // Initialize the polyline
+        if (pointer % 5 == 0 || pointer == 1) {
+            pathLine = new google.maps.Polyline({
+                strokeColor: '#FF0000', // Red line
+                strokeOpacity: 1.0,
+                strokeWeight: 2,
+                map: map
+            });
+        }
+        
+        pointer++;
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHbEU4gBrlH8zGMfObMDvzjUBHEFR7F0o&callback=initMap" async defer></script>

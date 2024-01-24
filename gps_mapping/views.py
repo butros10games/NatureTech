@@ -2,6 +2,7 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 import traceback
+import json
 
 from django.middleware.csrf import get_token
 
@@ -60,10 +61,18 @@ def gps_scan_save(request):
 def veld_gps_saving(request):
     if request.method == 'POST':
         try:
-            veld = request.POST['veld']
-            gps_locations = request.POST['gps_locations']
+            data = json.loads(request.body.decode('utf-8'))
+            gps_locations = data.get('path')
             
-            veld_object = Veld.objects.create(id=veld)
+            # get the name of the last field
+            last_field = Veld.objects.last()
+            
+            # it is a, b, c naming system so how to get the next letter?
+            # get the last letter
+            last_letter = last_field.name
+            # get the next letter
+            next_letter = chr(ord(last_letter) + 1)
+            veld_object = Veld.objects.create(name=next_letter)
 
             for gps_location in gps_locations:
                 VeldGps.objects.create(veld=veld_object, lat=gps_location['lat'], lng=gps_location['lng'])

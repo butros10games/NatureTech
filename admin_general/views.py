@@ -390,26 +390,26 @@ def get_ble_data(request, ip_adress):
         return JsonResponse({'error': 'Missing ip_adress'}, status=400)
 
     now = timezone.now()
-    six_hours_ago = now - timedelta(hours=6)
+    six_hours_ago = now - timedelta(hours=3)
     twenty_four_hours_ago = now - timedelta(hours=24)
 
-    ble_data_6_hours = BtMACAdress.objects.filter(ip_adress=ip_adress, date__gte=six_hours_ago).order_by('date')
+    ble_data_3_hours = BtMACAdress.objects.filter(ip_adress=ip_adress, date__gte=six_hours_ago).order_by('date')
     ble_data_24_hours = BtMACAdress.objects.filter(ip_adress=ip_adress, date__gte=twenty_four_hours_ago).order_by('date')
 
-    data_6_hours = list(ble_data_6_hours.values('date', 'BLE_count'))
+    data_3_hours = list(ble_data_3_hours.values('date', 'BLE_count'))
     data_24_hours = list(ble_data_24_hours.values('date', 'BLE_count'))
 
-    new_data_6_hours = []
-    prev_data_6 = None
+    new_data_3_hours = []
+    prev_data_3 = None
 
-    for data in data_6_hours:
-        if prev_data_6 != data['BLE_count']:
-            new_data_6 = {
+    for data in data_3_hours:
+        if prev_data_3 != data['BLE_count']:
+            new_data_3 = {
                 'x': data['date'],
                 'y': int(data['BLE_count'])
             }
-            new_data_6_hours.append(new_data_6)
-            prev_data_6 = data['BLE_count']
+            new_data_3_hours.append(new_data_3)
+            prev_data_3 = data['BLE_count']
 
     new_data_24_hours = []
     prev_data_24 = None
@@ -423,4 +423,4 @@ def get_ble_data(request, ip_adress):
             new_data_24_hours.append(new_data_24)
             prev_data_24 = data['BLE_count']
 
-    return JsonResponse({'data_6_hours': new_data_6_hours, 'data_24_hours': new_data_24_hours})
+    return JsonResponse({'data_3_hours': new_data_3_hours, 'data_24_hours': new_data_24_hours})

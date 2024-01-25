@@ -41,7 +41,7 @@
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <canvas id="chart6Hours"></canvas>
+            <canvas id="chart3Hours"></canvas>
             <canvas id="chart24Hours"></canvas>
         </div>
     </div>
@@ -51,22 +51,13 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js/dist/chart.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script>
 window.onload = function () {
     setupRowClickEvents();
     setupModalCloseEvent();
     setupWindowClickEvent();
 };
-    // 
-// function graph_data_fetch(ip_adress) {
-//     // Send data with the body of the request
-//     fetch('api/blt_data')
-//         .body(JSON.stringify({ "ip_adress": ip_adress }))
-//         .then(response => response.json())
-//         .then(data => {
-//             createCharts(data.last6Hours.timestamps, data.last6Hours.bleCounts, data.last24Hours.timestamps, data.last24Hours.bleCounts);
-//         });
-// };
 
 function setupWindowClickEvent() {
   window.onclick = function(event) {
@@ -96,55 +87,75 @@ function setupModalCloseEvent() {
     modal.style.display = "none";
     }
 }
+function updateCharts(ip_address) {
+    fetch(`/api/get_ble_data/${ip_address}`)
+        .then(response => response.json())
+        .then(data => {
+            // Update the data for the 3 hours chart
+            chart3Hours.data.datasets[0].data = data.data_3_hours;
+            chart3Hours.update();  // Update the chart
 
-// fetch('/api/get_ble_data/192.168.3.99')
-//     .then(response => response.json())
-//     .then(data => {
-//         console.log(data.data_6_hours);
-//         console.log(data.data_24_hours);
-//         // const timestamps24Hours = data.data_24_hours.map(item => new Date(item.date));
-//         // const bleCounts24Hours = data.data_24_hours.map(item => item.BLE_count);
+            // Update the data for the 24 hours chart
+            chart24Hours.data.datasets[0].data = data.data_24_hours;
+            chart24Hours.update();  // Update the chart
+        });
+}
 
-//         createCharts(data.data_6_hours, data.data_24_hours);
-//     });
-// Add event listener to table rows
 document.querySelectorAll('table tr').forEach(row => {
     row.addEventListener('click', function() {
         // Get IP address from clicked row. Adjust this line to match your table structure.
         const ip_address = this.cells[0].innerText;
+        updateCharts(ip_address);
 
         // Use IP address in fetch request
         fetch(`/api/get_ble_data/${ip_address}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data.data_6_hours);
+                console.log(data.data_3_hours);
                 console.log(data.data_24_hours);
-                createCharts(data.data_6_hours, data.data_24_hours);
+                createCharts(data.data_3_hours, data.data_24_hours);
             });
     });
 });
 
-function createCharts(data_6_hours, data_24_hours) {
+var chart3Hours;  // declare at top level
+var chart24Hours;  // declare at top level
+
+function createCharts(data_3_hours, data_24_hours) {
     // ... your chart creation code here ...
-    var ctx6Hours = document.getElementById('chart6Hours').getContext('2d');
-    var chart6Hours = new Chart(ctx6Hours, {
+    // destroy the previous chart if it exists
+    if (chart3Hours) {
+        chart3Hours.destroy();
+    }
+    var ctx3Hours = document.getElementById('chart3Hours').getContext('2d');
+    chart3Hours = new Chart(ctx3Hours, {
         type: 'line',
         data: {
             datasets: [{
                 label: 'BLE_count',
-                data: data_6_hours,
+                data: data_3_hours,
             }]
         },
         options: {
             scales: {
                 x: {
+                    type: 'time',
+                    time: {
+                        unit: 'minute',
+                        min: moment().subtract(3, 'hours').toISOString(),
+                        max: moment().toISOString()
+                    }
                 }
             }
         }
     });
 
+       // destroy the previous chart if it exists
+    if (chart24Hours) {
+        chart24Hours.destroy();
+    }
     var ctx24Hours = document.getElementById('chart24Hours').getContext('2d');
-    var chart24Hours = new Chart(ctx24Hours, {
+    chart24Hours = new Chart(ctx24Hours, {
         type: 'line',
         data: {
             datasets: [{
@@ -155,6 +166,12 @@ function createCharts(data_6_hours, data_24_hours) {
         options: {
             scales: {
                 x: {
+                    type: 'time',
+                    time: {
+                        unit: 'minute',
+                        min: moment().subtract(24, 'hours').toISOString(),
+                        max: moment().toISOString()
+                    }
                 }
             }
         }

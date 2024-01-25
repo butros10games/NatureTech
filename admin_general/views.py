@@ -344,10 +344,10 @@ def usage_data(request):
     if not request.user.is_authenticated or not request.user.is_staff:
         return redirect('login')
     
-    bt_ip_data = BtIpAdress.objects.values('ip_adress')
-    btn_state_data = BtnState.objects.values('ip_adress', 'state')
-    pir_state_data = pirState.objects.values('ip_adress', 'PIR_state')
-    bt_mac_data = BtMACAdress.objects.values('ip_adress', 'hostname', 'BLE_count')
+    bt_ip_data = BtIpAdress.objects.values('ip_adress').order_by('date')
+    btn_state_data = BtnState.objects.values('ip_adress', 'state').order_by('date')
+    pir_state_data = pirState.objects.values('ip_adress', 'PIR_state').order_by('date')
+    bt_mac_data = BtMACAdress.objects.values('ip_adress', 'hostname', 'BLE_count').order_by('date')
 
     combined_data = {}
 

@@ -134,6 +134,7 @@ function createCharts(data_3_hours, data_24_hours) {
             datasets: [{
                 label: 'BLE_count',
                 data: data_3_hours,
+                pointRadius: 0,  // This will hide the data points
             }]
         },
         options: {
@@ -161,6 +162,7 @@ function createCharts(data_3_hours, data_24_hours) {
             datasets: [{
                 label: 'BLE_count',
                 data: data_24_hours,
+                pointRadius: 0,  // This will hide the data points
             }]
         },
         options: {

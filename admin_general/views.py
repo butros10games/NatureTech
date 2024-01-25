@@ -401,24 +401,36 @@ def get_ble_data(request, ip_adress):
 
     new_data_3_hours = []
     prev_data_3 = None
+    window_size_3 = 10  # Adjust this value to your needs
+    window_3 = []
 
     for data in data_3_hours:
         if prev_data_3 != data['BLE_count']:
+            window_3.append(int(data['BLE_count']))
+            if len(window_3) > window_size_3:
+                window_3.pop(0)  # Remove the oldest value when the window is full
+            avg_data_3 = round(sum(window_3) / len(window_3))  # Calculate and round the average
             new_data_3 = {
                 'x': data['date'],
-                'y': int(data['BLE_count'])
+                'y': avg_data_3
             }
             new_data_3_hours.append(new_data_3)
             prev_data_3 = data['BLE_count']
 
     new_data_24_hours = []
     prev_data_24 = None
-    
+    window_size = 10  # Adjust this value to your needs
+    window = []
+
     for data in data_24_hours:
         if prev_data_24 != data['BLE_count']:
+            window.append(int(data['BLE_count']))
+            if len(window) > window_size:
+                window.pop(0)  # Remove the oldest value when the window is full
+            avg_data_24 = round(sum(window) / len(window))  # Calculate and round the average
             new_data_24 = {
                 'x': data['date'],
-                'y': int(data['BLE_count'])
+                'y': avg_data_24
             }
             new_data_24_hours.append(new_data_24)
             prev_data_24 = data['BLE_count']

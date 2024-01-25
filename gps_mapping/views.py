@@ -25,7 +25,7 @@ def gps_index(request):
             total_places += veldvulling.number
             
             
-        fields_json.append({'name': field.name, 'total_places': total_places, 'places': places})
+        fields_json.append({'id': field.id, 'name': field.name, 'total_places': total_places, 'places': places})
     
     context = {
         'csrf_token': get_token(request),
@@ -82,3 +82,19 @@ def veld_gps_saving(request):
         except Exception as e:
             # Log the error if needed
             return JsonResponse({"status": "error", "message": str(e), "traceback": traceback.format_exc()})
+        
+def field_display(request, field_id):
+    field = Veld.objects.get(id=field_id)
+    gps_locations = VeldGps.objects.filter(veld=field)
+    gps_data = []
+    
+    for gps in gps_locations:
+        gps_data.append({'lat': gps.lat, 'lng': gps.lng})
+        
+    context = {
+        'field': field,
+        'gps_data': gps_data,
+    }
+    
+    return render(request, 'boer-admin/gps_mapping/gps_display.html', context)
+        

@@ -64,33 +64,8 @@
                 }
                 
                 pointer++;
-            }
-            
-            function startLocationMapping() {
-                var button = document.getElementById("startLocationMapping");
-    
-                if (navigator.geolocation) {
-                    if (watchId) {
-                        // Stop tracking
-                        navigator.geolocation.clearWatch(watchId);
-                        watchId = null;
-                        startingPosition = null;
-                        button.innerHTML = "start location tracking";
-                        button.className = "text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 mx-auto mb-8 focus:outline-none";
 
-                        if (loaction_tracked) {
-                            document.getElementById("save_gps_data").style.display = "block";
-                        }
-                    } else {
-                        // Start tracking
-                        watchId = navigator.geolocation.watchPosition(showPosition, showError, options);
-                        button.innerHTML = "stop location tracking";
-                        button.className = "text-white bg-red-700 hover:bg-red-800 font-medium rounded-lg text-sm px-5 py-2.5 mx-auto mb-8 focus:outline-none";
-                        loaction_tracked = true;
-                    }
-                } else {
-                    alert("Geolocation is not supported by this browser.");
-                }
+                fill_gps_array();
             }
     
             function showPosition(position) {
@@ -110,63 +85,27 @@
                     position: currentLocation,
                     map: map
                 });
-            }
-    
-            function showError(error) {
-                switch(error.code) {
-                    case error.PERMISSION_DENIED:
-                        alert("User denied the request for Geolocation. Please enable it in your browser settings.");
-                        break;
-                    case error.POSITION_UNAVAILABLE:
-                        alert("Location information is unavailable. Please check your internet connection.");
-                        break;
-                    case error.TIMEOUT:
-                        alert("The request to get user location timed out. Please try again.");
-                        break;
-                    case error.UNKNOWN_ERROR:
-                        alert("An unknown error occurred. Please try again.");
-                        break;
-                }
-            }
+            };
+            
+            function fill_gps_array() {
+                let gps_array = {{ gps_data|safe }};
 
-            function save_gps_data() {
-                var path = pathLine.getPath();
-                var pathArray = [];
-            
-                for (var i = 0; i < path.getLength(); i++) {
-                    var lat = path.getAt(i).lat();
-                    var lng = path.getAt(i).lng();
-            
-                    pathArray.push({ 'lat': lat, 'lng': lng });
+                for (gps in gps_array) {
+                    var currentLocation = {lat: gps.lat, lng: gps.lng};
+                    map.setCenter(currentLocation);
+    
+                    // Add current location to the path
+                    var path = pathLine.getPath();
+                    path.push(new google.maps.LatLng(currentLocation.lat, currentLocation.lng));
+    
+                    // Create a marker for the current position
+                    var marker = new google.maps.Marker({
+                        position: currentLocation,
+                        map: map
+                    });
                 }
+            }
             
-                var csrftoken = '{{ csrf_token }}';
-            
-                fetch("/gps/api/veld_gps_saving/", {
-                    method: "POST",
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': csrftoken
-                    },
-                    body: JSON.stringify({
-                        'path': pathArray
-                    })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Network response was not ok.');
-                    }
-                })
-                .then(data => {
-                    alert("Path saved successfully!");
-                })
-                .catch(error => {
-                    console.error('There has been a problem with your fetch operation:', error);
-                    alert("An error occurred while saving the path. Please try again.");
-                });
-            }            
         </script>
 
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBHbEU4gBrlH8zGMfObMDvzjUBHEFR7F0o&callback=initMap" async defer></script>

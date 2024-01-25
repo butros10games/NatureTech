@@ -12,7 +12,7 @@
 
         <div class="flex flex-col justify-between items-center w-full md:w-auto md:h-screen h-mobile-full mt-16 md:mt-0 md:ml-72">
             {% for field in fields%}
-                <a href="" class="rounded border-2">
+                <a href="{% url 'field_display' field.id %}" class="rounded border-2">
                     {{ field.name }}
                     {{ field.total_places }}
                     {% for place in field.places %}

@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
-# To test with button, Connect 1 pin with the +5V and the other on the PIR pin (14 in this case)
+# To test with button, Connect 1 pin with the +5V and the other on the PIR pin
+# (14 in this case)
 
 from datetime import datetime
 from signal import pause

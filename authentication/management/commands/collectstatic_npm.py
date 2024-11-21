@@ -3,7 +3,6 @@ import subprocess
 from django.contrib.staticfiles.management.commands.collectstatic import (
     Command as CollectstaticCommand,
 )
-from django.core.management.base import BaseCommand
 
 
 class Command(CollectstaticCommand):

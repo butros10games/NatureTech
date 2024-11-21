@@ -43,7 +43,7 @@ def contact(request):
         message_user = EmailMultiAlternatives(
             subject="Uw vraag is ontvangen",
             body=plain_message_user,
-            from_email=settings.DEFAULT_FROM_EMAIL,  # Use your default email address or specify one
+            from_email=settings.DEFAULT_FROM_EMAIL,  # Use your default email address or specify one  # noqa E501
             to=[mail],  # Use a list for the 'to' parameter
         )
         message_user.attach_alternative(html_message_user, "text/html")
@@ -69,14 +69,15 @@ def contact(request):
     return render(request, "boer/customer_general/contact.html")
 
 
-def ip_logger(request, ip_adress):
+def ip_logger(_, ip_adress):
     BtIpAdress.objects.create(ip_adress=ip_adress)
 
     return HttpResponse(status=http.HTTPStatus.OK)  # 200 OK
 
 
 def ip_adress_display(request):
-    ## Make it so that only the last 10 ip adresses are displayed and the newest one is on top
+    # Make it so that only the last 10 ip adresses are displayed and
+    # the newest one is on top
     ip_adresses = BtIpAdress.objects.all().order_by("-date")[:10]
 
     context = {"ip_adresses": ip_adresses}

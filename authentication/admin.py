@@ -18,7 +18,7 @@ class CachingPaginator(Paginator):
                     self._count = super().count
                     cache.set(key, self._count, 3600)
 
-            except:
+            except Exception:
                 self._count = len(self.object_list)
         return self._count
 
@@ -26,11 +26,11 @@ class CachingPaginator(Paginator):
 
 
 # Register your models here.
-class UserProfile_admin(admin.ModelAdmin):
+class UserProfileAdmin(admin.ModelAdmin):
     show_full_result_count = False
 
     class Meta:
         model = UserProfile
 
 
-admin.site.register(UserProfile, UserProfile_admin)
+admin.site.register(UserProfile, UserProfileAdmin)

@@ -1,12 +1,11 @@
-from booking_system.models import Booking, Customer
+from booking_system.models import Booking
 
-from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
 
 # Create your views here.
 def admin_index(request):
-    ## if the user is not logged in, redirect to the login page
+    # if the user is not logged in, redirect to the login page
     if not request.user.is_authenticated:
         return redirect("login")
 
@@ -14,7 +13,7 @@ def admin_index(request):
 
 
 def booking_context(request):
-    ## if the user is not logged in, redirect to the login page
+    # if the user is not logged in, redirect to the login page
     if not request.user.is_authenticated:
         return redirect("login")
 

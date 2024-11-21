@@ -7,7 +7,7 @@ while True:
         # 10.0 sec scanning
         ble_list = Scanner().scan(10.0)
         for dev in ble_list:
-            ## print(dir(dev))
+            # print(dir(dev))
             name = str(dev.rawData).split("\\t")
             if len(name) > 1:
                 name = name[1][:-1]
@@ -16,5 +16,5 @@ while True:
             else:
                 name = None
             print(f"rssi: {dev.rssi} ; mac: {dev.addr} ; Name: {name}")
-    except:
-        raise Exception("Error occured")
+    except Exception as e:
+        raise Exception("Error occured while scanning BLE devices: ", e)

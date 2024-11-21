@@ -184,7 +184,7 @@ def login_page(request):
             else:
                 error_message = (
                     "Your account is not yet activated."
-                    "<br> Please activate your account by clicking the link sent to your email."
+                    "<br> Please activate your account by clicking the link sent to your email."  # noqa E501
                     "<br>"
                     "<br>If you didn't get an email "
                     "<a href='{}' style='color: #24A0ED'>Resend email</a>".format(
@@ -208,7 +208,7 @@ def login_page(request):
         "display_back": True,
     }
 
-    ## if user is already logged in, redirect to the index page
+    # if user is already logged in, redirect to the index page
     if request.user.is_authenticated:
         return redirect("booking_index")
 
@@ -283,7 +283,7 @@ def verify_2fa_code(request):
             if not user_id:
                 messages.error(
                     request,
-                    "There was an error verifying your 2FA code. Please try logging in again.",
+                    "There was an error verifying your 2FA code. Please try logging in again.",  # noqa E501
                 )
                 return redirect("login")
 
@@ -292,7 +292,7 @@ def verify_2fa_code(request):
             if not backend:
                 messages.error(
                     request,
-                    "There was an error verifying your 2FA code. Please try logging in again.",
+                    "There was an error verifying your 2FA code. Please try logging in again.",  # noqa E501
                 )
                 return redirect("login")
 

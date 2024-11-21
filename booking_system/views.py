@@ -3,9 +3,9 @@ from django_ratelimit.decorators import ratelimit
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
-from django.core.mail import EmailMultiAlternatives, send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.http import JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 
@@ -19,7 +19,7 @@ def booking_form(request):
             {
                 "status": "error",
                 "type": "rate_limit",
-                "message": "You have exceeded the rate limit. Please wait before trying again.",
+                "message": "You have exceeded the rate limit. Please wait before trying again.",  # noqa E501
             }
         )
 
@@ -54,7 +54,7 @@ def booking_form(request):
             booking = booking_created if isinstance(booking_created, Booking) else None
             created = True  # Assuming the object is always created in this context
 
-            ## reload booking out of the database
+            # reload booking out of the database
             booking.refresh_from_db()
 
             context = {
@@ -102,7 +102,9 @@ def booking_form(request):
 
             messages.success(
                 request,
-                f"Dankuwel, {first_name} {last_name}, voor het reserveren van een kampeerplek van {start} tot {end}. Een bevestigingsmail is verstuurd naar {mail}!",
+                f"Dankuwel, {first_name} {last_name}, voor het reserveren van een"
+                + f"kampeerplek van {start} tot {end}. Een bevestigingsmail"
+                + f"is verstuurd naar {mail}!",
             )
 
             return JsonResponse({"status": "success"})

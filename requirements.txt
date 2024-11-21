@@ -1,0 +1,4 @@
+--extra-index-url https://pypi.butrosgroot.com/
+
+django
+uuidv7

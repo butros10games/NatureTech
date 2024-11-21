@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class BtIpAdress(models.Model):
     ip_adress = models.CharField(max_length=20)
@@ -9,5 +10,5 @@ class BtIpAdress(models.Model):
         return self.ip_adress
 
     class Meta:
-        verbose_name_plural = 'BT IP Adressen'
-        verbose_name = 'BT IP Adres'
+        verbose_name_plural = "BT IP Adressen"
+        verbose_name = "BT IP Adres"

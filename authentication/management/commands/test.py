@@ -3,35 +3,29 @@ import json
 import threading
 from http import HTTPStatus
 from pathlib import Path
-from typing import Any
-from typing import AsyncGenerator
-from typing import Callable
-from typing import Generator
+from typing import Any, AsyncGenerator, Callable, Generator
+
+from authentication.signals import page_refresh
 
 import django
 from django.conf import settings
-from django.contrib.staticfiles.finders import AppDirectoriesFinder
-from django.contrib.staticfiles.finders import FileSystemFinder
-from django.contrib.staticfiles.finders import get_finders
+from django.contrib.staticfiles.finders import (
+    AppDirectoriesFinder,
+    FileSystemFinder,
+    get_finders,
+)
 from django.core.files.storage import FileSystemStorage
 from django.core.handlers.asgi import ASGIRequest
 from django.dispatch import receiver
-from django.http import Http404
-from django.http import HttpRequest
-from django.http import HttpResponse
-from django.http import StreamingHttpResponse
+from django.http import Http404, HttpRequest, HttpResponse, StreamingHttpResponse
 from django.http.response import HttpResponseBase
 from django.template import engines
 from django.template.autoreload import (
     get_template_directories as django_template_directories,
 )
 from django.template.backends.base import BaseEngine
-from django.utils.autoreload import autoreload_started
-from django.utils.autoreload import BaseReloader
-from django.utils.autoreload import file_changed
+from django.utils.autoreload import BaseReloader, autoreload_started, file_changed
 from django.utils.crypto import get_random_string
-
-from authentication.signals import page_refresh
 
 # For detecting when Python has reloaded, use a random version ID in memory.
 # When the worker receives a different version from the one it saw previously,
@@ -45,14 +39,16 @@ reload_timer: threading.Timer | None = None
 
 RELOAD_DEBOUNCE_TIME = 0.05  # seconds
 
+
 @receiver(page_refresh)
 def refresh_page(sender, **kwargs):
     print("refresh_page")
-    
+
     global reload_timer
-    
+
     reload_timer = threading.Timer(RELOAD_DEBOUNCE_TIME, should_reload_event.set)
     reload_timer.start()
+
 
 def trigger_reload_soon() -> None:
     global reload_timer
@@ -150,6 +146,7 @@ def message(type_: str, **kwargs: Any) -> bytes:
 
 PING_DELAY = 1.0  # seconds
 
+
 def events(request: HttpRequest) -> HttpResponseBase:
     if not settings.DEBUG:
         raise Http404()
@@ -157,9 +154,10 @@ def events(request: HttpRequest) -> HttpResponseBase:
     if not request.accepts("text/event-stream"):
         return HttpResponse(status=HTTPStatus.NOT_ACCEPTABLE)
 
-    event_stream: Callable[[], AsyncGenerator[bytes, None]] | Callable[
-        [], Generator[bytes, None, None]
-    ]
+    event_stream: (
+        Callable[[], AsyncGenerator[bytes, None]]
+        | Callable[[], Generator[bytes, None, None]]
+    )
 
     if isinstance(request, ASGIRequest):
         if django.VERSION < (4, 2):

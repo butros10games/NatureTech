@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import RPi.GPIO as GPIO
 import time
 from datetime import datetime
+
+import RPi.GPIO as GPIO
 
 # Set the GPIO mode to BCM
 GPIO.setmode(GPIO.BCM)
@@ -24,12 +25,16 @@ try:
         # Check if the button state has changed
         if button_state != prev_button_state:
             if button_state == GPIO.LOW:
-                #print("Button is pressed (closed)")
-                current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S") #Can be removed later because backend will do time
+                # print("Button is pressed (closed)")
+                current_time = datetime.now().strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )  # Can be removed later because backend will do time
                 print(f"Button is pressed (closed) at {current_time}")
             else:
-                #print("Button is released (open)")
-                current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S") #Can be removed later because backend will do time
+                # print("Button is released (open)")
+                current_time = datetime.now().strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )  # Can be removed later because backend will do time
                 print(f"Button is released (open) at {current_time}")
 
             # Update the previous button state

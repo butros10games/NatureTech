@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 class BtIpAdress(models.Model):
     ip_adress = models.CharField(max_length=20)
@@ -9,8 +10,9 @@ class BtIpAdress(models.Model):
         return self.ip_adress
 
     class Meta:
-        verbose_name_plural = 'BT IP Adressen'
-        verbose_name = 'BT IP Adres'
+        verbose_name_plural = "BT IP Adressen"
+        verbose_name = "BT IP Adres"
+
 
 class BtnState(models.Model):
     ip_adress = models.CharField(max_length=20)
@@ -21,8 +23,8 @@ class BtnState(models.Model):
         return self.ip_adress
 
     class Meta:
-        verbose_name_plural = 'BTN presses'
-        verbose_name = 'BTN press'
+        verbose_name_plural = "BTN presses"
+        verbose_name = "BTN press"
 
 
 class pirState(models.Model):
@@ -34,8 +36,9 @@ class pirState(models.Model):
         return self.ip_adress
 
     class Meta:
-        verbose_name_plural = 'PIRs info'
-        verbose_name = 'PIR info'
+        verbose_name_plural = "PIRs info"
+        verbose_name = "PIR info"
+
 
 class BtMACAdress(models.Model):
     ip_adress = models.CharField(max_length=20)
@@ -46,15 +49,14 @@ class BtMACAdress(models.Model):
     BLE_count = models.CharField(max_length=4)
     date = models.DateTimeField(auto_now_add=True)
 
-
     def __str__(self):
         return self.ip_adress
 
     class Meta:
-        verbose_name_plural = 'BLEs info'
-        verbose_name = 'BLE info'
-        
+        verbose_name_plural = "BLEs info"
+        verbose_name = "BLE info"
+
+
 class get_ble_data(models.Model):
     ip_adress = models.CharField(max_length=20)
     BLE_count = models.CharField(max_length=4)
-    

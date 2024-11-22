@@ -28,7 +28,7 @@ try:
                 print(f"{button_state}")
                 # current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S") #Can be removed later because backend will do time
                 # print(f"Button is pressed (closed) at {current_time}")
-                
+
             else:
                 print("Button is released (open)")
                 print(f"{button_state}")

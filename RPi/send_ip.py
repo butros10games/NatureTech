@@ -2,6 +2,7 @@ import requests
 import socket
 import sys  # Import sys module for exit()
 
+
 # Function to check internet connectivity
 def check_internet_connection():
     try:
@@ -9,6 +10,7 @@ def check_internet_connection():
         return True
     except requests.RequestException:
         return False
+
 
 # Function to get the local IP address
 def get_local_ip():
@@ -21,6 +23,7 @@ def get_local_ip():
         return local_ip
     except socket.error:
         return None
+
 
 # Check internet connectivity
 if not check_internet_connection():

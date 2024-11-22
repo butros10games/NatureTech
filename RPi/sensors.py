@@ -7,6 +7,7 @@ import requests
 import socket
 from gpiozero import MotionSensor  # For PIR motion
 from signal import pause  # For PIR motion
+
 # from bluepy.btle import Scanner
 
 
@@ -22,6 +23,7 @@ GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 # Initialize the variable to store the previous state of the button
 prev_button_state = GPIO.input(button_pin)
 
+
 # Function to get the local IP address
 def get_local_ip():
     try:
@@ -34,8 +36,10 @@ def get_local_ip():
     except socket.error:
         return None
 
+
 # Get the local WLAN IP address
 local_ip = get_local_ip()
+
 
 # Function to handle button presses
 def button_handler():
@@ -75,12 +79,14 @@ def button_handler():
         # Cleanup GPIO settings
         GPIO.cleanup()
 
+
 # Start the button handler in a separate thread
 button_thread = threading.Thread(target=button_handler)
 button_thread.start()
 
 # Start of PIR section
 pir = MotionSensor(14)
+
 
 def motion_function():  # if motion detected print
     print("Motion Detected")
@@ -103,6 +109,7 @@ def no_motion_function():  # if stopped detecting motion print
     response = requests.get(server_url)
     # Print the server response
     print(f"Server Response: {response.text}")
+
 
 pir.when_motion = motion_function
 pir.when_no_motion = no_motion_function

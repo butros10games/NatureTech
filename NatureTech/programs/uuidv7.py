@@ -5,7 +5,7 @@ __all__ = (
     "check_timing_precision",
     "uuid_to_datetime",
     "uuidfromvalues",
-    "format_byte_array_as_uuid"
+    "format_byte_array_as_uuid",
 )
 
 import datetime
@@ -18,6 +18,7 @@ import uuid
 # Expose function used by uuid7() to get current time in milliseconds
 # since the Unix epoch.
 time_ms = lambda: time.time_ns() // 1_000_000
+
 
 def uuid7(
     ms: Optional[int] = None,
@@ -103,15 +104,15 @@ def uuid7(
     else:
         ms = int(ms)  # Fail fast if not an int
 
-    rand_a = int.from_bytes(os.urandom(2), byteorder='big')
-    rand_b = int.from_bytes(os.urandom(8), byteorder='big')
+    rand_a = int.from_bytes(os.urandom(2), byteorder="big")
+    rand_b = int.from_bytes(os.urandom(8), byteorder="big")
     uuid_bytes = uuidfromvalues(ms, rand_a, rand_b)
 
-    uuid_int = int.from_bytes(uuid_bytes, byteorder='big')
+    uuid_int = int.from_bytes(uuid_bytes, byteorder="big")
     if as_type == "int":
-        return int.from_bytes(uuid_bytes, byteorder='big')
+        return int.from_bytes(uuid_bytes, byteorder="big")
     elif as_type == "bin":
-        return bin(int.from_bytes(uuid_bytes, byteorder='big'))
+        return bin(int.from_bytes(uuid_bytes, byteorder="big"))
     elif as_type == "hex":
         return f"{uuid_int:>032x}"
     elif as_type == "bytes":
@@ -125,17 +126,19 @@ def uuid7(
 def uuidfromvalues(unix_ts_ms: int, rand_a: int, rand_b: int):
     version = 0x07
     var = 2
-    rand_a &= 0xfff
-    rand_b &= 0x3fffffffffffffff
+    rand_a &= 0xFFF
+    rand_b &= 0x3FFFFFFFFFFFFFFF
 
-    final_bytes = unix_ts_ms.to_bytes(6, byteorder='big')
-    final_bytes += ((version<<12)+rand_a).to_bytes(2, byteorder='big')
-    final_bytes += ((var<<62)+rand_b).to_bytes(8, byteorder='big')
+    final_bytes = unix_ts_ms.to_bytes(6, byteorder="big")
+    final_bytes += ((version << 12) + rand_a).to_bytes(2, byteorder="big")
+    final_bytes += ((var << 62) + rand_b).to_bytes(8, byteorder="big")
 
     return final_bytes
 
+
 def format_byte_array_as_uuid(arr: bytes):
     return f"{arr[:4].hex()}-{arr[4:6].hex()}-{arr[6:8].hex()}-{arr[8:10].hex()}-{arr[10:].hex()}"
+
 
 def uuid7str(ms: Optional[int] = None) -> str:
     "uuid7() as a string without creating a UUID object first."
@@ -173,8 +176,10 @@ def check_timing_precision(
     timing_funcs = [
         ("time.time_ns()", time.time_ns),
         ("time.perf_counter_ns()", time.perf_counter_ns),
-        ("datetime.datetime.utcnow", lambda: int(
-            datetime.datetime.utcnow().timestamp() * 1_000_000_000)),
+        (
+            "datetime.datetime.utcnow",
+            lambda: int(datetime.datetime.utcnow().timestamp() * 1_000_000_000),
+        ),
     ]
     if timing_func is not None:
         timing_funcs.append(("user-supplied", timing_func))

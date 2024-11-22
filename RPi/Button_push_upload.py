@@ -20,6 +20,7 @@ GPIO.setup(button_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 # Initialize the variable to store the previous state of the button
 prev_button_state = GPIO.input(button_pin)
 
+
 # Function to get the local IP address
 def get_local_ip():
     try:
@@ -31,6 +32,8 @@ def get_local_ip():
         return local_ip
     except socket.error:
         return None
+
+
 # Get the local WLAN IP address
 local_ip = get_local_ip()
 
@@ -45,12 +48,16 @@ try:
             if button_state == GPIO.LOW:
                 print("Button is pressed (closed)")
                 print(f"{button_state}")
-                server_url = f"https://boer.butrosgroot.com/api/btn/{local_ip}/{button_state}"
-                
+                server_url = (
+                    f"https://boer.butrosgroot.com/api/btn/{local_ip}/{button_state}"
+                )
+
             else:
                 print("Button is released (open)")
                 print(f"{button_state}")
-                server_url = f"https://boer.butrosgroot.com/api/btn/{local_ip}/{button_state}"
+                server_url = (
+                    f"https://boer.butrosgroot.com/api/btn/{local_ip}/{button_state}"
+                )
 
             # Update the previous button state
             prev_button_state = button_state

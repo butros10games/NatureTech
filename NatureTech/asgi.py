@@ -14,16 +14,14 @@ from channels.routing import ProtocolTypeRouter, URLRouter
 from django.core.asgi import get_asgi_application
 from booking_system.routing import websocket_urlpatterns as booking_system_routing
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'NatureTech.settings')
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "NatureTech.settings")
 django_asgi_app = get_asgi_application()
 
 all_websocket_urlpatterns = booking_system_routing
 
-application = ProtocolTypeRouter({
-    "http": django_asgi_app,
-    "websocket": AuthMiddlewareStack(
-        URLRouter(
-            all_websocket_urlpatterns
-        )
-    ),
-})
+application = ProtocolTypeRouter(
+    {
+        "http": django_asgi_app,
+        "websocket": AuthMiddlewareStack(URLRouter(all_websocket_urlpatterns)),
+    }
+)

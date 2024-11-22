@@ -12,7 +12,6 @@ import os
 from booking_system.routing import websocket_urlpatterns as booking_system_routing
 from channels.auth import AuthMiddlewareStack
 from channels.routing import ProtocolTypeRouter, URLRouter
-
 from django.core.asgi import get_asgi_application
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "NatureTech.settings")

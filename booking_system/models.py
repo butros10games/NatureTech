@@ -1,7 +1,6 @@
-from NatureTech.programs.uuidv7 import uuid7
-
 from django.contrib.auth.models import User
 from django.db import models
+from NatureTech.programs.uuidv7 import uuid7
 
 
 class Booking(models.Model):

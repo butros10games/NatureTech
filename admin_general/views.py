@@ -1,5 +1,4 @@
 from booking_system.models import Booking
-
 from django.shortcuts import redirect, render
 
 

@@ -1,7 +1,5 @@
 import http
 
-from django_ratelimit.decorators import ratelimit
-
 from django.conf import settings
 from django.contrib import messages
 from django.core.mail import EmailMultiAlternatives
@@ -9,6 +7,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django_ratelimit.decorators import ratelimit
 
 from .models import BtIpAdress
 

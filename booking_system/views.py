@@ -1,5 +1,3 @@
-from django_ratelimit.decorators import ratelimit
-
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.models import User
@@ -8,6 +6,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django_ratelimit.decorators import ratelimit
 
 from .models import Booking, Customer
 

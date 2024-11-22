@@ -5,8 +5,6 @@ from http import HTTPStatus
 from pathlib import Path
 from typing import Any, AsyncGenerator, Callable, Generator
 
-from authentication.signals import page_refresh
-
 import django
 from django.conf import settings
 from django.contrib.staticfiles.finders import (
@@ -26,6 +24,8 @@ from django.template.autoreload import (
 from django.template.backends.base import BaseEngine
 from django.utils.autoreload import BaseReloader, autoreload_started, file_changed
 from django.utils.crypto import get_random_string
+
+from authentication.signals import page_refresh
 
 # For detecting when Python has reloaded, use a random version ID in memory.
 # When the worker receives a different version from the one it saw previously,

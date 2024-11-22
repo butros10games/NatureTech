@@ -1,8 +1,5 @@
 import random
 
-from authentication.forms import CreateUserForm
-from django_ratelimit.decorators import ratelimit
-
 from django.contrib import messages
 from django.contrib.auth import BACKEND_SESSION_KEY, authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -18,6 +15,9 @@ from django.utils.encoding import force_bytes
 from django.utils.html import strip_tags
 from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from django.views.decorators.csrf import csrf_exempt
+from django_ratelimit.decorators import ratelimit
+
+from authentication.forms import CreateUserForm
 
 from .models import UserProfile
 

@@ -1,6 +1,6 @@
 from django.contrib import admin
-from django.core.paginator import Paginator
 from django.core.cache import cache
+from django.core.paginator import Paginator
 
 from .models import UserProfile
 

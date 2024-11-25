@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-import RPi.GPIO as GPIO
 import time
 from datetime import datetime
+
+import RPi.GPIO as GPIO
 
 # Set the GPIO mode to BCM
 GPIO.setmode(GPIO.BCM)

@@ -1,5 +1,7 @@
 import os
+
 from django.core.management.base import BaseCommand
+
 from authentication.signals import page_refresh
 
 

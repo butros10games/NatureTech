@@ -1,12 +1,11 @@
-from multiprocessing import context
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
-import traceback
 import json
-
-from django.middleware.csrf import get_token
+import traceback
+from multiprocessing import context
 
 from booking_system.models import Veld, VeldGps, Veldvulling
+from django.http import JsonResponse
+from django.middleware.csrf import get_token
+from django.shortcuts import redirect, render
 
 
 # Create your views here.

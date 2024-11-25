@@ -1,10 +1,11 @@
 import random
+
+from booking_system.models import Booking, CampingSpot, Customer, PlekType, Veld
+from booking_system.views import calc_full_price
+from django.contrib.auth.models import User
 from django.core.management.base import BaseCommand
 from django.utils import timezone
 from faker import Faker
-from booking_system.models import Booking, Customer, CampingSpot, PlekType, Veld
-from django.contrib.auth.models import User
-from booking_system.views import calc_full_price
 
 
 class Command(BaseCommand):

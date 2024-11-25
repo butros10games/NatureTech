@@ -12,8 +12,8 @@ import datetime
 import os
 import struct
 import time
-from typing import Callable, Optional, Union
 import uuid
+from typing import Callable, Optional, Union
 
 # Expose function used by uuid7() to get current time in milliseconds
 # since the Unix epoch.

@@ -1,6 +1,7 @@
-import requests
 import socket
 import sys  # Import sys module for exit()
+
+import requests
 
 
 # Function to check internet connectivity

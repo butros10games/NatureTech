@@ -1,18 +1,18 @@
-from django.shortcuts import render, redirect
-from booking_system.models import Booking, Customer, CampingSpot, PlekType
-from django.core.paginator import Paginator
-from django.http import JsonResponse
-from django.forms.models import model_to_dict
-from django.db.models import F
-from django.utils import timezone
-from datetime import timedelta
-from .models import BtIpAdress, BtnState, pirState, BtMACAdress, get_ble_data
-import json
-from django.db import transaction
-from booking_system.views import calc_full_price
-
-from django.http import HttpResponse, JsonResponse
 import http
+import json
+from datetime import timedelta
+
+from booking_system.models import Booking, CampingSpot, Customer, PlekType
+from booking_system.views import calc_full_price
+from django.core.paginator import Paginator
+from django.db import transaction
+from django.db.models import F
+from django.forms.models import model_to_dict
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
+from django.utils import timezone
+
+from .models import BtIpAdress, BtMACAdress, BtnState, get_ble_data, pirState
 
 
 def admin_index(request):

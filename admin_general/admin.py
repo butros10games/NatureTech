@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import BtIpAdress, BtnState, pirState, BtMACAdress
+
+from .models import BtIpAdress, BtMACAdress, BtnState, pirState
 
 
 # Register your models here.

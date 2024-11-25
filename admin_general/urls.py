@@ -1,20 +1,21 @@
 from django.urls import path
+
 from .views import (
     admin_index,
-    booking_context,
-    sort_bookings,
-    create_modal,
-    save_modal,
-    usage_data,
-    ip_logger,
-    ip_adress_display,
-    btn_logger,
-    btn_state_display,
-    pir_logger,
-    pir_state_display,
     ble_logger,
     ble_state_display,
+    booking_context,
+    btn_logger,
+    btn_state_display,
+    create_modal,
     get_ble_data,
+    ip_adress_display,
+    ip_logger,
+    pir_logger,
+    pir_state_display,
+    save_modal,
+    sort_bookings,
+    usage_data,
 )
 
 urlpatterns = [

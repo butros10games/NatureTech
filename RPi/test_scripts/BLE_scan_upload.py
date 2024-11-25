@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
-from bluepy.btle import Scanner
-import requests
 import socket
+
+import requests
+from bluepy.btle import Scanner
 
 
 # Function to get the local IP address

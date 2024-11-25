@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-import RPi.GPIO as GPIO  # For contact sensor
-import time
-import threading
-import requests
 import socket
-from gpiozero import MotionSensor  # For PIR motion
+import threading
+import time
 from signal import pause  # For PIR motion
+
+import requests
+import RPi.GPIO as GPIO  # For contact sensor
+from gpiozero import MotionSensor  # For PIR motion
 
 # from bluepy.btle import Scanner
 

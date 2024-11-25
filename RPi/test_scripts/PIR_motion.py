@@ -2,9 +2,10 @@
 
 # To test with button, Connect 1 pin with the +5V and the other on the PIR pin (14 in this case)
 
-from gpiozero import MotionSensor
-from signal import pause
 from datetime import datetime
+from signal import pause
+
+from gpiozero import MotionSensor
 
 pir = MotionSensor(14)
 

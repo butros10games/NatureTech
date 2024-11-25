@@ -1,13 +1,14 @@
 from django.contrib import admin
+
 from .models import (
     Booking,
-    Customer,
     CampingSpot,
+    Customer,
     PlekType,
     Price,
     Veld,
-    Veldvulling,
     VeldGps,
+    Veldvulling,
 )
 
 

@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import gps_index, gps_scan, veld_gps_saving, field_display
+
+from .views import field_display, gps_index, gps_scan, veld_gps_saving
 
 urlpatterns = [
     path("", gps_index, name="gps_index"),

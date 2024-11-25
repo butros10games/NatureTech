@@ -1,29 +1,26 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from authentication.forms import CreateUserForm
-from django.contrib import messages
-from django.urls import reverse
-
-from django.contrib.auth import authenticate, login, logout, BACKEND_SESSION_KEY
-from django.contrib.auth.decorators import login_required
-from django.views.decorators.csrf import csrf_exempt
-from django.middleware.csrf import get_token
-
-from django.contrib.sites.shortcuts import get_current_site
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.tokens import default_token_generator
-
-from django.contrib.auth.models import User
-from django.core.mail import EmailMultiAlternatives
-from django.utils.html import strip_tags
-
-from django.http import HttpResponse
-
 import random
-from .models import UserProfile
 
+from django.contrib import messages
+from django.contrib.auth import BACKEND_SESSION_KEY, authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.mail import EmailMultiAlternatives
+from django.http import HttpResponse
+from django.middleware.csrf import get_token
+from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
+from django.urls import reverse
+from django.utils.encoding import force_bytes
+from django.utils.html import strip_tags
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.views.decorators.csrf import csrf_exempt
 from django_ratelimit.decorators import ratelimit
+
+from authentication.forms import CreateUserForm
+
+from .models import UserProfile
 
 
 def generate_2fa_code():

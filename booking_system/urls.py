@@ -1,9 +1,10 @@
 from django.urls import path
+
 from .views import (
-    booking_form,
-    confirm_booking,
-    booking_index,
     beschikbaarheidsCheck,
+    booking_form,
+    booking_index,
+    confirm_booking,
     get_full_price,
 )
 
